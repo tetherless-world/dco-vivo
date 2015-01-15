@@ -56,10 +56,8 @@ RUN chmod +x /etc/service/tomcat7/run
 
 # Install VIVO
 
-#ENV VIVO_DIST maint-rel-1.6
 ENV VIVO_HOME /opt/vivo/home
 ENV VIVO_DATA /usr/local/vivo/data
-#ENV VIVO_REPO https://github.com/tetherless-world/dco-vivo.git
 ENV VIVO_BUILD /opt/build
 
 # Create VIVO required directories
@@ -70,20 +68,8 @@ RUN mkdir -p ${CATALINA_HOME}/logs
 
 WORKDIR ${VIVO_BUILD}
 
-ADD productMods/ rdf/ scripts/ solr/ src/ themes/ vitro/ vivo/ build.properties build.xml runtime.properties .
+ADD productMods/ rdf/ scripts/ solr/ src/ themes/ vitro/ vivo/ build.properties build.xml runtime.properties ${VIVO_BUILD}
 
-#RUN git clone ${VIVO_REPO} dco-vivo
-#WORKDIR dco-vivo
-
-#RUN git submodule init && git submodule update
-
-#WORKDIR ./vitro
-#RUN git checkout $VIVO_DIST
-
-#WORKDIR ../vivo
-#RUN git checkout $VIVO_DIST
-
-WORKDIR ..
 RUN ant all
 
 # Clean up APT when done.
