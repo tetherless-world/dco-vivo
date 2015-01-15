@@ -84,6 +84,7 @@ RUN ant all
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# copy runtime.properties to /etc/vivo where it is found by my-init configure script on start-up
 RUN mkdir -p /etc/vivo && cp runtime.properties /etc/vivo
 
 # Set permissions on all VIVO directories
