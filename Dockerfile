@@ -70,7 +70,7 @@ RUN mkdir -p ${CATALINA_HOME}/logs
 
 WORKDIR ${VIVO_BUILD}
 
-ADD productMods/ rdf/ scripts/ solr/ src/ themes/ vitro/ vivo/ build.properties build.xml runtime.properties
+ADD productMods/ rdf/ scripts/ solr/ src/ themes/ vitro/ vivo/ build.properties build.xml runtime.properties .
 
 #RUN git clone ${VIVO_REPO} dco-vivo
 #WORKDIR dco-vivo
