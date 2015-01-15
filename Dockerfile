@@ -67,7 +67,7 @@ RUN mkdir -p ${VIVO_DATA}
 RUN mkdir -p ${CATALINA_BASE}/temp
 RUN mkdir -p ${CATALINA_HOME}/logs
 
-RUN git clone ${VIVO_REPO}
+RUN git clone ${VIVO_REPO} dco-vivo
 WORKDIR dco-vivo
 
 RUN git submodule init && git submodule update
@@ -83,6 +83,8 @@ RUN ant all
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir -p /etc/vivo && cp runtime.properties /etc/vivo
 
 # Set permissions on all VIVO directories
 RUN chown -R tomcat7:tomcat7 ${VIVO_HOME}
