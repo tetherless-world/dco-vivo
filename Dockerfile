@@ -68,12 +68,17 @@ RUN mkdir -p ${CATALINA_HOME}/logs
 
 WORKDIR ${VIVO_BUILD}
 
-ADD productMods/ rdf/ scripts/ solr/ src/ themes/ vitro/ vivo/ build.properties build.xml runtime.properties ${VIVO_BUILD}/
+ADD productMods ${VIVO_BUILD}/productMods
+ADD rdf ${VIVO_BUILD}/rdf
+ADD scripts ${VIVO_BUILD}/scripts
+ADD solr ${VIVO_BUILD}/solr
+ADD src ${VIVO_BUILD}/src
+ADD themes ${VIVO_BUILD}/themes
+ADD vitro ${VIVO_BUILD}/vitro
+ADD vivo ${VIVO_BUILD}/vivo
+ADD build.properties build.xml runtime.properties ${VIVO_BUILD}/
 
 RUN ant all
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # copy runtime.properties to /etc/vivo where it is found by my-init configure script on start-up
 RUN mkdir -p /etc/vivo && cp runtime.properties /etc/vivo
@@ -87,6 +92,11 @@ RUN chown -R tomcat7:tomcat7 ${CATALINA_HOME}/logs
 
 # Add vivo configuration script to runit
 ADD docker/vivo/my_init.d/ /etc/my_init.d/
+
+RUN ant clean
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 8080
 
