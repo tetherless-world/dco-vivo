@@ -6,7 +6,7 @@ CONFIG=${VIVO_HOME}/runtime.properties
 
 write_config () {
 
-    #copy config from build directory to
+    #copy VIVO runtime config from /etc/vivo to VIVO_HOME
     cp /etc/vivo/runtime.properties ${VIVO_HOME}
 
     if [ -n "${VIVO_ADMIN}" ]; then
