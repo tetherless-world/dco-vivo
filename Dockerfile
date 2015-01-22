@@ -61,7 +61,6 @@ ENV VIVO_DATA /usr/local/vivo/data
 ENV VIVO_BUILD /opt/build
 
 # Create VIVO required directories
-RUN mkdir -p /etc/vivo
 RUN mkdir -p ${VIVO_HOME}
 RUN mkdir -p ${VIVO_DATA}
 RUN mkdir -p ${CATALINA_BASE}/temp
@@ -78,12 +77,12 @@ ADD themes ${VIVO_BUILD}/themes
 ADD vitro ${VIVO_BUILD}/vitro
 ADD vivo ${VIVO_BUILD}/vivo
 ADD build.properties build.xml ${VIVO_BUILD}/
-ADD runtime.properties /etc/vivo/
 
 RUN ant all
 
 # copy runtime.properties to /etc/vivo where it is found by my-init configure script on start-up
-RUN mkdir -p /etc/vivo && cp runtime.properties /etc/vivo
+RUN mkdir -p /etc/vivo
+ADD runtime.properties /etc/vivo/
 
 # Set permissions on all VIVO directories
 RUN chown -R tomcat7:tomcat7 ${VIVO_HOME}
