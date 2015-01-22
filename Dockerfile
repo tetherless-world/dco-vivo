@@ -61,6 +61,7 @@ ENV VIVO_DATA /usr/local/vivo/data
 ENV VIVO_BUILD /opt/build
 
 # Create VIVO required directories
+RUN mkdir -p /etc/vivo
 RUN mkdir -p ${VIVO_HOME}
 RUN mkdir -p ${VIVO_DATA}
 RUN mkdir -p ${CATALINA_BASE}/temp
@@ -76,7 +77,8 @@ ADD src ${VIVO_BUILD}/src
 ADD themes ${VIVO_BUILD}/themes
 ADD vitro ${VIVO_BUILD}/vitro
 ADD vivo ${VIVO_BUILD}/vivo
-ADD build.properties build.xml runtime.properties ${VIVO_BUILD}/
+ADD build.properties build.xml ${VIVO_BUILD}/
+ADD runtime.properties /etc/vivo/
 
 RUN ant all
 
