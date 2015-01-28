@@ -73,6 +73,7 @@ ADD rdf ${VIVO_BUILD}/rdf
 ADD scripts ${VIVO_BUILD}/scripts
 ADD solr ${VIVO_BUILD}/solr
 ADD src ${VIVO_BUILD}/src
+ADD test ${VIVO_BUILD}/test
 ADD themes ${VIVO_BUILD}/themes
 ADD vitro ${VIVO_BUILD}/vitro
 ADD vivo ${VIVO_BUILD}/vivo
