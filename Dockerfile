@@ -100,7 +100,7 @@ RUN ant clean
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-VOLUME ["/var/lib/tomcat7/webapps", "/var/lib/tomcat7/conf", "/opt/vivo/home", "/usr/local/vivo/data"]
+#VOLUME ["/var/lib/tomcat7/webapps", "/var/lib/tomcat7/conf", "/opt/vivo/home", "/usr/local/vivo/data"]
 
 EXPOSE 8080
 
