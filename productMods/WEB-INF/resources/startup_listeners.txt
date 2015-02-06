@@ -1,5 +1,5 @@
 #
-# ServletContextListeners for VIVO, to be instantiated and run by the StartupManager.
+# ServletContextListeners for Vitro, to be instantiated and run by the StartupManager.
 # 
 # For more information, 
 #     https://sourceforge.net/apps/mediawiki/vivo/index.php?title=The_StartupManager
@@ -36,10 +36,9 @@ edu.cornell.mannlib.vitro.webapp.servlet.setup.UpdatePermissionSetUris
 
 edu.cornell.mannlib.vitro.webapp.servlet.setup.FileGraphSetup
 
-# Invokes process to perform updates to align with ontology changes if needed -->
-edu.cornell.mannlib.vitro.webapp.servlet.setup.UpdateKnowledgeBase
-
 edu.cornell.mannlib.vitro.webapp.servlet.setup.SimpleReasonerSetup
+
+#edu.cornell.mannlib.vitro.webapp.servlet.setup.UpdateKnowledgeBase
 
 # Must run after JenaDataSourceSetup
 edu.cornell.mannlib.vitro.webapp.servlet.setup.ThemeInfoSetup
@@ -54,8 +53,6 @@ edu.cornell.mannlib.vitro.webapp.auth.policy.setup.CommonPolicyFamilySetup
 
 edu.cornell.mannlib.vitro.webapp.auth.policy.RootUserPolicy$Setup
 
-edu.cornell.mannlib.vivo.auth.policy.SelfEditorRelationshipPolicy$Setup
-
 edu.cornell.mannlib.vitro.webapp.auth.policy.RestrictHomeMenuItemEditingPolicy$Setup
 
 edu.cornell.mannlib.vitro.webapp.services.shortview.ShortViewServiceSetup
@@ -64,9 +61,6 @@ edu.ucsf.vitro.opensocial.OpenSocialSmokeTests
 
 # For multiple language support
 edu.cornell.mannlib.vitro.webapp.i18n.selection.LocaleSelectionSetup
-
-# Add VIVO specific DocumentModifers, this must come before SolrSetup
-edu.cornell.mannlib.vitro.webapp.search.solr.VivoDocumentModifiers
 
 # The Solr index uses a "public" permission, so the PropertyRestrictionPolicyHelper 
 #   and the PermissionRegistry must already be set up.
