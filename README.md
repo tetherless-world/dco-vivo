@@ -4,12 +4,14 @@ dco-vivo
 Deep Carbon Observatory VIVO
 
 Getting the source
+```
 % git clone https://github.com/tetherless-world/dco-vivo/
 % cd dco-vivo
 % git checkout <branch_name>
 % git branch
 % git submodule update vivo
 % git submodule update vitro
+```
 
 Building vivo
 * ant clean - does what you think it would do
