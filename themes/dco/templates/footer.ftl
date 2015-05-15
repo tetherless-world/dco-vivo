@@ -11,6 +11,7 @@
             <#else>
                 ${copyright.text}
             </#if>
+             | <a class="terms" href="/vivo/privacy-policy" title="${i18n().menu_privacy}">${i18n().menu_privacy}</a></small>
              | <a class="terms" href="${urls.termsOfUse}" title="${i18n().menu_termuse}">${i18n().menu_termuse}</a></small> | 
         </#if>
         ${i18n().menu_powered} <a class="powered-by-vivo" href="http://vivoweb.org" target="_blank" title="${i18n().menu_powered} VIVO"><strong>VIVO</strong></a>
