@@ -9,8 +9,8 @@ Getting the source
 % cd dco-vivo
 % git checkout <branch_name>
 % git branch
-% git submodule update vivo
-% git submodule update vitro
+% git submodule init
+% git submodule update
 ```
 
 Building vivo
