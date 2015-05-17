@@ -46,8 +46,8 @@ ENV PATH $PATH:$CATALINA_HOME/bin
 RUN echo "JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/default/tomcat7
 
 # Add script for configuring tomcat based on ENV variables
-ADD docker/tomcat/tomcat-config.sh /tomcat-config.sh
-RUN chmod +x /tomcat-config.sh
+ADD docker/tomcat/tomcat-config.sh /etc/tomcat/tomcat-config.sh
+RUN chmod +x /etc/tomcat/tomcat-config.sh
 
 # Add script for starting tomcat as runit service
 RUN mkdir /etc/service/tomcat7
@@ -92,15 +92,13 @@ RUN chown -R tomcat7:tomcat7 ${CATALINA_BASE}/temp
 RUN chown -R tomcat7:tomcat7 ${CATALINA_BASE}/logs
 RUN chown -R tomcat7:tomcat7 ${CATALINA_HOME}/logs
 
+VOLUME ["${VIVO_HOME}", "${VIVO_DATA}"]
+
 # Add vivo configuration script to runit
 ADD docker/vivo/my_init.d/ /etc/my_init.d/
 
-RUN ant clean
-
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-VOLUME ["/var/lib/tomcat7/webapps", "/var/lib/tomcat7/conf", "/opt/vivo/home", "/usr/local/vivo/data"]
 
 EXPOSE 8080
 
