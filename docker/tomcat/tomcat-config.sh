@@ -3,8 +3,8 @@
 ADMIN_USER=${ADMIN_USER:-admin}
 ADMIN_PASS=${ADMIN_PASS:-tomcat}
 MAX_UPLOAD_SIZE=${MAX_UPLOAD_SIZE:-52428800}
-CATALINA_OPTS=${CATALINA_OPTS:-"-Xms128m -Xmx1024m -XX:PermSize=128m -XX:MaxPermSize=256m"}
 
+CATALINA_OPTS=${CATALINA_OPTS:-"-Xms1g -Xmx2g -XX:PermSize=512m -XX:MaxPermSize=4g -XX:+DisableExplicitGC"}
 export CATALINA_OPTS="${CATALINA_OPTS}"
 
 cat << EOF > ${CATALINA_BASE}/conf/tomcat-users.xml

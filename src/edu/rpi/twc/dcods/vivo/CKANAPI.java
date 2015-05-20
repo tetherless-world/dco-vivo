@@ -75,14 +75,7 @@ public class CKANAPI {
 	private String fileName="tempfile";
 	private String ckanDataRepoName;
 	private static String apiKey = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
-	
-	public static void main(String args[]){
-		
-		String test = ServerInfo.getInstance().getCkanURL()+"/storage/f/2013-10-15-064857/DataScience_2013_Assignment-2.pdf";
-		int len = test.split("\\.").length;
-		
-		System.out.println(test.split("\\.")[len-1]);
-	}
+
 	public CKANAPI(){
 		
 	}
