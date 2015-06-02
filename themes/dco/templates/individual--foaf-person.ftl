@@ -91,6 +91,18 @@
                     DCO ID <a href="http://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
                 </h2>
             </#if>
+            <!-- Here below. The problem is that this template has no access to the networkId variable 
+            	and I can't find it anywhere or figure out how to resolve this.
+            	So it is always showing there is no network ID -->
+            <#if networkId??>
+            	<h2 id="networkId">
+	     	    Network ID <a href="http://vitro.mydomain.edu/${networkId!}" target="_blank" title="NETWORK-ID"> (exists) ${networkId!} </a>
+		</h2>
+            <#else>
+	   	<h2 id="networkId">
+		    Network ID <a href="" target="_blank" title="NETWORK-ID"> N/A </a>
+		</h2>
+	    </#if>
             <!-- Positions -->   
             <#include "individual-positions.ftl">
         </header>
