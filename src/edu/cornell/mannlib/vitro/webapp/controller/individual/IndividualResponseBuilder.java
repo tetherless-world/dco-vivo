@@ -69,6 +69,8 @@ class IndividualResponseBuilder {
 	private final Individual individual;
 	private static String dcoOntoNamespace = ServerInfo.getInstance().getDcoOntoNamespace();
 	private static String predicateDcoID = dcoOntoNamespace+"dcoId";
+	private static String predicateNetworkID = dcoOntoNamespace+"networkId";
+	
 	public IndividualResponseBuilder(VitroRequest vreq, Individual individual) {
 		this.vreq = vreq;
 		this.wadf = vreq.getWebappDaoFactory();
@@ -86,14 +88,21 @@ class IndividualResponseBuilder {
 		Individual dcoId = individual.getRelatedIndividual("http://info.deepcarbon.net/schema#hasDcoId");
 		if (dcoId != null) {	
 			body.put("dcoId", dcoId.getRdfsLabel());
-			System.out.println("world!!!");
 		}
 		// Trial for networkId
-		Individual networkId = individual.getRelatedIndividual("http://info.deepcarbon.net/schema#networkId");
+		//Individual networkId = individual.getRelatedIndividual("http://vivo.mydomain.edu/ns#networkId");
+		String networkId = individual.getDataValue("http://vivo.mydomain.edu/ns#networkId");
+		System.out.println(networkId);
 		if (networkId != null){
-			body.put("networkId", networkId.getRdfsLabel());
-			System.out.println("world!!!");
+			//body.put("networkId", networkId.toString());
+			body.put("networkId", networkId);
 		}
+		else{
+			System.out.println("networkId is null");
+		}
+		
+		String trialVariable = "hellohellohello!";
+		body.put("trialVariable", trialVariable);
 		
 		body.put("title", individual.getName());            
 		body.put("relatedSubject", getRelatedSubject());
