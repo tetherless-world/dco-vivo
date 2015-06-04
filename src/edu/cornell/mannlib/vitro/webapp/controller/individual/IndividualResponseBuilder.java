@@ -91,11 +91,15 @@ class IndividualResponseBuilder {
 		}
 		// Trial for networkId
 		//Individual networkId = individual.getRelatedIndividual("http://vivo.mydomain.edu/ns#networkId");
-		String networkId = individual.getDataValue("http://vivo.mydomain.edu/ns#networkId");
-		System.out.println(networkId);
+		Individual networkId = individual.getRelatedIndividual("http://info.deepcarbon.net/schema#networkId");
+		//String networkId = individual.getDataValue("http://info.deepcarbon.net/schema#networkId");
+		//String networkId = individual.getDataValue("http://vivo.mydomain.edu/ns#networkId");
+		//DataPropertyStatement networkId = individual.getDataPropertyStatement("http://vivo.mydomain.edu/ns#networkId");
+		
+		System.out.println(networkId.toString());
 		if (networkId != null){
 			//body.put("networkId", networkId.toString());
-			body.put("networkId", networkId);
+			body.put("networkId", networkId.toString());
 		}
 		else{
 			System.out.println("networkId is null");
