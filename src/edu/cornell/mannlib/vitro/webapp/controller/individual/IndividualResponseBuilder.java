@@ -86,7 +86,15 @@ class IndividualResponseBuilder {
 		Individual dcoId = individual.getRelatedIndividual("http://info.deepcarbon.net/schema#hasDcoId");
 		if (dcoId != null) {	
 			body.put("dcoId", dcoId.getRdfsLabel());
+			System.out.println("world!!!");
 		}
+		// Trial for networkId
+		Individual networkId = individual.getRelatedIndividual("http://info.deepcarbon.net/schema#networkId");
+		if (networkId != null){
+			body.put("networkId", networkId.getRdfsLabel());
+			System.out.println("world!!!");
+		}
+		
 		body.put("title", individual.getName());            
 		body.put("relatedSubject", getRelatedSubject());
 		body.put("namespaces", namespaces);
