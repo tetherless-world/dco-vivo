@@ -89,6 +89,7 @@ class IndividualResponseBuilder {
 		if (dcoId != null) {	
 			body.put("dcoId", dcoId.getRdfsLabel());
 		}
+<<<<<<< HEAD
 		/*
 		 * Start of Modification for networkId
 		 */
@@ -108,6 +109,8 @@ class IndividualResponseBuilder {
 		 * 3) the property URI works for my is "http://info.deepcarbon.net/schema#networkId",
 		 * not "http://vivo.mydomain.edu/ns#networkId".
 		 */		
+=======
+>>>>>>> parent of d9c0ac3... individualResponseBuilder edited, runs, but no visible changes
 		body.put("title", individual.getName());            
 		body.put("relatedSubject", getRelatedSubject());
 		body.put("namespaces", namespaces);
