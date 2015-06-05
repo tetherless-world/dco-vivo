@@ -94,7 +94,6 @@ class IndividualResponseBuilder {
 		 * Start of Modification for networkId
 		 */
 		String networkId = individual.getDataValue("http://info.deepcarbon.net/schema#networkId");
-		System.out.println(networkId);
 		if (networkId != null || networkId != ""){
 			body.put("networkId", networkId);
 		}
