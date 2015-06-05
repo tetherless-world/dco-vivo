@@ -95,12 +95,10 @@
             <!-- 
             	Here below is the implementation of displaying the networkId variable. 
             	This template has now given access to the networkId variable by modifying 
-            	IndividualResponseBuilder. And we want the networkId here to be already in String format
+            	IndividualResponseBuilder. And we want the networkId here is a String object.
              -->               
             <#if networkId??>
-            	<h2> Network ID </h2>
-            	<br>
-            	${networkId!}
+            	<h2> Network ID </h2>            	${networkId!}
             </#if>
                         
             <!-- Positions -->   
