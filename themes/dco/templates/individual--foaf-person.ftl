@@ -98,14 +98,9 @@
             	IndividualResponseBuilder. And we want the networkId here is a String object.
              -->               
             <#if networkId??>
-            	<h2 id="networkId">
-	     	    Network ID <a href="http://vitro.mydomain.edu/${networkId!}" target="_blank" title="NETWORK-ID"> (exists) ${networkId!} </a>
-		</h2>
-            <#else>
-	   	<h2 id="networkId">
-		    Network ID <a href="" target="_blank" title="NETWORK-ID"> N/A </a>
-		</h2>
-	    </#if>
+            	<h2> Network ID </h2>            	${networkId!}
+            </#if>
+            
             <!-- Positions -->   
             <#include "individual-positions.ftl">
         </header>
