@@ -88,7 +88,7 @@
             </#if>
 	    	<#if dcoId??>
                 <h2 id="dcoId">
-                    DCO ID <a href="http://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
+                    DCO ID: <a href="http://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
                 </h2>
             </#if>
             
@@ -98,7 +98,7 @@
             	IndividualResponseBuilder. And we want the networkId here is a String object.
              -->               
             <#if networkId??>
-            	<h2> Network ID </h2>            	${networkId!}
+            	<h2> Network ID: ${networkId!}</h2>            	
             </#if>
             
             <!-- Positions -->   
