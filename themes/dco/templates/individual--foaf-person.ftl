@@ -86,11 +86,21 @@
                     </#if>                        
                 </h1>
             </#if>
-	    <#if dcoId??>
+	    	<#if dcoId??>
                 <h2 id="dcoId">
-                    DCO ID <a href="http://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
+                    DCO ID: <a href="http://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
                 </h2>
             </#if>
+            
+            <!-- 
+            	Here below is the implementation of displaying the networkId variable. 
+            	This template has now given access to the networkId variable by modifying 
+            	IndividualResponseBuilder. And we want the networkId here is a String object.
+             -->               
+            <#if networkId??>
+            	<h2> Network ID: ${networkId!}</h2>            	
+            </#if>
+            
             <!-- Positions -->   
             <#include "individual-positions.ftl">
         </header>

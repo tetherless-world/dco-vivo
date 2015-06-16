@@ -69,6 +69,8 @@ class IndividualResponseBuilder {
 	private final Individual individual;
 	private static String dcoOntoNamespace = ServerInfo.getInstance().getDcoOntoNamespace();
 	private static String predicateDcoID = dcoOntoNamespace+"dcoId";
+	private static String predicateNetworkID = dcoOntoNamespace+"networkId";
+	
 	public IndividualResponseBuilder(VitroRequest vreq, Individual individual) {
 		this.vreq = vreq;
 		this.wadf = vreq.getWebappDaoFactory();
@@ -87,6 +89,26 @@ class IndividualResponseBuilder {
 		if (dcoId != null) {	
 			body.put("dcoId", dcoId.getRdfsLabel());
 		}
+		
+		/*
+		 * Start of Modification for networkId
+		 */
+		//String networkId = individual.getDataValue("http://info.deepcarbon.net/schema#networkId");
+		String networkId = individual.getDataValue("http://vivo.mydomain.edu/ns#networkId");
+		if (networkId != null || networkId != ""){
+			body.put("networkId", networkId);
+		}
+		/*
+		 * Modification Comments:
+		 * 1) IndividualResponseBuilder can only access the networkId property when logged in
+		 * 2) The compiler constantly gives this warning:
+		 * 		[javac] /Users/Hao/Projects/dco-vivo/.build/appBase/src/edu/cornell/mannlib
+		 * /vitro/webapp/controller/individual/IndividualController.java:91: warning: 
+		 * [deprecation] ExtendedRdfAssembler in edu.cornell.mannlib.vitro.webapp.controller
+		 * .individual has been deprecated 
+		 * 3) the property URI works for my is "http://info.deepcarbon.net/schema#networkId",
+		 * not "http://vivo.mydomain.edu/ns#networkId".
+		 */		
 		body.put("title", individual.getName());            
 		body.put("relatedSubject", getRelatedSubject());
 		body.put("namespaces", namespaces);
