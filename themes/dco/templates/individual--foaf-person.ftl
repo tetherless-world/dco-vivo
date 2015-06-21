@@ -49,6 +49,9 @@
                 
         <!-- Websites -->
         <#include "individual-webpage.ftl">
+        
+        <!-- Nationality -->
+        <!-- Nationality: ${homeCountry!}  -->
     </section>
 
     <section id="individual-info" ${infoClass!} role="region"> 
