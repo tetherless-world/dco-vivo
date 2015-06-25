@@ -90,13 +90,11 @@ class IndividualResponseBuilder {
 			body.put("dcoId", dcoId.getRdfsLabel());
 		}
 		
-		/*
 		//Adding variable: homeCountry (Hao, June 2015)
 		Individual homeCountry = individual.getRelatedIndividual("http://info.deepcarbon.net/schema#homeCountry");
 		if (homeCountry != null){
 			body.put("homeCountry", homeCountry.getRdfsLabel());
 		}
-		*/
 		
 		/*
 		 * Start of Modification for networkId
