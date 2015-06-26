@@ -50,7 +50,7 @@
         <!-- Websites -->
         <#include "individual-webpage.ftl">
         
-        <!-- Nationality -->
+        <#-- Nationality -->
         <#-- Nationality: ${homeCountry!} -->
     </section>
 
@@ -113,9 +113,6 @@
         
         <!-- Research Areas -->
         <#include "individual-researchAreas.ftl">
-
-        <!-- Geographic Focus -->
-        <!-- #include "individual-geographicFocus.ftl" -->
 
 		<#include "individual-openSocial.ftl">
     </section>
