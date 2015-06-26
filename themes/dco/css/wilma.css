@@ -1903,3 +1903,26 @@ span.subclassExpandMinus {
     background:url(../images/green_minus_sign.gif) right center no-repeat;
     min-height:18px;
 }
+
+.boiler {
+  font-size: 115%;
+  line-height: 150%;
+  color: white;
+  font-family: Arial,Helvetica,Verdana,"Bitstream Vera Sans",sans-serif;
+}
+
+h6 {
+    display: block;
+    font-weight:bold;
+    line-height:150%;
+    color:white;
+    font-size:80%;
+}
+
+a.dco_anchor {
+	color:white;
+}
+
+a:hover.dco_anchor {
+	color:#c6251d;
+}
