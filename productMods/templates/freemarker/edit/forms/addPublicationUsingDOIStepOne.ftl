@@ -5,7 +5,9 @@
 <#assign metadata = metadata>
 
 <h2>Imported Metadata for Publication DOI: ${doi}</h2>
-
+<br/>
+<span style="font-size:9pt;border:1px solid;margin:10px 0px;padding:15px 10px 15px 10px;background-color:#FEEFB3;"><span style="color:red;">NOTE ON AUTHORS</span>: Please use the dropdowns to select an existing author if available. Creating a new one might introduce duplication.</span>
+<br/><br/>
 <section id="addPublicationToPerson" role="region">
 
 <form id="addpublicationToPersonUsingDOIStageTwo" class="customForm noIE67" action="${urls.base}/addPublicationUsingDOIStepTwo" role="add publication">
