@@ -9,8 +9,8 @@ public class ServerInfo {
 	private String ckanURL = "http://data.deepcarbon.net/ckan";
 	private String dcoOntoNameSpace = "http://info.deepcarbon.net/schema#";
 	private String dcoNamespace = "http://info.deepcarbon.net";
-	private String rootName = "cheny18@rpi.edu";
-	private String rootPassword = "twc123";
+	private String rootName = "tw-dco@lists.rpi.edu";
+	private String rootPassword = "myts-eth-erd";
 	
 	private void ServerInfo(){
 		machineURL = "http://info.deepcarbon.net/vivo";
@@ -19,8 +19,8 @@ public class ServerInfo {
 		ckanURL = "http://data.deepcarbon.net/ckan";
 		dcoOntoNameSpace = "http://info.deepcarbon.net/schema#";
 		dcoNamespace = "http://info.deepcarbon.net";
-		rootName = "cheny18@rpi.edu";
-		rootPassword = "twc123";
+		rootName = "tw-dco@lists.rpi.edu";
+		rootPassword = "myts-eth-erd";
 		
 	}
 	

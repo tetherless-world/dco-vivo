@@ -22,3 +22,20 @@ Building vivo
 * ant all - builds, runs tests, builds war file, copies the files to tomcat
 ** in build.properties change tomcat.home
 * ant distribute - builds, runs tests, builds war files under .build/distribution/vivo.war
+
+Testing DOI input
+Try to find a DOI with limited authors who are in the DCO system already
+* login to VIVO
+* go to your profile in VIVO
+* select the Publications tab
+* click on the + next to "selected publications"
+* Enter the DOI 10.1016/j.cageo.2007.12.019
+* Click "Or import metadata from DOI"
+* Make sure all the information is correct in the form. For authors and
+journal please make sure to select one that already exists. We do not
+want duplication from a test
+* Click "Submit"
+If all goes well you should see the new publication in the system. Now
+delete it.
+
+
