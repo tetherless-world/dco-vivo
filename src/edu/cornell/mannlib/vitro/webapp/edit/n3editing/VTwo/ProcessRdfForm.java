@@ -534,17 +534,6 @@ public class ProcessRdfForm {
         Model retractions = allPossibleRetractions.difference( allPossibleAssertions );        
         return new AdditionsAndRetractions(assertions,retractions);
     }
-
-   private void applyEditSubmissionPreprocessors(
-            EditConfigurationVTwo configuration, MultiValueEditSubmission submission, VitroRequest vreq) {
-        List<EditSubmissionVTwoPreprocessor> preprocessors = configuration.getEditSubmissionPreprocessors();
-        if(preprocessors != null) {
-            for(EditSubmissionVTwoPreprocessor p: preprocessors) {
-                p.preprocess(submission, vreq);
-            }
-        }
-    }
-
    
    //Note this would require more analysis in context of multiple URIs
    public Map<String,String> URIsForNewRsources(
