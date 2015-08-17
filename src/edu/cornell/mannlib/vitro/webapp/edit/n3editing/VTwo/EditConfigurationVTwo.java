@@ -724,14 +724,14 @@ public class EditConfigurationVTwo {
      * request or session.  If the queryParams are supplied, look for the editKey
      * there first since multipart parsing might have cleared them from the request.
      */
-    public static EditConfigurationVTwo getConfigFromSession( HttpSession sess, HttpServletRequest request, String editKey){
-		
-        String key = editKey;
-     
-        if( key == null )
-            return null;
-        return getConfigFromSession(sess, key);
-    }
+//    public static EditConfigurationVTwo getConfigFromSession( HttpSession sess, HttpServletRequest request, String editKey){
+//
+//        String key = editKey;
+//
+//        if( key == null )
+//            return null;
+//        return getConfigFromSession(sess, key);
+//    }
     
     /**
      * The editKey can be a HTTP query parameter or it can be a request attribute.
