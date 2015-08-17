@@ -93,23 +93,15 @@ public class ProcessRdfForm {
         log.debug("submission:\n" + submission.toString());
         
         
-        //applyEditSubmissionPreprocessors( configuration, submission, vreq );
         applyEditSubmissionPreprocessors( configuration, submission, vreq );
 
         AdditionsAndRetractions changes;
         if( configuration.isUpdate() ){
-            //System.out.println("Edit exsiting ones");
             changes = editExistingStatements(configuration, submission);
-            //System.out.println(changes.toString());
         } else {
-            //System.out.println("Create new ones");
             changes = createNewStatements(configuration, submission );
-            //System.out.println(changes.toString());
-
-            /* DCO-ID generation, by Han Wang (wangh17@rpi.edu) */
             generateDcoIdN3(changes, submission);
-	        /* End of DCO-ID generation */
-        }   
+        }
 
         changes = getMinimalChanges(changes);      
         logChanges( configuration, changes);        
@@ -117,40 +109,28 @@ public class ProcessRdfForm {
         return changes;
     }
     
-    public AdditionsAndRetractions  process(
-            EditConfigurationVTwo configuration,
-            MultiValueEditSubmission submission) 
-    throws Exception{  
-        log.debug("configuration:\n" + configuration.toString());
-        log.debug("submission:\n" + submission.toString());
-        
-        //System.out.println("Configurations:");
-        //System.out.println(configuration.toString());
-        //System.out.println("Submissions:");
-        //System.out.println(submission.toString());
-
-        applyEditSubmissionPreprocessors( configuration, submission );
-        
-        AdditionsAndRetractions changes;
-        if( configuration.isUpdate() ){
-            //System.out.println("Edit exsiting ones");
-            changes = editExistingStatements(configuration, submission);
-            //System.out.println(changes.toString());
-        } else {
-            //System.out.println("Create new ones");
-            changes = createNewStatements(configuration, submission );
-            //System.out.println(changes.toString());
-
-		    /* DCO-ID generation, by Han Wang (wangh17@rpi.edu) */
-            generateDcoIdN3(changes, submission);
-	        /* End of DCO-ID generation */
-        }       
-
-        changes = getMinimalChanges(changes);      
-        logChanges( configuration, changes);        
-        
-        return changes;
-    }
+//    public AdditionsAndRetractions  process(
+//            EditConfigurationVTwo configuration,
+//            MultiValueEditSubmission submission)
+//    throws Exception{
+//        log.debug("configuration:\n" + configuration.toString());
+//        log.debug("submission:\n" + submission.toString());
+//
+//        applyEditSubmissionPreprocessors( configuration, submission );
+//
+//        AdditionsAndRetractions changes;
+//        if( configuration.isUpdate() ){
+//            changes = editExistingStatements(configuration, submission);
+//        } else {
+//            changes = createNewStatements(configuration, submission );
+//            generateDcoIdN3(changes, submission);
+//        }
+//
+//        changes = getMinimalChanges(changes);
+//        logChanges( configuration, changes);
+//
+//        return changes;
+//    }
     
     /* DCO-ID N3 generation, by Han Wang (wangh17@rpi.edu) */
     private void generateDcoIdN3(AdditionsAndRetractions changes, MultiValueEditSubmission submission) {
@@ -249,11 +229,11 @@ public class ProcessRdfForm {
     }
  
     private void applyEditSubmissionPreprocessors(
-            EditConfigurationVTwo configuration, MultiValueEditSubmission submission) {
+            EditConfigurationVTwo configuration, MultiValueEditSubmission submission, VitroRequest vreq) {
         List<EditSubmissionVTwoPreprocessor> preprocessors = configuration.getEditSubmissionPreprocessors();
         if(preprocessors != null) {
             for(EditSubmissionVTwoPreprocessor p: preprocessors) {
-                p.preprocess(submission);
+                p.preprocess(submission, vreq);
             }
         }
     }
