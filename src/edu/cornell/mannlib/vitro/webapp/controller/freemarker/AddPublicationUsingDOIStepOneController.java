@@ -80,16 +80,14 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		} else {
 			try {
 				if (doi.isEmpty()) throw new NullPointerException("No DOI was entered.");
-				String editKey = vreq.getParameter("editKey");
-				
-				EditConfigurationVTwo editConfig = EditConfigurationUtils.getEditConfiguration(vreq, editKey);
-	//			System.out.println("Configuration: " + editConfig);
-	//			MultiValueEditSubmission submission = new MultiValueEditSubmission(vreq.getParameterMap(), editConfig);
-	//			System.out.println("Submission: " + submission);
-				
+
+				//String editKey = vreq.getParameter("editKey");
+				//EditConfigurationVTwo editConfig = EditConfigurationUtils.getEditConfiguration(vreq, editKey);
+
+				EditConfigurationVTwo editConfig = EditConfigurationUtils.getEditConfiguration(vreq);
+
 				Map<String, String> pubTypes = getPublicationTypes(vreq, editConfig);
-	//			System.out.println("Pubtypes: " + pubTypes.toString());
-		        
+
 				JSONObject metadata = getPublicationMetadataViaCrossRef(doi);
 				if (metadata == null)
 					throw new PublicationMetadataImportException("This DOI has no record in CrossRef.");
@@ -101,9 +99,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 				}
 				HashMap<String, Object> venue = (HashMap<String, Object>) metadataMap.get("venue");
 				matchVenue(venue);
-				
-				//System.out.println("Parsed metadata: " + metadataMap.toString());
-				
+
 				Map<String, Object> templateData = new HashMap<String, Object>();
 	//			templateData.put("editConfiguration", editConfig);
 				templateData.put("pubTypes", pubTypes);
@@ -135,7 +131,6 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
 			}
-//			System.out.println(builder.toString());
 			if (builder.toString().startsWith("{")) {
 				JSONTokener tokener = new JSONTokener(builder.toString());
 				JSONObject json = new JSONObject(tokener);

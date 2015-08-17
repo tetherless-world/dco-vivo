@@ -118,7 +118,9 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 		// Write things to the model
 		String editKey = request.getParameter("editKey");
 		
-		EditConfigurationVTwo configuration = EditConfigurationUtils.getEditConfiguration(request,editKey);
+		//EditConfigurationVTwo configuration = EditConfigurationUtils.getEditConfiguration(request,editKey);
+		EditConfigurationVTwo configuration = EditConfigurationUtils.getEditConfiguration(request);
+
 		System.out.println("Hopefully the configuration is "+configuration);
 		this.configuration = configuration;
 
