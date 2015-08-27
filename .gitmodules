@@ -4,3 +4,6 @@
 [submodule "vivo"]
 	path = vivo
 	url = https://github.com/vivo-project/VIVO
+[submodule "themes/dco/js/facetview2"]
+	path = themes/dco/js/facetview2
+	url = https://github.com/tetherless-world/facetview2
