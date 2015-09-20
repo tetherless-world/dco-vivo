@@ -69,7 +69,11 @@ public class LoginRedirector {
 	}
 
 	public String getRedirectionUriForLoggedInUser() {
-		/*
+		/* PCW: we want to redirect to the page that the person was on
+         * after logging in. If they could view the page when not logged
+         * in then they should be able to view it when logged in. If
+         * they don't have permission then they'll receive some sort of
+         * message to that affect.
 		if (isSelfEditorWithIndividual()) {
 			log.debug("Going to Individual home page.");
 			return getAssociatedIndividualHomePage();
@@ -79,13 +83,16 @@ public class LoginRedirector {
 			log.debug("User not recognized. Going to application home.");
 			return getApplicationHomePageUrl();
 		}
+		*/
 
+        /* if the return page is the login page then they would get a
+         * "already logged in" type of message, so send them to the
+         * home page.
+         */
 		if (isLoginPage(afterLoginPage)) {
 			log.debug("Coming from /login. Going to site admin page.");
-			return getSiteAdminPageUrl();
+			return getApplicationHomePageUrl();
 		} else if (null != afterLoginPage) {
-		*/
-		if (null != afterLoginPage) {
 			log.debug("Returning to requested page: " + afterLoginPage);
 			return afterLoginPage;
 		} else {
