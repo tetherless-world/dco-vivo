@@ -333,11 +333,9 @@ public class EditConfigurationUtils {
         return editConfiguration;
     }
     
-    public static EditConfigurationVTwo getEditConfiguration(HttpServletRequest request,String editKey) {
-    	
-        HttpSession session = request.getSession();
-		
-        EditConfigurationVTwo editConfiguration = EditConfigurationVTwo.getConfigFromSession(session, request,editKey);     
-        return editConfiguration;
-    }
+//    public static EditConfigurationVTwo getEditConfiguration(HttpServletRequest request, String editKey) {
+//        HttpSession session = request.getSession();
+//        EditConfigurationVTwo editConfiguration = EditConfigurationVTwo.getConfigFromSession(session, request, editKey);
+//        return editConfiguration;
+//    }
 }

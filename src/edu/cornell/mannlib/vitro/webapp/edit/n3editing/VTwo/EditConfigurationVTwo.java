@@ -706,14 +706,7 @@ public class EditConfigurationVTwo {
 
     public static EditConfigurationVTwo getConfigFromSession(HttpSession sess, String editKey){
         Map<String,EditConfigurationVTwo> configs = (Map<String,EditConfigurationVTwo>)sess.getAttribute("EditConfigurations");
-        if( configs == null )
-          return null;
-
-        EditConfigurationVTwo config = configs.get( editKey );
-        if( config == null )
-            return null;
-        else
-            return config;
+        return (configs != null) ? configs.get( editKey ) : null;
     }
 
     /**
@@ -723,10 +716,7 @@ public class EditConfigurationVTwo {
      */
     public static EditConfigurationVTwo getConfigFromSession( HttpSession sess, HttpServletRequest request ){
         String key = getEditKeyFromRequest(request);
-        
-        if( key == null )
-            return null;
-        return getConfigFromSession(sess, key);
+        return (key != null) ? getConfigFromSession(sess, key) : null;
     }
 
     /**
@@ -734,14 +724,14 @@ public class EditConfigurationVTwo {
      * request or session.  If the queryParams are supplied, look for the editKey
      * there first since multipart parsing might have cleared them from the request.
      */
-    public static EditConfigurationVTwo getConfigFromSession( HttpSession sess, HttpServletRequest request, String editKey){
-		
-        String key = editKey;
-     
-        if( key == null )
-            return null;
-        return getConfigFromSession(sess, key);
-    }
+//    public static EditConfigurationVTwo getConfigFromSession( HttpSession sess, HttpServletRequest request, String editKey){
+//
+//        String key = editKey;
+//
+//        if( key == null )
+//            return null;
+//        return getConfigFromSession(sess, key);
+//    }
     
     /**
      * The editKey can be a HTTP query parameter or it can be a request attribute.
