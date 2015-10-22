@@ -991,7 +991,7 @@ obo:ERO_0000004
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
       vitro:hiddenFromPublishBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupequipment> ;
+      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
       vitro:prohibitedFromUpdateBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
@@ -1572,7 +1572,7 @@ vivo:Equipment
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
       vitro:hiddenFromPublishBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupequipment> ;
+      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
       vitro:prohibitedFromUpdateBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
@@ -4186,7 +4186,7 @@ bibo:Proceedings
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
       vitro:hiddenFromPublishBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
+      vitro:inClassGroup <http://info.deepcarbon.net/individual/vitroClassGrouppublications> ;
       vitro:prohibitedFromUpdateBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
@@ -4629,19 +4629,19 @@ vivo:entryTerm
       vitro:prohibitedFromUpdateBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
-<http://purl.org/spar/fabio/ClinicalGuideline>
-      rdfs:label "Clinical Guideline"@en-US ;
-      vitro:displayLimitAnnot
-              "5"^^xsd:int ;
-      vitro:displayRankAnnot
-              "5"^^xsd:int ;
-      vitro:hiddenFromDisplayBelowRoleLevelAnnot
-              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:hiddenFromPublishBelowRoleLevelAnnot
-              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
-      vitro:prohibitedFromUpdateBelowRoleLevelAnnot
-              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
+#<http://purl.org/spar/fabio/ClinicalGuideline>
+#      rdfs:label "Clinical Guideline"@en-US ;
+#      vitro:displayLimitAnnot
+#              "5"^^xsd:int ;
+#      vitro:displayRankAnnot
+#              "5"^^xsd:int ;
+#      vitro:hiddenFromDisplayBelowRoleLevelAnnot
+#              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
+#      vitro:hiddenFromPublishBelowRoleLevelAnnot
+#              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
+#      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
+#      vitro:prohibitedFromUpdateBelowRoleLevelAnnot
+#              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
 vcard:Fax
       rdfs:label "Fax"@en-US .
@@ -6161,7 +6161,7 @@ obo:ERO_0000014
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
       vitro:hiddenFromPublishBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupactivities> ;
+      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications>
       vitro:prohibitedFromUpdateBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
@@ -7671,8 +7671,8 @@ vivo:publicationVenueFor
       vitro:selectFromExistingAnnot
               "true"^^xsd:boolean .
 
-<http://purl.org/net/OCRe/study_design.owl#Phase_0>
-      rdfs:label "Phase 0"@en-US .
+#<http://purl.org/net/OCRe/study_design.owl#Phase_0>
+#      rdfs:label "Phase 0"@en-US .
 
 #<http://vivoweb.org/ontology/scientific-research#Phase2ClinicalTrial>
 #      rdfs:label "Phase 2 Clinical Trial"@en-US ;
@@ -7768,19 +7768,19 @@ obo:OBI_0000835
 vcard:honorificPrefix
       rdfs:label "honorific prefix"@en-US .
 
-<http://vivoweb.org/ontology/scientific-research#Phase0ClinicalTrial>
-      rdfs:label "Phase 0 Clinical Trial"@en-US ;
-      vitro:displayLimitAnnot
-              "6"^^xsd:int ;
-      vitro:displayRankAnnot
-              "-1"^^xsd:int ;
-      vitro:hiddenFromDisplayBelowRoleLevelAnnot
-              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:hiddenFromPublishBelowRoleLevelAnnot
-              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
-      vitro:prohibitedFromUpdateBelowRoleLevelAnnot
-              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
+#<http://vivoweb.org/ontology/scientific-research#Phase0ClinicalTrial>
+#      rdfs:label "Phase 0 Clinical Trial"@en-US ;
+#      vitro:displayLimitAnnot
+#              "6"^^xsd:int ;
+#      vitro:displayRankAnnot
+#              "-1"^^xsd:int ;
+#      vitro:hiddenFromDisplayBelowRoleLevelAnnot
+#              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
+#      vitro:hiddenFromPublishBelowRoleLevelAnnot
+#              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
+#      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
+#      vitro:prohibitedFromUpdateBelowRoleLevelAnnot
+#              <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
 vivo:Translation
       rdfs:label "Translation"@en-US ;
@@ -8431,7 +8431,7 @@ vivo:Project
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
       vitro:hiddenFromPublishBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> ;
-      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGroupactivities> ;
+      vitro:inClassGroup <http://vivoweb.org/ontology#vitroClassGrouppublications> ;
       vitro:prohibitedFromUpdateBelowRoleLevelAnnot
               <http://vitro.mannlib.cornell.edu/ns/vitro/role#public> .
 
