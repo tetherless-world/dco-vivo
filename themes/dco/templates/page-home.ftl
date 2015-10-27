@@ -28,51 +28,23 @@
     <#-- supplies the faculty count to the js function that generates a random row number for the solr query -->
         <@lh.facultyMemberCount  vClassGroups! />
         <#include "identity.ftl">
-        <#include "search.ftl" >
-        <#include "menu.ftl">
+       
+		<#-- added by Josh 10/9/2015 -->
+        <#include "dcomenu.ftl">
 
         <section id="intro" role="region">
             <h2>${i18n().intro_title}</h2>
 
-            <p>${i18n().intro_para1}</p>
+            <p><div class="image"><a href="${urls.base}/field-studies"><img src="${urls.theme}/images/dco-images/DCO-Field-Study-Map-Slide-copy.jpg" /></a><span class="caption">This map depicts the locations of Deep Carbon Observatory field studies. Visit <a href="${urls.base}/field-studies">the DCO Field Study page</a> for the interactive version.</span></div>${i18n().intro_para1}</span></p>
             <p>${i18n().intro_para2}</p>
 
-            <section id="search-home" role="region">
-                <h3>${i18n().intro_searchvivo} <span class="search-filter-selected">filteredSearch</span></h3>
-        
-                <fieldset>
-                    <legend>${i18n().search_form}</legend>
-                    <form id="search-homepage" action="${urls.search}" name="search-home" role="search" method="post" > 
-                        <div id="search-home-field">
-                            <input type="text" name="querytext" class="search-homepage" value="" autocapitalize="off" />
-                            <input type="submit" value="${i18n().search_button}" class="search" />
-                            <input type="hidden" name="classgroup"  value="" autocapitalize="off" />
-                        </div>
-                
-                        <a class="filter-search filter-default" href="#" title="${i18n().intro_filtersearch}">
-                            <span class="displace">${i18n().intro_filtersearch}</span>
-                        </a>
-                
-                        <ul id="filter-search-nav">
-                            <li><a class="active" href="">${i18n().all_capitalized}</a></li>
-                            <@lh.allClassGroupNames vClassGroups! />  
-                        </ul>
-                    </form>
-                </fieldset>
-            </section> <!-- #search-home -->
         
         </section> <!-- #intro -->
         
-        <!--@widget name="login" /-->
-        
-        <!-- List of research classes: e.g., articles, books, collections, conference papers -->
-        <@lh.researchClasses />
-                
-        <!-- List of four randomly selected faculty members -->
-        <@lh.facultyMbrHtml />
-
-        <!-- List of randomly selected academic departments -->
-        <@lh.academicDeptsHtml />
+       
+         
+       
+       
 
         <#if geoFocusMapsEnabled >
             <!-- Map display of researchers' areas of geographic focus. Must be enabled in runtime.properties -->
