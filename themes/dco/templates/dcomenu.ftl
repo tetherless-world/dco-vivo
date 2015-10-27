@@ -70,9 +70,9 @@
 		
 		
 		<li class="leaf"><a title="Grant Browser" href="https://deepcarbon.net/dco_grant_browser">Grant Browser</a></li>
-		<li class="leaf"><a title="Project Browser" href="${urls.base}/projects">Project Browser</a></li>
+		<li class="leaf"><a title="Project and Field Site Browser" href="${urls.base}/projects">Project &amp; Field Site Browser</a></li>
 		
-		<li class="leaf"><a title="DCO Field Study Browser (map)" href="${urls.base}/field-studies">Field Study Browser (map)</a></li>
+		<li class="leaf"><a title="Field Site Browser (map)" href="${urls.base}/field-studies">Field Site Browser (map)</a></li>
 		<li class="leaf"><a title="Dataset Browser" href="${urls.base}/datasets">Dataset Browser</a></li>
 		<li class="leaf"><a title="Datatype Browser" href="${urls.base}/datatypes">Datatype Browser</a></li>
 		
