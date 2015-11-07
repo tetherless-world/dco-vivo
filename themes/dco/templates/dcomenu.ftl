@@ -65,6 +65,9 @@
 	</ul></li>
 	<li class="collapsed"><a title="" href="${urls.base}/">Data Portal</a>
 	<ul class="menu">
+		<#if user.loggedIn>
+		    <li class="leaf first"><a title="Submit Community Data" href="https://deepcarbon.net/page/submit-community-data">Submit Community Data</a></li>
+                </#if>
 		<li class="leaf first"><a title="DCO People Browser" href="${urls.base}/people">People Browser</a></li>
 		<li class="leaf first"><a title="" href="${urls.base}/publications">Publications Browser</a></li>
 		
