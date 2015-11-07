@@ -31,7 +31,7 @@
         </ul>
     </nav>
     -->
-    <table style="background-color: black;">
+    <table class="footertable" style="background-color: black;">
 	<tr>
 	    <td style="width:15%;padding:1em;">
 <ul style="list-style-type:circle;">

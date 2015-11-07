@@ -10,8 +10,9 @@
     
     <body class="${bodyClasses!}" onload="${bodyOnload!}">
         <#include "identity.ftl">
-        <#include "search.ftl" >
-        <#include "menu.ftl">
+        
+        <#include "dcomenu.ftl">
+		
 
 		<#-- VIVO OpenSocial Extension by UCSF -->
 		<#if openSocial??>
@@ -19,7 +20,7 @@
             	<div id="gadgets-tools" class="gadgets-gadget-parent"></div>
             </#if>	
 		</#if>	
-        
+        <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
         ${body}
         
         <#include "footer.ftl">
