@@ -30,3 +30,7 @@ out/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
+
+# Vitro home directory
+home/
+vitro-home/
