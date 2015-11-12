@@ -57,41 +57,42 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     protected EditConfigurationVTwo doAddNew(VitroRequest vreq,
                                              HttpSession session) throws Exception {
         EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
-        initBasics(editConfiguration, vreq);
-        initPropertyParameters(vreq, session, editConfiguration);
-        initObjectPropForm(editConfiguration, vreq);
-        setVarNames(editConfiguration);
-
-        // Required N3
-        editConfiguration.setN3Required(generateN3Required());
-
-        // Optional N3
-        editConfiguration.setN3Optional(generateN3Optional());
-
-        editConfiguration.setNewResources(generateNewResources(vreq));
-
-        // In scope
-        setUrisAndLiteralsInScope(editConfiguration, vreq);
-
-        // on Form
-        setUrisAndLiteralsOnForm(editConfiguration, vreq);
-
-        // Sparql queries
-        setSparqlQueries(editConfiguration, vreq);
-
-        // set fields
-        setFields(editConfiguration, vreq);
-
-        // template file
-        editConfiguration.setTemplate("addProjectUpdate.ftl"); // need to create this ftl file
-        // adding person has publication validator
-        editConfiguration.addValidator(new AntiXssValidation());
-        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
-        editConfiguration.addValidator(new PersonHasPublicationValidator());
-
-        // Adding additional data, specifically edit mode
-        addFormSpecificData(editConfiguration, vreq);
-        prepare(vreq, editConfiguration);
+//        initBasics(editConfiguration, vreq);
+//        initPropertyParameters(vreq, session, editConfiguration);
+//        initObjectPropForm(editConfiguration, vreq);
+//        setVarNames(editConfiguration);
+//
+//        // Required N3
+//        editConfiguration.setN3Required(generateN3Required());
+//
+//        // Optional N3
+//        editConfiguration.setN3Optional(generateN3Optional());
+//
+//        editConfiguration.setNewResources(generateNewResources(vreq));
+//
+//        // In scope
+//        setUrisAndLiteralsInScope(editConfiguration, vreq);
+//
+//        // on Form
+//        setUrisAndLiteralsOnForm(editConfiguration, vreq);
+//
+//        // Sparql queries
+//        setSparqlQueries(editConfiguration, vreq);
+//
+//        // set fields
+//        setFields(editConfiguration, vreq);
+//
+//        // template file
+//        editConfiguration.setTemplate("addProjectUpdate.ftl"); // need to create this ftl file
+//        // adding person has publication validator
+//        editConfiguration.addValidator(new AntiXssValidation());
+//        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
+//        editConfiguration.addValidator(new PersonHasPublicationValidator());
+//
+//        // Adding additional data, specifically edit mode
+//        addFormSpecificData(editConfiguration, vreq);
+//        prepare(vreq, editConfiguration);
         return editConfiguration;
     }
+
 }

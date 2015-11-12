@@ -34,3 +34,6 @@ atlassian-ide-plugin.xml
 # Vitro home directory
 home/
 vitro-home/
+
+# Build property file
+build.properties
