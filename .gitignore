@@ -35,5 +35,3 @@ atlassian-ide-plugin.xml
 home/
 vitro-home/
 
-# Build property file
-build.properties
