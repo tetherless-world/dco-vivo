@@ -133,4 +133,93 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         return "@prefix dco: <" + dco + "> . " +
                 "projectUpdateUri dco:forReportingYear ?reportingYearUri . ";
     }
+
+    private String getN3ForExistingPublication() {
+        return "@prefix dco: <" + dco + "> . " +
+                "projectUpdateUri dco:associatedPublications ?publicationUri . ";
+    }
+
+    private String getN3ForNewModificationNote() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?newModificationNote a dco:ProjectUpdateModificationNote . " +
+                "?newModificationNote dco:modifiedBy ?personUri . " +
+                "?newModificationNote dco:modifiedOn ?date . " +
+                "projectUpdateUri dco:modificationNote ?modificationNoteUri . ";
+    }
+
+    /**  Get new resources	 */
+    private Map<String, String> generateNewResources(VitroRequest vreq) {
+        String DEFAULT_NS_TOKEN=null; //null forces the default NS
+
+        HashMap<String, String> newResources = new HashMap<String, String>();
+        newResources.put("ProjectUpdate", DEFAULT_NS_TOKEN);
+        newResources.put("newModificationNote", DEFAULT_NS_TOKEN);
+        //newResources.put("dateTimeNode", DEFAULT_NS_TOKEN);
+        return newResources;
+    }
+
+    /** Set URIS and Literals In Scope and on form and supporting methods	 */
+    private void setUrisAndLiteralsInScope(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        HashMap<String, List<String>> urisInScope = new HashMap<String, List<String>>();
+        urisInScope.put(editConfiguration.getVarNameForSubject(),
+                Arrays.asList(new String[]{editConfiguration.getSubjectUri()}));
+        urisInScope.put(editConfiguration.getVarNameForPredicate(),
+                Arrays.asList(new String[]{editConfiguration.getPredicateUri()}));
+        editConfiguration.setUrisInScope(urisInScope);
+        HashMap<String, List<Literal>> literalsInScope = new HashMap<String, List<Literal>>();
+        editConfiguration.setLiteralsInScope(literalsInScope);
+
+    }
+
+    private void setUrisAndLiteralsOnForm(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        List<String> urisOnForm = new ArrayList<String>();
+        urisOnForm.add("reportingYearUri");
+        urisOnForm.add("publisherUri");
+        urisOnForm.add("personUri");
+        editConfiguration.setUrisOnform(urisOnForm);
+
+        List<String> literalsOnForm = new ArrayList<String>();
+        literalsOnForm.add("date");
+        editConfiguration.setLiteralsOnForm(literalsOnForm);
+    }
+
+    /** Set SPARQL Queries and supporting methods. */
+    //In this case no queries for existing
+    private void setSparqlQueries(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        editConfiguration.setSparqlForExistingUris(new HashMap<String, String>());
+        editConfiguration.setSparqlForAdditionalLiteralsInScope(new HashMap<String, String>());
+        editConfiguration.setSparqlForAdditionalUrisInScope(new HashMap<String, String>());
+        editConfiguration.setSparqlForExistingLiterals(new HashMap<String, String>());
+    }
+
+    /**
+     *
+     * Set Fields and supporting methods
+     * @throws Exception
+     */
+
+    private void setFields(EditConfigurationVTwo editConfiguration, VitroRequest vreq) throws Exception {
+        setTitleField(editConfiguration);
+        setReportingYearUriField(editConfiguration);
+        setPublicationUriField(editConfiguration);
+    }
+
+    private void setTitleField(EditConfigurationVTwo editConfiguration) {
+        String stringDatatypeUri = XSD.xstring.toString();
+        editConfiguration.addField(new FieldVTwo().
+                setName("title").
+                setValidators(list("datatype:" + stringDatatypeUri)).
+                setRangeDatatypeUri(stringDatatypeUri));
+    }
+
+    private void setReportingYearUriField(EditConfigurationVTwo editConfiguration) {
+        editConfiguration.addField(new FieldVTwo().
+                setName("reportingYearUri"));
+    }
+
+    private void setPublicationUriField(EditConfigurationVTwo editConfiguration) {
+        editConfiguration.addField(new FieldVTwo().
+                setName("publicationUri"));
+    }
+
 }
