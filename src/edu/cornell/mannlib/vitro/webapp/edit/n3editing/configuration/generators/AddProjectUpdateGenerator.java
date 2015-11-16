@@ -39,6 +39,8 @@ import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 
 public class AddProjectUpdateGenerator extends VivoBaseGenerator implements EditConfigurationGenerator {
 
+    final static String dco ="http://info.deepcarbon.net/schema#";
+
     public AddProjectUpdateGenerator() {}
 
     @Override
@@ -57,16 +59,16 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     protected EditConfigurationVTwo doAddNew(VitroRequest vreq,
                                              HttpSession session) throws Exception {
         EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
-//        initBasics(editConfiguration, vreq);
-//        initPropertyParameters(vreq, session, editConfiguration);
-//        initObjectPropForm(editConfiguration, vreq);
-//        setVarNames(editConfiguration);
+        initBasics(editConfiguration, vreq);
+        initPropertyParameters(vreq, session, editConfiguration);
+        initObjectPropForm(editConfiguration, vreq);
+        setVarNames(editConfiguration);
+
+        // Required N3
+        editConfiguration.setN3Required(generateN3Required());
 //
-//        // Required N3
-//        editConfiguration.setN3Required(generateN3Required());
-//
-//        // Optional N3
-//        editConfiguration.setN3Optional(generateN3Optional());
+        // Optional N3
+        editConfiguration.setN3Optional(generateN3Optional());
 //
 //        editConfiguration.setNewResources(generateNewResources(vreq));
 //
@@ -95,4 +97,40 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         return editConfiguration;
     }
 
+    private void setVarNames(EditConfigurationVTwo editConfiguration) {
+        editConfiguration.setVarNameForSubject("project");
+        editConfiguration.setVarNameForPredicate("predicate");
+        editConfiguration.setVarNameForObject("projectUpdateUri");
+
+    }
+
+    private List<String> generateN3Required() {
+        return list(getProjectUpdateN3(),
+                    getN3ForExistingReportingYear()
+        );
+    }
+
+    private String getProjectUpdateN3() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?projectUpdateUri a dco:ProjectUpdate ;" +
+                "dco:forProject ?project ." +
+                "?project dco:hasProjectUpdate ?projectUpdateUri .";
+    }
+
+    private List<String> generateN3Optional() {
+        return list(getN3ForNewReportingYear()
+        );
+    }
+
+    private String getN3ForNewReportingYear() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?newReportingYear a dco:ReportingYear . " +
+                "?newReportingYear <" + label + "> ?title . " +
+                "projectUpdateUri dco:forReportingYear ?newReportingYear . ";
+    }
+
+    private String getN3ForExistingReportingYear() {
+        return "@prefix dco: <" + dco + "> . " +
+                "projectUpdateUri dco:forReportingYear ?reportingYearUri . ";
+    }
 }
