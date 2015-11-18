@@ -125,7 +125,6 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
                     getN3ForExistingReportingYear(),
                     getN3ForExistingPublication(),
                     getN3ForNewModificationNote(),
-                    getN3ForDateTimeAssertion(),
                     getN3ForUpdateTextAssertion()
         );
     }
@@ -139,12 +138,12 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForExistingReportingYear() {
         return "@prefix dco: <" + dco + "> . " +
-                "projectUpdateUri dco:forReportingYear ?reportingYearUri . ";
+                "?projectUpdateUri dco:forReportingYear ?reportingYearUri . ";
     }
 
     private String getN3ForExistingPublication() {
         return "@prefix dco: <" + dco + "> . " +
-                "projectUpdateUri dco:associatedPublications ?publicationUri . ";
+                "?projectUpdateUri dco:associatedPublications ?publicationUri . ";
     }
 
     private String getN3ForNewModificationNote() {
@@ -152,25 +151,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
                 "?newModificationNote a dco:ProjectUpdateModificationNote . " +
                 "?newModificationNote dco:modifiedBy ?personUri . " +
                 "?newModificationNote dco:modifiedOn ?date . " +
-                "projectUpdateUri dco:modificationNote ?modificationNoteUri . ";
-    }
-
-    // Currently we don't have a property to associate a projectUpdate to a person
-    // But we want to automatically record the person who submits the update.
-//    private String getN3ForExistingPerson() {
-//
-//    }
-
-    // We are currently using literal value for dates.
-    // Do we want to make it a datetime object?
-    // We also want to record the submission date automatically.
-    private String getN3ForDateTimeAssertion() {
-        return "@prefix vivo: <" + vivoCore + "> . \n" +
-                "@prefix dco: <" + dco + "> . \n" +
-                "?projectUpdateUri <" + dateTimePred + "> ?dateTimeNode . \n" +
-                "?dateTimeNode a <" + dateTimeValueType + "> . \n" +
-                "?dateTimeNode <" + dateTimeValue + "> ?dateTime-value . \n" +
-                "?dateTimeNode <" + dateTimePrecision + "> ?dateTime-precision . ";
+                "?projectUpdateUri dco:modificationNote ?modificationNoteUri . ";
     }
 
     private String getN3ForUpdateTextAssertion() {
@@ -183,9 +164,8 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         String DEFAULT_NS_TOKEN=null; //null forces the default NS
 
         HashMap<String, String> newResources = new HashMap<String, String>();
-        newResources.put("ProjectUpdate", DEFAULT_NS_TOKEN);
+        newResources.put("projectUpdateUri", DEFAULT_NS_TOKEN);
         newResources.put("newModificationNote", DEFAULT_NS_TOKEN);
-        //newResources.put("dateTimeNode", DEFAULT_NS_TOKEN);
         return newResources;
     }
 
@@ -205,12 +185,12 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private void setUrisAndLiteralsOnForm(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         List<String> urisOnForm = new ArrayList<String>();
         urisOnForm.add("reportingYearUri");
-        urisOnForm.add("publisherUri");
         urisOnForm.add("personUri");
         editConfiguration.setUrisOnform(urisOnForm);
 
         List<String> literalsOnForm = new ArrayList<String>();
         literalsOnForm.add("date");
+        literalsOnForm.add("updateText");
         editConfiguration.setLiteralsOnForm(literalsOnForm);
     }
 
