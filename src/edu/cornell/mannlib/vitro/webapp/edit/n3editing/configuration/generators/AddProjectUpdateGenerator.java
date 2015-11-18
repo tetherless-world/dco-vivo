@@ -40,6 +40,10 @@ import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 public class AddProjectUpdateGenerator extends VivoBaseGenerator implements EditConfigurationGenerator {
 
     final static String dco ="http://info.deepcarbon.net/schema#";
+    final static String dateTimePred = dco + "submittedOn";
+    final static String dateTimeValueType = vivoCore + "DateTimeValue";
+    final static String dateTimeValue = vivoCore + "dateTime";
+    final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 
     public AddProjectUpdateGenerator() {}
 
@@ -105,20 +109,24 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     }
 
     private List<String> generateN3Required() {
-        return list(getProjectUpdateN3(),
-                    getN3ForExistingReportingYear()
-        );
+        return list(getProjectUpdateN3());
     }
 
     private String getProjectUpdateN3() {
         return "@prefix dco: <" + dco + "> . " +
-                "?projectUpdateUri a dco:ProjectUpdate ;" +
-                "dco:forProject ?project ." +
+                "?projectUpdateUri a dco:ProjectUpdate ." +
+                "?projectUpdateUri <" + label + "> ?title . " +
+                "?projectUpdateUri dco:forProject ?project ." +
                 "?project dco:hasProjectUpdate ?projectUpdateUri .";
     }
 
     private List<String> generateN3Optional() {
-        return list(getN3ForNewReportingYear()
+        return list(getN3ForNewReportingYear(),
+                    getN3ForExistingReportingYear(),
+                    getN3ForExistingPublication(),
+                    getN3ForNewModificationNote(),
+                    getN3ForDateTimeAssertion(),
+                    getN3ForUpdateTextAssertion()
         );
     }
 
@@ -145,6 +153,29 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
                 "?newModificationNote dco:modifiedBy ?personUri . " +
                 "?newModificationNote dco:modifiedOn ?date . " +
                 "projectUpdateUri dco:modificationNote ?modificationNoteUri . ";
+    }
+
+    // Currently we don't have a property to associate a projectUpdate to a person
+    // But we want to automatically record the person who submits the update.
+//    private String getN3ForExistingPerson() {
+//
+//    }
+
+    // We are currently using literal value for dates.
+    // Do we want to make it a datetime object?
+    // We also want to record the submission date automatically.
+    private String getN3ForDateTimeAssertion() {
+        return "@prefix vivo: <" + vivoCore + "> . \n" +
+                "@prefix dco: <" + dco + "> . \n" +
+                "?projectUpdateUri <" + dateTimePred + "> ?dateTimeNode . \n" +
+                "?dateTimeNode a <" + dateTimeValueType + "> . \n" +
+                "?dateTimeNode <" + dateTimeValue + "> ?dateTime-value . \n" +
+                "?dateTimeNode <" + dateTimePrecision + "> ?dateTime-precision . ";
+    }
+
+    private String getN3ForUpdateTextAssertion() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?projectUpdateUri dco:updateText ?updateText . ";
     }
 
     /**  Get new resources	 */
