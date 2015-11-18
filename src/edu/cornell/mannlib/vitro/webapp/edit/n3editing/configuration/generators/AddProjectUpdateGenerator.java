@@ -70,26 +70,27 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
         // Required N3
         editConfiguration.setN3Required(generateN3Required());
-//
+
         // Optional N3
         editConfiguration.setN3Optional(generateN3Optional());
-//
-//        editConfiguration.setNewResources(generateNewResources(vreq));
-//
-//        // In scope
-//        setUrisAndLiteralsInScope(editConfiguration, vreq);
-//
-//        // on Form
-//        setUrisAndLiteralsOnForm(editConfiguration, vreq);
-//
-//        // Sparql queries
-//        setSparqlQueries(editConfiguration, vreq);
-//
-//        // set fields
-//        setFields(editConfiguration, vreq);
-//
-//        // template file
-//        editConfiguration.setTemplate("addProjectUpdate.ftl"); // need to create this ftl file
+
+        editConfiguration.setNewResources(generateNewResources(vreq));
+
+        // In scope
+        setUrisAndLiteralsInScope(editConfiguration, vreq);
+
+        // on Form
+        setUrisAndLiteralsOnForm(editConfiguration, vreq);
+
+        // Sparql queries
+        setSparqlQueries(editConfiguration, vreq);
+
+        // set fields
+        setFields(editConfiguration, vreq);
+
+        // template file
+        editConfiguration.setTemplate("addProjectUpdate.ftl");
+
 //        // adding person has publication validator
 //        editConfiguration.addValidator(new AntiXssValidation());
 //        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
@@ -97,7 +98,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 //
 //        // Adding additional data, specifically edit mode
 //        addFormSpecificData(editConfiguration, vreq);
-//        prepare(vreq, editConfiguration);
+        prepare(vreq, editConfiguration);
         return editConfiguration;
     }
 
@@ -121,19 +122,11 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     }
 
     private List<String> generateN3Optional() {
-        return list(getN3ForNewReportingYear(),
-                    getN3ForExistingReportingYear(),
+        return list(getN3ForExistingReportingYear(),
                     getN3ForExistingPublication(),
                     getN3ForNewModificationNote(),
                     getN3ForUpdateTextAssertion()
         );
-    }
-
-    private String getN3ForNewReportingYear() {
-        return "@prefix dco: <" + dco + "> . " +
-                "?newReportingYear a dco:ReportingYear . " +
-                "?newReportingYear <" + label + "> ?title . " +
-                "projectUpdateUri dco:forReportingYear ?newReportingYear . ";
     }
 
     private String getN3ForExistingReportingYear() {
@@ -185,6 +178,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private void setUrisAndLiteralsOnForm(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         List<String> urisOnForm = new ArrayList<String>();
         urisOnForm.add("reportingYearUri");
+        urisOnForm.add("publicationUri");
         urisOnForm.add("personUri");
         editConfiguration.setUrisOnform(urisOnForm);
 
