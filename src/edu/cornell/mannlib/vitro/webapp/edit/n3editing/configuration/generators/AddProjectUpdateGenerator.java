@@ -92,8 +92,8 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         editConfiguration.setTemplate("addProjectUpdate.ftl");
 
 //        // adding person has publication validator
-//        editConfiguration.addValidator(new AntiXssValidation());
-//        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
+        editConfiguration.addValidator(new AntiXssValidation());
+        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
 //        editConfiguration.addValidator(new PersonHasPublicationValidator());
 //
 //        // Adding additional data, specifically edit mode
@@ -183,6 +183,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         editConfiguration.setUrisOnform(urisOnForm);
 
         List<String> literalsOnForm = new ArrayList<String>();
+        literalsOnForm.add("title");
         literalsOnForm.add("date");
         literalsOnForm.add("updateText");
         editConfiguration.setLiteralsOnForm(literalsOnForm);
