@@ -93,7 +93,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
 //        // adding person has publication validator
         editConfiguration.addValidator(new AntiXssValidation());
-        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
+//        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
 //        editConfiguration.addValidator(new PersonHasPublicationValidator());
 //
 //        // Adding additional data, specifically edit mode
@@ -208,12 +208,21 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         setTitleField(editConfiguration);
         setReportingYearUriField(editConfiguration);
         setPublicationUriField(editConfiguration);
+        setUpdateTextField(editConfiguration);
     }
 
     private void setTitleField(EditConfigurationVTwo editConfiguration) {
         String stringDatatypeUri = XSD.xstring.toString();
         editConfiguration.addField(new FieldVTwo().
                 setName("title").
+                setValidators(list("datatype:" + stringDatatypeUri)).
+                setRangeDatatypeUri(stringDatatypeUri));
+    }
+
+    private void setUpdateTextField(EditConfigurationVTwo editConfiguration) {
+        String stringDatatypeUri = XSD.xstring.toString();
+        editConfiguration.addField(new FieldVTwo().
+                setName("updateText").
                 setValidators(list("datatype:" + stringDatatypeUri)).
                 setRangeDatatypeUri(stringDatatypeUri));
     }
