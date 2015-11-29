@@ -6,8 +6,9 @@
 
 <#assign titleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "title") />
 <#assign updateTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "updateText") />
+<#assign formTitle = "Create a project update" + " ${i18n().for} " + editConfiguration.subjectName/>
 
-
+<h2>${formTitle}</h2>
 <form class="editForm" id="addProjectUpdate" method="post" enctype="multipart/form-data" action="${submitUrl}">
 
     <input type="hidden" name="editKey" id="editKey" value="${editConfiguration.editKey}" role="input">
