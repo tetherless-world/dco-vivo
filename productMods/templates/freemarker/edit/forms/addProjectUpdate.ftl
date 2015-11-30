@@ -4,6 +4,8 @@
 
 <#import "lib-vivo-form.ftl" as lvf>
 
+<#assign requiredHint = "<span class='requiredHint'> *</span>" />
+
 <#assign titleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "title") />
 <#assign updateTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "updateText") />
 <#assign formTitle = "Create a project update" + " ${i18n().for} " + editConfiguration.subjectName/>
@@ -14,50 +16,40 @@
     <input type="hidden" name="editKey" id="editKey" value="${editConfiguration.editKey}" role="input">
     <input type="hidden" name="subjectUri" id="subjectUri" value="${editConfiguration.subjectUri}">
 
-    <p>
-        Project Update Title:
-        <input type="text" name="title" id="title" label="title" size="30" role="input" value="${titleValue}">
+    <p class="inline">
+        Project Update Title${requiredHint}:
+        <input type="text" name="title" id="title" label="title" size="50" role="input" value="${titleValue}">
     </p>
 
-    <p>
-        For Project (Should be non-editable):
-        <input type="text" name="subjectUri" id="subjectUri" value="${editConfiguration.subjectUri}">
+    <p class="inline">
+        Reporting Year: [a drop list]
     </p>
 
-    <p>
-        For Reporting Year:
-        <br>
-        [a drop list]
+    <p class="inline">
+        Update Text:<br>
+        <textarea rows="10" cols="50" name="updateText" id="updateText" label="updateText" class="useTinyMce" role="input" value="">
+        ${updateTextValue}
+        </textarea>
     </p>
 
-    <p>
-        Update Text:
-        <br>
-        <input type="text" name="updateText" id="updateText" label="updateText" size="50" role="input" value="${updateTextValue}">
+    <p class="inline">
+        Associated Publications:
+        <input type="text" name="associatedPublication" id="associatedPublication" label="associatedPublication" size="30" role="input">
     </p>
 
-    <p>
-        Associated Publications
-        <br>
-        [search box]
-    </p>
-
-    <p>
+    <p class="inline">
         Created by
-        <br>
-        [Person]
+        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input">
     </p>
 
-    <p>
-        Created on
-        <br>
-        [Date]
+    <p class="inline">
+        Created on:
+        <input type="text" name="createdOn" id="createdOn" label="createdOn" size="30" role="input">
     </p>
 
-    <p>
-        Creation Note
-        <br>
-        [Plain text box]
+    <p class="inline">
+        Creation Note:
+        <input type="text" name="creationNote" id="creationNote" label="creationNote" size="50" role="input">
     </p>
 
 
@@ -69,3 +61,6 @@
     </p>
 
 </form>
+
+${headScripts.add('<script type="text/javascript" src="${urls.base}/js/jquery_plugins/qtip/jquery.qtip-1.0.0-rc3.min.js"></script>',
+'<script type="text/javascript" src="${urls.base}/js/tiny_mce/tiny_mce.js"></script>')}
