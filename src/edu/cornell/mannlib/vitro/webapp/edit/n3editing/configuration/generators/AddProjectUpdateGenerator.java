@@ -31,6 +31,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisio
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ConstantFieldOptions;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsViaVClassOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
@@ -44,6 +45,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
+    final static String reportingYearClass = dco + "ReportingYear";
 
     public AddProjectUpdateGenerator() {}
 
@@ -59,7 +61,6 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     }
 
 
-    // We need to implement all the methods within this method.
     protected EditConfigurationVTwo doAddNew(VitroRequest vreq,
                                              HttpSession session) throws Exception {
         EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
@@ -227,9 +228,11 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
                 setRangeDatatypeUri(stringDatatypeUri));
     }
 
-    private void setReportingYearUriField(EditConfigurationVTwo editConfiguration) {
+    private void setReportingYearUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
-                setName("reportingYearUri"));
+                setName("reportingYearUri").
+                setValidators(list("nonempty")).
+                setOptions(new IndividualsViaVClassOptions(reportingYearClass)));
     }
 
     private void setPublicationUriField(EditConfigurationVTwo editConfiguration) {
