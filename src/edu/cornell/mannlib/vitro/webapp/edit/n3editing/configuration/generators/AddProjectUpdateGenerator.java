@@ -34,6 +34,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ConstantField
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsViaVClassOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
+import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 
@@ -94,11 +95,12 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
 //        // adding person has publication validator
         editConfiguration.addValidator(new AntiXssValidation());
-//        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("pubUri", "title"));
+        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("publicationUri", "publicationUri"));
 //        editConfiguration.addValidator(new PersonHasPublicationValidator());
 //
-//        // Adding additional data, specifically edit mode
-//        addFormSpecificData(editConfiguration, vreq);
+        // Adding additional data, specifically edit mode
+        addFormSpecificData(editConfiguration, vreq);
+
         prepare(vreq, editConfiguration);
         return editConfiguration;
     }
@@ -238,6 +240,32 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private void setPublicationUriField(EditConfigurationVTwo editConfiguration) {
         editConfiguration.addField(new FieldVTwo().
                 setName("publicationUri"));
+    }
+
+    public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
+        formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
+        formSpecificData.put("sparqlForAcFilter", getSparqlForAcFilter(vreq));
+        editConfiguration.setFormSpecificData(formSpecificData);
+    }
+
+    public String getSparqlForAcFilter(VitroRequest vreq) {
+        String subject = EditConfigurationUtils.getSubjectUri(vreq);
+
+        String query = "PREFIX core:<" + vivoCore + "> " +
+                "SELECT ?publicationUri WHERE { " +
+                "<" + subject + "> dco:hasProjectUpdate ?projectUpdateUri . " +
+                "?projectUpdateUri dco:associatedPublications ?publicationUri . }";
+        return query;
+    }
+
+    public EditMode getEditMode(VitroRequest vreq) {
+        String objectUri = EditConfigurationUtils.getObjectUri(vreq);
+        EditMode editMode = FrontEndEditingUtils.EditMode.ADD;
+        if(objectUri != null && !objectUri.isEmpty()) {
+            editMode = FrontEndEditingUtils.EditMode.EDIT;
+        }
+        return editMode;
     }
 
 }
