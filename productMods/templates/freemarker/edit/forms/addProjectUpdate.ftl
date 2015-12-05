@@ -60,6 +60,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </textarea>
 
     <label for="publicationUri">${i18n().associated_publication}</label>
+    <#assign publicationOpts = editConfiguration.pageData.publicationUri />
+    <select name="publicationUri" id="publicationUri" >
+        <option value="" <#if publicationUri = "">selected</#if>>${i18n().select_one}</option>
+    <#list publicationOpts?keys as key>
+        <option value="${key}" <#if publicationUri = key>selected</#if>>${publicationOpts[key]}</option>
+    </#list>
+    </select>
+
+    <#--
     <input class="acSelector" size="60"  type="text" id="publicationUri" name="publicationUri" acGroupName="publicationUri"  value="${publicationUri}" />
     <div class="acSelection" acGroupName="publicationUri" id="publicationUri">
         <p class="inline">
@@ -70,6 +79,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </p>
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value=""  ${flagClearLabelForExisting}="true" />
     </div>
+    -->
 
     <p class="inline">
         Created by

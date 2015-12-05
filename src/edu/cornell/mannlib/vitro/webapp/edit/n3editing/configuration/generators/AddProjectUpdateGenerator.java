@@ -42,11 +42,13 @@ import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 public class AddProjectUpdateGenerator extends VivoBaseGenerator implements EditConfigurationGenerator {
 
     final static String dco ="http://info.deepcarbon.net/schema#";
+    final static String bibo ="http://purl.org/ontology/bibo/";
     final static String dateTimePred = dco + "submittedOn";
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
     final static String reportingYearClass = dco + "ReportingYear";
+    final static String publicationClass = dco + "Document";
 
     public AddProjectUpdateGenerator() {}
 
@@ -139,7 +141,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForExistingPublication() {
         return "@prefix dco: <" + dco + "> . " +
-                "?projectUpdateUri dco:associatedPublications ?publicationUri . ";
+                "?projectUpdateUri dco:associatedPublication ?publicationUri . ";
     }
 
     private String getN3ForNewModificationNote() {
@@ -233,13 +235,14 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private void setReportingYearUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
                 setName("reportingYearUri").
-                setValidators(list("nonempty")).
                 setOptions(new IndividualsViaVClassOptions(reportingYearClass)));
     }
 
-    private void setPublicationUriField(EditConfigurationVTwo editConfiguration) {
+    private void setPublicationUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
-                setName("publicationUri"));
+                setName("publicationUri").
+                setValidators(list("nonempty")).
+                setOptions(new IndividualsViaVClassOptions(publicationClass)));
     }
 
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
@@ -255,7 +258,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         String query = "PREFIX core:<" + vivoCore + "> " +
                 "SELECT ?publicationUri WHERE { " +
                 "<" + subject + "> dco:hasProjectUpdate ?projectUpdateUri . " +
-                "?projectUpdateUri dco:associatedPublications ?publicationUri . }";
+                "?projectUpdateUri dco:associatedPublication ?publicationUri . }";
         return query;
     }
 
