@@ -139,7 +139,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForExistingPublication() {
         return "@prefix dco: <" + dco + "> . " +
-                "?projectUpdateUri dco:associatedPublications ?publicationUri . ";
+                "?projectUpdateUri dco:associatedPublication ?publicationUri . ";
     }
 
     private String getN3ForNewModificationNote() {
@@ -253,9 +253,10 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         String subject = EditConfigurationUtils.getSubjectUri(vreq);
 
         String query = "PREFIX core:<" + vivoCore + "> " +
+                "PREFIX dco: <" + dco + "> " +
                 "SELECT ?publicationUri WHERE { " +
                 "<" + subject + "> dco:hasProjectUpdate ?projectUpdateUri . " +
-                "?projectUpdateUri dco:associatedPublications ?publicationUri . }";
+                "?projectUpdateUri dco:associatedPublication ?publicationUri . }";
         return query;
     }
 
