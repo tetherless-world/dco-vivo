@@ -34,7 +34,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign updateTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "updateText") />
 <#assign reportingYearValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "reportingYearUri") />
 <#assign publicationUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "publicationUri") />
-<#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + editConfiguration.subjectName/>
+<#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + "\"" + editConfiguration.subjectName + "\"" />
 
 <h2 xmlns="http://www.w3.org/1999/html">${formTitle}</h2>
 <form class="editForm customForm" id="addProjectUpdate" method="post" enctype="multipart/form-data" action="${submitUrl}">
