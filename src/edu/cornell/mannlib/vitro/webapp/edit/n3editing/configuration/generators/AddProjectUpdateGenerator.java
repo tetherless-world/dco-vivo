@@ -48,7 +48,6 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
     final static String reportingYearClass = dco + "ReportingYear";
-    final static String publicationClass = dco + "Document";
 
     public AddProjectUpdateGenerator() {}
 
@@ -235,14 +234,13 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private void setReportingYearUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
                 setName("reportingYearUri").
+                setValidators(list("nonempty")).
                 setOptions(new IndividualsViaVClassOptions(reportingYearClass)));
     }
 
     private void setPublicationUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
-                setName("publicationUri").
-                setValidators(list("nonempty")).
-                setOptions(new IndividualsViaVClassOptions(publicationClass)));
+                setName("publicationUri"));
     }
 
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
