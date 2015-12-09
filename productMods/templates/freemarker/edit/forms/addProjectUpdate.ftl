@@ -7,7 +7,7 @@
 <#--Retrieve certain edit configuration information-->
 <#assign editMode = editConfiguration.pageData.editMode />
 
-<#assign sparqlForAcFilter = editConfiguration.pageData.sparqlForAcFilter />
+<#assign sparqlForPublicationAcFilter = editConfiguration.pageData.sparqlForPublicationAcFilter />
 
 <#--If edit submission exists, then retrieve validation errors if they exist-->
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
@@ -68,15 +68,17 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <p>
         <label for="publication">${i18n().associated_publication}:</label>
         <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
+        <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
     <div class="acSelection" acGroupName="publication" id="pubAcSelection">
         <p class="inline">
             <label>${i18n().selected_publication}:</label>
             <span class="acSelectionInfo"></span>
+            <br />
             <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
-        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="{publicationUriValue}"  ${flagClearLabelForExisting}="true" />
+        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
     </div>
 
     <p>
@@ -112,7 +114,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <script type="text/javascript">
     var customFormData  = {
-        sparqlForAcFilter: '${sparqlForAcFilter}',
+        sparqlForAcFilter: '${sparqlForPublicationAcFilter}',
         sparqlQueryUrl: '${sparqlQueryUrl}',
         acUrl: '${urls.base}/autocomplete?tokenize=true',
         acTypes: {publication: 'http://purl.org/ontology/bibo/Document', collection: 'http://purl.org/ontology/bibo/Periodical', book: 'http://purl.org/ontology/bibo/Book', conference: 'http://purl.org/NET/c4dm/event.owl#Event', event: 'http://purl.org/NET/c4dm/event.owl#Event', editor: 'http://xmlns.com/foaf/0.1/Person', publisher: 'http://xmlns.com/foaf/0.1/Organization'},
@@ -146,5 +148,6 @@ ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarke
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
-            '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>',
+            '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForMultipleSelection.js"></script>',
+            <#--'<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>',-->
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/defaultDataPropertyUtils.js"></script>')}

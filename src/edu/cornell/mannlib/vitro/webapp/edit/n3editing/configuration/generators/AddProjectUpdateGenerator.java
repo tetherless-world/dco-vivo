@@ -19,24 +19,15 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.resultset.ResultSetMem;
 
-import edu.cornell.mannlib.vitro.webapp.beans.Individual;
-import edu.cornell.mannlib.vitro.webapp.beans.ObjectPropertyStatement;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
-import edu.cornell.mannlib.vitro.webapp.controller.freemarker.UrlBuilder;
-import edu.cornell.mannlib.vitro.webapp.dao.ModelAccess;
-import edu.cornell.mannlib.vitro.webapp.dao.VitroVocabulary;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.AutocompleteRequiredInputValidator;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.PersonHasPublicationValidator;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.DateTimeWithPrecisionVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.ConstantFieldOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsViaVClassOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.AddPublicationToProjectUpdatePreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
-import edu.cornell.mannlib.vitro.webapp.utils.generators.EditModeUtils;
 
 
 public class AddProjectUpdateGenerator extends VivoBaseGenerator implements EditConfigurationGenerator {
@@ -96,11 +87,14 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
 //        // adding person has publication validator
         editConfiguration.addValidator(new AntiXssValidation());
-        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("publicationUri", "publicationUri"));
+//        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("publicationUri", "publicationUri"));
 //        editConfiguration.addValidator(new PersonHasPublicationValidator());
 //
         // Adding additional data, specifically edit mode
         addFormSpecificData(editConfiguration, vreq);
+
+        editConfiguration.addEditSubmissionPreprocessor(
+                new AddPublicationToProjectUpdatePreprocessor(editConfiguration));
 
         prepare(vreq, editConfiguration);
         return editConfiguration;
@@ -246,11 +240,11 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
         formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
-        formSpecificData.put("sparqlForAcFilter", getSparqlForAcFilter(vreq));
+        formSpecificData.put("sparqlForPublicationAcFilter", getSparqlForPublicationAcFilter(vreq));
         editConfiguration.setFormSpecificData(formSpecificData);
     }
 
-    public String getSparqlForAcFilter(VitroRequest vreq) {
+    public String getSparqlForPublicationAcFilter(VitroRequest vreq) {
         String subject = EditConfigurationUtils.getSubjectUri(vreq);
 
         String query = "PREFIX core:<" + vivoCore + "> " +
