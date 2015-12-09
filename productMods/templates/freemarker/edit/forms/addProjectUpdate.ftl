@@ -35,6 +35,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign reportingYearValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "reportingYearUri") />
 <#assign publicationUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "publicationUri") />
 <#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + "\"" + editConfiguration.subjectName + "\"" />
+<#--<#assign submittedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "submittedOn") />-->
 
 <h2 xmlns="http://www.w3.org/1999/html">${formTitle}</h2>
 <form class="editForm customForm" id="addProjectUpdate" method="post" enctype="multipart/form-data" action="${submitUrl}">
@@ -81,14 +82,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
     </div>
 
-    <p>
-        <label for="creator">${i18n().created_by}:</label>
-        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input">
-    </p>
+    <#--<p>-->
+    <#--the project update object have no such predicate for "creator" yet!!!-->
+        <#--<label for="creator">${i18n().created_by}:</label>-->
+        <#--<input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input">-->
+    <#--</p>-->
 
     <p>
-        <label for="createdDateTime">${i18n().created_on}:</label>
-        <input type="text" name="createdOn" id="createdOn" label="createdOn" size="30" role="input">
+        <label for="submittedOn">${i18n().created_on}:</label>
+        <input type="text" name="submittedOn" id="submittedOn" label="submittedOn" size="30" role="input">
     </p>
 
     <p>
@@ -139,6 +141,20 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     $(document).ready(function(){
         defaultDataPropertyUtils.onLoad();
     });
+</script>
+
+<script>
+    var date = new Date();
+    // GET YYYY, MM AND DD FROM THE DATE OBJECT
+    var yyyy = date.getFullYear().toString();
+    var mm = (date.getMonth()+1).toString();
+    var dd  = date.getDate().toString();
+    // CONVERT mm AND dd INTO chars
+    var mmChars = mm.split('');
+    var ddChars = dd.split('');
+    // CONCAT THE STRINGS IN YYYY-MM-DD FORMAT
+    var datestring = yyyy + '-' + (mmChars[1]?mm:"0"+mmChars[0]) + '-' + (ddChars[1]?dd:"0"+ddChars[0]);
+    document.getElementById("submittedOn").defaultValue = datestring;
 </script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
