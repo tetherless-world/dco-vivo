@@ -71,6 +71,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
+
     <div class="acSelection" acGroupName="publication" id="pubAcSelection">
         <p class="inline">
             <label>${i18n().selected_publication}:</label>
@@ -82,11 +83,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
     </div>
 
-    <#--<p>-->
-    <#--the project update object have no such predicate for "creator" yet!!!-->
-        <#--<label for="creator">${i18n().created_by}:</label>-->
-        <#--<input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input">-->
-    <#--</p>-->
+    <p>
+        <label for="creator">${i18n().created_by}:</label>
+        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="${user.profileUrl}">
+    </p>
 
     <p>
         <label for="modifiedOn">${i18n().created_on}:</label>
