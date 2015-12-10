@@ -88,7 +88,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="">
         <#--<input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="${user.profileUrl}">-->
         <a href="${user.profileUrl}" class="verifyMatch"  title="${i18n().verify_match_capitalized}">
-            (${i18n().verify_match_capitalized}
+            (${i18n().verify_match_capitalized})
         </a>
     </p>
 
