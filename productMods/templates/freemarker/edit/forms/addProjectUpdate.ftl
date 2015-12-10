@@ -80,12 +80,16 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
-        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
+        <input class="acUriReceiver" type="text" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
     </div>
 
     <p>
         <label for="creator">${i18n().created_by}:</label>
-        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="${user.profileUrl}">
+        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="">
+        <#--<input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="${user.profileUrl}">-->
+        <a href="${user.profileUrl}" class="verifyMatch"  title="${i18n().verify_match_capitalized}">
+            (${i18n().verify_match_capitalized}
+        </a>
     </p>
 
     <p>
@@ -155,6 +159,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     // CONCAT THE STRINGS IN YYYY-MM-DD FORMAT
     var datestring = yyyy + '-' + (mmChars[1]?mm:"0"+mmChars[0]) + '-' + (ddChars[1]?dd:"0"+ddChars[0]);
     document.getElementById("modifiedOn").defaultValue = datestring;
+</script>
+
+<#assign creatorUrl = "${user.profileUrl}" >
+<#--<#assign creatorUrl = "/vivo/individual?uri=http%3A%2F%2Finfo.deepcarbon.net%2Findividual%2F9101e7a4-eff6-4a22-95c6-0af70b65990b" >-->
+<script type="text/javascript">
+    var creatorUrlEncoded = '${creatorUrl}';
+    var creatorUrlDecoded = decodeURIComponent(creatorUrlEncoded);
+    var creatorUri = creatorUrlDecoded.substring(21, creatorUrlDecoded.length - 1);
+    document.getElementById("createdBy").value = creatorUri;
 </script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
