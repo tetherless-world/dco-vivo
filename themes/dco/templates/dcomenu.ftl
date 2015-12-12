@@ -40,7 +40,7 @@
 					<li class="leaf"><a title="DCO Reservoirs and Fluxes Community" href="https://deepcarbon.net/content/reservoirs-and-fluxes">Reservoirs and Fluxes</a></li>
 					<li class="leaf"><a title="DCO Deep Energy Community" href="https://deepcarbon.net/content/deep-energy">Deep Energy</a></li>
 					<li class="leaf"><a title="DCO Deep Life Community" href="https://deepcarbon.net/content/deep-life">Deep Life</a></li>
-					<li class="leaf"><a title="Instrumentation Initiatives" href="https://deepcarbon.net/dco/instrumentation-initiatives">Instrumentation Initiatives</a></li>
+					<li class="leaf"><a title="Instrumentation Initiatives" href="https://deepcarbon.net/page/instrumentation-initiatives">Instrumentation Initiatives</a></li>
 					<li class="leaf last"><a title="" href="https://deepcarbon.net/page/dco-open-access-and-data-policies">Open Access and Data Policies</a></li>
 				</ul></li>
 	<li class="expanded"><a title="DCO News and Announcements" href="https://deepcarbon.net//content/news">News</a>
