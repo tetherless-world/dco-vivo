@@ -35,7 +35,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign reportingYearValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "reportingYearUri") />
 <#assign publicationUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "publicationUri") />
 <#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + "\"" + editConfiguration.subjectName + "\"" />
-<#--<#assign modifiedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedOn") />-->
+<#assign modificationNoteTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modificationNoteText") />
+<#assign modifiedByUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedByUri") />
+<#assign modifiedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedOn") />
+
 
 <h2 xmlns="http://www.w3.org/1999/html">${formTitle}</h2>
 <form class="editForm customForm" id="addProjectUpdate" method="post" enctype="multipart/form-data" action="${submitUrl}">
@@ -85,7 +88,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
     <p>
         <label for="creator">${i18n().created_by}:</label>
-        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="">
+        <input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="${modifiedByUriValue}">
         <#--<input type="text" name="createdBy" id="createdBy" label="createdBy" size="30" role="input" value="${user.profileUrl}">-->
         <a href="${user.profileUrl}" class="verifyMatch"  title="${i18n().verify_match_capitalized}">
             (${i18n().verify_match_capitalized})
@@ -94,12 +97,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
     <p>
         <label for="modifiedOn">${i18n().created_on}:</label>
-        <input type="text" name="modifiedOn" id="modifiedOn" label="modifiedOn" size="30" role="input">
+        <input type="text" name="modifiedOn" id="modifiedOn" label="modifiedOn" size="30" role="input" value="${modifiedOnValue}">
     </p>
 
     <p>
-        <label for="creationNote">${i18n().creation_note}:</label>
-        <textarea rows="10" cols="50" name="creationNote" id="creationNote" class="useTinyMce" role="textarea"></textarea>
+        <label for="modificationNoteText">${i18n().creation_note}:</label>
+        <textarea rows="10" cols="50" name="modificationNoteText" id="modificationNoteText" class="useTinyMce" role="textarea">${modificationNoteTextValue}</textarea>
     </p>
 
     <p class="submit">
@@ -169,6 +172,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     var creatorUri = creatorUrlDecoded.substring(21, creatorUrlDecoded.length - 1);
     document.getElementById("createdBy").value = creatorUri;
 </script>
+
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}

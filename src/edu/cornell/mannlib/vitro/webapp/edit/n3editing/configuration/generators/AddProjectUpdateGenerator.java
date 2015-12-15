@@ -33,6 +33,7 @@ import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 public class AddProjectUpdateGenerator extends VivoBaseGenerator implements EditConfigurationGenerator {
 
     final static String dco ="http://info.deepcarbon.net/schema#";
+    final static String rdfs ="http://www.w3.org/2000/01/rdf-schema#";
     final static String bibo ="http://purl.org/ontology/bibo/";
     final static String dateTimePred = dco + "submittedOn";
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
@@ -123,6 +124,8 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         return list(getN3ForExistingReportingYear(),
                     getN3ForExistingPublication(),
                     getN3ForNewModificationNote(),
+                    getN3ForModifiedByAssertion(),
+                    getN3ForModifiedOnAssertion(),
                     getN3ForUpdateTextAssertion()
         );
     }
@@ -139,10 +142,19 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForNewModificationNote() {
         return "@prefix dco: <" + dco + "> . " +
-                "?newModificationNote a dco:ProjectUpdateModificationNote . " +
-                "?newModificationNote dco:modifiedBy ?personUri . " +
-                "?newModificationNote dco:modifiedOn ?date . " +
-                "?projectUpdateUri dco:modificationNote ?modificationNoteUri . ";
+                "?newModificationNoteUri a dco:ProjectUpdateModificationNote . " +
+                "?newModificationNoteUri <" + label + "> ?modificationNoteText . " +
+                "?projectUpdateUri dco:modificationNote ?newModificationNoteUri . ";
+    }
+
+    private String getN3ForModifiedByAssertion() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?newModificationNoteUri dco:modifiedBy ?modifiedByUri . ";
+    }
+
+    private String getN3ForModifiedOnAssertion() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?newModificationNoteUri dco:modifiedOn ?modifiedOn . ";
     }
 
     private String getN3ForUpdateTextAssertion() {
@@ -156,7 +168,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
         HashMap<String, String> newResources = new HashMap<String, String>();
         newResources.put("projectUpdateUri", DEFAULT_NS_TOKEN);
-        newResources.put("newModificationNote", DEFAULT_NS_TOKEN);
+        newResources.put("newModificationNoteUri", DEFAULT_NS_TOKEN);
         return newResources;
     }
 
@@ -177,12 +189,13 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         List<String> urisOnForm = new ArrayList<String>();
         urisOnForm.add("reportingYearUri");
         urisOnForm.add("publicationUri");
-        urisOnForm.add("personUri");
+        urisOnForm.add("modifiedByUri");
         editConfiguration.setUrisOnform(urisOnForm);
 
         List<String> literalsOnForm = new ArrayList<String>();
         literalsOnForm.add("title");
-        literalsOnForm.add("date");
+        literalsOnForm.add("modifiedOn");
+        literalsOnForm.add("modificationNoteText");
         literalsOnForm.add("updateText");
         editConfiguration.setLiteralsOnForm(literalsOnForm);
     }
@@ -207,6 +220,9 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         setReportingYearUriField(editConfiguration);
         setPublicationUriField(editConfiguration);
         setUpdateTextField(editConfiguration);
+        setModifiedByField(editConfiguration);
+        setModifiedOnField(editConfiguration);
+        setModificationNoteTextField(editConfiguration);
     }
 
     private void setTitleField(EditConfigurationVTwo editConfiguration) {
@@ -235,6 +251,28 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private void setPublicationUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
                 setName("publicationUri"));
+    }
+
+    private void setModifiedByField(EditConfigurationVTwo editConfiguration) throws Exception {
+        editConfiguration.addField(new FieldVTwo().
+                setName("modifiedBy").
+                setValidators(list("nonempty")));
+    }
+
+    private void setModifiedOnField(EditConfigurationVTwo editConfiguration) {
+        String dateDatatypeUri = XSD.date.toString();
+        editConfiguration.addField(new FieldVTwo().
+                setName("modifiedOn").
+                setValidators(list("datatype:" + dateDatatypeUri)).
+                setRangeDatatypeUri(dateDatatypeUri));
+    }
+
+    private void setModificationNoteTextField(EditConfigurationVTwo editConfiguration) {
+        String stringDatatypeUri = XSD.xstring.toString();
+        editConfiguration.addField(new FieldVTwo().
+                setName("modificationNoteText").
+                setValidators(list("datatype:" + stringDatatypeUri)).
+                setRangeDatatypeUri(stringDatatypeUri));
     }
 
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
