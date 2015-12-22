@@ -27,8 +27,8 @@ public class AddMemberRoleToPersonGenerator extends AddRoleToPersonTwoStageGener
     FieldOptions getRoleActivityFieldOptions(VitroRequest vreq) throws Exception {
         return new ConstantFieldOptions(
                 "","Select type",
-                DCO+"ResearchCommunity", "DCO Research Community",
-                DCO+"PortalGroup", "DCO Portal Group",
+                DCO+"Team","DCO Team",
+                DCO+"ResearchCommunity","DCO Research Community",
                 "http://vivoweb.org/ontology/core#AcademicDepartment","Academic Department",
                 "http://vivoweb.org/ontology/core#Association","Association",
                 "http://vivoweb.org/ontology/core#Center","Center",
@@ -57,10 +57,11 @@ public class AddMemberRoleToPersonGenerator extends AddRoleToPersonTwoStageGener
                 "http://vivoweb.org/ontology/core#Publisher","Publisher",
                 "http://vivoweb.org/ontology/core#ResearchOrganization","Research Organization",
                 "http://vivoweb.org/ontology/core#School","School",
-                "http://vivoweb.org/ontology/core#Team","Team",
+                /*
                 "http://vivoweb.org/ontology/core#ServiceProvidingLaboratory","Service Providing Lab",
                 "http://vivoweb.org/ontology/core#StudentOrganization","Student Organization",
                 "http://purl.obolibrary.org/obo/ERO_0000565","Technology Transfer Office",
+                */
                 "http://vivoweb.org/ontology/core#University","University");
     }
 
