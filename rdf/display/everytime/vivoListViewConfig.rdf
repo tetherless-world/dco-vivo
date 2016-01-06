@@ -96,4 +96,8 @@
         <display:listViewConfigFile rdf:datatype="http://www.w3.org/2001/XMLSchema#string">listViewConfig-accessURL.xml</display:listViewConfigFile>
     </rdf:Description>
 
+    <rdf:Description rdf:about="http://info.deepcarbon.net/schema#downloadURL">
+        <display:listViewConfigFile rdf:datatype="http://www.w3.org/2001/XMLSchema#string">listViewConfig-downloadURL.xml</display:listViewConfigFile>
+    </rdf:Description>
+
 </rdf:RDF>
