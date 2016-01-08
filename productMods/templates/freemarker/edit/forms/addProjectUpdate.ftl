@@ -100,8 +100,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <#--</p>-->
 
     <p>
-        <label for="modificationNoteText">${i18n().creation_note}:</label>
-        <textarea rows="10" cols="50" name="modificationNoteText" id="modificationNoteText" class="useTinyMce" role="textarea">${modificationNoteTextValue}</textarea>
+        <label for="modificationNoteText">${i18n().modification_label}:</label>
+        <input type="text" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
     </p>
 
     <p class="submit">
