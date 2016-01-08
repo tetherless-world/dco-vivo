@@ -167,7 +167,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <script type="text/javascript">
     var creatorUrlEncoded = '${creatorUrl}';
     var creatorUrlDecoded = decodeURIComponent(creatorUrlEncoded);
-    var creatorUri = creatorUrlDecoded.substring(21, creatorUrlDecoded.length - 1);
+    var creatorUri = creatorUrlDecoded.substring(21);
     document.getElementById("modifiedByUri").value = creatorUri;
 </script>
 
