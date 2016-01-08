@@ -86,18 +86,18 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
     </div>
 
-    <p>
-        <label for="modifiedByUri">${i18n().created_by}:</label>
-        <input type="text" name="modifiedByUri" id="modifiedByUri" label="modifiedByUri" size="30" role="input" value="${modifiedByUriValue}">
-        <a href="${user.profileUrl}" class="verifyMatch"  title="${i18n().verify_match_capitalized}">
-            (${i18n().verify_match_capitalized})
-        </a>
-    </p>
+    <#--<p>-->
+        <#--<label for="modifiedByUri">${i18n().created_by}:</label>-->
+        <input type="hidden" name="modifiedByUri" id="modifiedByUri" label="modifiedByUri" size="30" role="input" value="${modifiedByUriValue}">
+        <#--<a href="${user.profileUrl}" class="verifyMatch"  title="${i18n().verify_match_capitalized}">-->
+            <#--(${i18n().verify_match_capitalized})-->
+        <#--</a>-->
+    <#--</p>-->
 
-    <p>
-        <label for="modifiedOn">${i18n().created_on}:</label>
-        <input type="text" name="modifiedOn" id="modifiedOn" label="modifiedOn" size="30" role="input" value="${modifiedOnValue}">
-    </p>
+    <#--<p>-->
+        <#--<label for="modifiedOn">${i18n().created_on}:</label>-->
+        <input type="hidden" name="modifiedOn" id="modifiedOn" label="modifiedOn" size="30" role="input" value="${modifiedOnValue}">
+    <#--</p>-->
 
     <p>
         <label for="modificationNoteText">${i18n().creation_note}:</label>
