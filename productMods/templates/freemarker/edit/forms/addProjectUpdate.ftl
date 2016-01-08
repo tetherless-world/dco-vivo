@@ -164,12 +164,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 </script>
 
 <#assign creatorUrl = "${user.profileUrl}" >
-<#--<#assign creatorUrl = "/vivo/individual?uri=http%3A%2F%2Finfo.deepcarbon.net%2Findividual%2F9101e7a4-eff6-4a22-95c6-0af70b65990b" >-->
 <script type="text/javascript">
     var creatorUrlEncoded = '${creatorUrl}';
     var creatorUrlDecoded = decodeURIComponent(creatorUrlEncoded);
     var creatorUri = creatorUrlDecoded.substring(21, creatorUrlDecoded.length - 1);
-    document.getElementById("createdBy").value = creatorUri;
+    document.getElementById("modifiedByUri").value = creatorUri;
 </script>
 
 
