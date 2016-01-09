@@ -179,7 +179,7 @@ local:hasMemberRoleConfig a :ObjectPropertyDisplayConfig ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.AddMemberRoleToPersonGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> .
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
 
 local:orgHasMemberRoleContext a :ConfigContext ;
     :hasConfiguration local:orgHasMemberRoleConfig ;
