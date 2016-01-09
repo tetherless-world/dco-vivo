@@ -174,7 +174,7 @@ local:hasMemberRoleContext a :ConfigContext ;
 local:hasMemberRoleConfig a :ObjectPropertyDisplayConfig ;
     :listViewConfigFile "listViewConfig-roleContributesTo.xml"^^xsd:string ;
     :displayName "member of" ;
-    vitro:displayRankAnnot 50;
+    vitro:displayRankAnnot 2;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
