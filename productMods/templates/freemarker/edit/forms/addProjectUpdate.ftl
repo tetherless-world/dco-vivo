@@ -54,7 +54,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </p>
 
     <p>
-        <label for="reportingYear">${i18n().reporting_year}:</label>
+        <label for="reportingYear">${i18n().reporting_year} ${requiredHint}:</label>
         <#assign reportingYearOpts = editConfiguration.pageData.reportingYearUri />
         <select name="reportingYearUri" id="reportingYearUri" >
             <option value="" <#if reportingYearValue = "">selected</#if>>${i18n().select_one}</option>
@@ -65,7 +65,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </p>
 
     <p>
-        <label for="updateText">${i18n().project_update_text}:</label>
+        <label for="updateText">${i18n().project_update_text} ${requiredHint}:</label>
         <textarea rows="10" cols="50" name="updateText" id="updateText" class="useTinyMce" role="textarea">${updateTextValue}</textarea>
     </p>
 
@@ -100,7 +100,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <#--</p>-->
 
     <p>
-        <label for="modificationNoteText">${i18n().modification_label}:</label>
+        <label for="modificationNoteText">${i18n().modification_label} ${requiredHint}:</label>
         <input type="text" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
     </p>
 
