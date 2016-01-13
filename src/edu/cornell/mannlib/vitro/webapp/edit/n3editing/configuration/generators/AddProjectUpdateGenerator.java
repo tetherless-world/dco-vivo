@@ -237,7 +237,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         String stringDatatypeUri = XSD.xstring.toString();
         editConfiguration.addField(new FieldVTwo().
                 setName("updateText").
-                setValidators(list("datatype:" + stringDatatypeUri)).
+                setValidators(list("datatype:" + stringDatatypeUri,"nonempty")).
                 setRangeDatatypeUri(stringDatatypeUri));
     }
 
@@ -271,7 +271,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         String stringDatatypeUri = XSD.xstring.toString();
         editConfiguration.addField(new FieldVTwo().
                 setName("modificationNoteText").
-                setValidators(list("datatype:" + stringDatatypeUri)).
+                setValidators(list("datatype:" + stringDatatypeUri,"nonempty")).
                 setRangeDatatypeUri(stringDatatypeUri));
     }
 
