@@ -1,5 +1,6 @@
 <#-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
 
+<meta name="google-site-verification" content="mGuRXeDwSakkua_M1C4t3Su46jLcIJ8fOpKCArAEfE0" />
 <meta charset="utf-8" />
 <!-- Google Chrome Frame open source plug-in brings Google Chrome's open web technologies and speedy JavaScript engine to Internet Explorer-->
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
