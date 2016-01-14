@@ -174,12 +174,12 @@ local:hasMemberRoleContext a :ConfigContext ;
 local:hasMemberRoleConfig a :ObjectPropertyDisplayConfig ;
     :listViewConfigFile "listViewConfig-roleContributesTo.xml"^^xsd:string ;
     :displayName "member of" ;
-    vitro:displayRankAnnot 50;
+    vitro:displayRankAnnot 2;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     vitro:stubObjectPropertyAnnot "true"^^xsd:boolean ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.AddMemberRoleToPersonGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
-    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupaffiliation> .
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
 
 local:orgHasMemberRoleContext a :ConfigContext ;
     :hasConfiguration local:orgHasMemberRoleConfig ;
