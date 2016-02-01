@@ -86,7 +86,17 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         // template file
         editConfiguration.setTemplate("addProjectUpdate.ftl");
 
-//        // adding person has publication validator
+        //editConfiguration.addSparqlForExistingUris("publicationUri", publicationQuery);
+        //editConfiguration.addSparqlForExistingUris("instrumentUri", instrumentQuery);
+/*
+        editConfiguration.addField( new FieldVTwo(). // an autocomplete field
+                setName("publicationUri")
+                );
+
+        editConfiguration.addField( new FieldVTwo(). // an autocomplete field
+                setName("instrumentUri")
+                );
+*/
         editConfiguration.addValidator(new AntiXssValidation());
 //        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("publicationUri", "publicationUri"));
 //        editConfiguration.addValidator(new PersonHasPublicationValidator());
@@ -123,6 +133,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private List<String> generateN3Optional() {
         return list(getN3ForExistingReportingYear(),
                     getN3ForExistingPublication(),
+                    getN3ForExistingInstrument(),
                     getN3ForNewModificationNote(),
                     getN3ForModifiedByAssertion(),
                     getN3ForModifiedOnAssertion(),
@@ -138,6 +149,11 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     private String getN3ForExistingPublication() {
         return "@prefix dco: <" + dco + "> . " +
                 "?projectUpdateUri dco:associatedPublication ?publicationUri . ";
+    }
+
+    private String getN3ForExistingInstrument() {
+        return "@prefix dco: <" + dco + "> . " +
+                "?projectUpdateUri dco:refersToInstrument ?existingInstrumentUri . ";
     }
 
     private String getN3ForNewModificationNote() {
@@ -189,6 +205,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         List<String> urisOnForm = new ArrayList<String>();
         urisOnForm.add("reportingYearUri");
         urisOnForm.add("publicationUri");
+        urisOnForm.add("existingInstrumentUri");
         urisOnForm.add("modifiedByUri");
         editConfiguration.setUrisOnform(urisOnForm);
 
@@ -219,6 +236,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         setTitleField(editConfiguration);
         setReportingYearUriField(editConfiguration);
         setPublicationUriField(editConfiguration);
+        setExistingInstrumentUriField(editConfiguration);
         setUpdateTextField(editConfiguration);
         setModifiedByField(editConfiguration);
         setModifiedOnField(editConfiguration);
@@ -253,6 +271,11 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
                 setName("publicationUri"));
     }
 
+    private void setExistingInstrumentUriField(EditConfigurationVTwo editConfiguration) throws Exception {
+        editConfiguration.addField(new FieldVTwo().
+                setName("existingInstrumentUri"));
+    }
+
     private void setModifiedByField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
                 setName("modifiedBy").
@@ -278,7 +301,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
         formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
-        formSpecificData.put("sparqlForPublicationAcFilter", getSparqlForPublicationAcFilter(vreq));
+        //formSpecificData.put("sparqlForPublicationAcFilter", getSparqlForPublicationAcFilter(vreq));
         editConfiguration.setFormSpecificData(formSpecificData);
     }
 
