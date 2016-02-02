@@ -100,8 +100,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <#--</p>-->
 
     <p>
-        <label for="modificationNoteText">${i18n().modification_label} ${requiredHint}:</label>
-        <input type="text" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
+        <#--<label for="modificationNoteText">${i18n().modification_label} ${requiredHint}:</label>-->
+        <input type="hidden" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
     </p>
 
     <p class="submit">
@@ -171,6 +171,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     document.getElementById("modifiedByUri").value = creatorUri;
 </script>
 
+<#assign creatorName = "${user.firstName} ${user.lastName}" >
+<script type="text/javascript">
+    var creatorName = '${creatorName}';
+    var modificationNoteText = "Created by " + creatorName;
+    document.getElementById("modificationNoteText").value = modificationNoteText;
+</script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
