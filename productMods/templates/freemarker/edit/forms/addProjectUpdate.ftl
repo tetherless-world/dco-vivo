@@ -99,10 +99,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input type="hidden" name="modifiedOn" id="modifiedOn" label="modifiedOn" size="30" role="input" value="${modifiedOnValue}">
     <#--</p>-->
 
-    <p>
+    <#--<p>-->
         <#--<label for="modificationNoteText">${i18n().modification_label} ${requiredHint}:</label>-->
         <input type="hidden" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
-    </p>
+    <#--</p>-->
 
     <p class="submit">
         <input type="submit" id="submit" value="${i18n().create_entry}" role="button" />
