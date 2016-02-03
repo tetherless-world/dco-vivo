@@ -153,7 +153,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForExistingInstrument() {
         return "@prefix dco: <" + dco + "> . " +
-                "?projectUpdateUri dco:refersToInstrument ?existingInstrumentUri . ";
+                "?projectUpdateUri dco:refersToInstrument ?instrumentUri . ";
     }
 
     private String getN3ForNewModificationNote() {
@@ -205,7 +205,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         List<String> urisOnForm = new ArrayList<String>();
         urisOnForm.add("reportingYearUri");
         urisOnForm.add("publicationUri");
-        urisOnForm.add("existingInstrumentUri");
+        urisOnForm.add("instrumentUri");
         urisOnForm.add("modifiedByUri");
         editConfiguration.setUrisOnform(urisOnForm);
 
@@ -273,7 +273,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private void setExistingInstrumentUriField(EditConfigurationVTwo editConfiguration) throws Exception {
         editConfiguration.addField(new FieldVTwo().
-                setName("existingInstrumentUri"));
+                setName("instrumentUri"));
     }
 
     private void setModifiedByField(EditConfigurationVTwo editConfiguration) throws Exception {
