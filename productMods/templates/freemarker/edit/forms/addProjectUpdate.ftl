@@ -68,11 +68,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <img src="${urls.images}/iconAlert.png" width="24" height="24" alert="${i18n().error_alert_icon}" />
         <p>
         <#--Checking if any required fields are empty-->
+        <#if lvf.submissionErrorExists(editSubmission, "updateText")>
+ 	        Please enter project update text.
+        </#if>
         <#if lvf.submissionErrorExists(editSubmission, "reportingYearUri")>
  	        Please select a reporting year.
-        </#if>
-        <#if lvf.submissionErrorExists(editSubmission, "modificationNoteText")>
- 	        Please enter the modification note text.
         </#if>
         </p>
     </section>

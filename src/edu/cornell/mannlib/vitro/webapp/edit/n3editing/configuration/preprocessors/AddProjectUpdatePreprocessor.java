@@ -21,9 +21,9 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTw
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.MultiValueEditSubmission;
 
 
-public class AddPublicationToProjectUpdatePreprocessor extends BaseEditSubmissionPreprocessorVTwo {
+public class AddProjectUpdatePreprocessor extends BaseEditSubmissionPreprocessorVTwo {
 
-    public AddPublicationToProjectUpdatePreprocessor(EditConfigurationVTwo editConfig) {
+    public AddProjectUpdatePreprocessor(EditConfigurationVTwo editConfig) {
         super(editConfig);
 
     }

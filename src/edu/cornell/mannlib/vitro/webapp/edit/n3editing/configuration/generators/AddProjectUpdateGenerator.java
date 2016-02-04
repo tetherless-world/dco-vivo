@@ -24,7 +24,7 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUti
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.IndividualsViaVClassOptions;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.fields.FieldVTwo;
-import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.AddPublicationToProjectUpdatePreprocessor;
+import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.preprocessors.AddProjectUpdatePreprocessor;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.AntiXssValidation;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
@@ -86,17 +86,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         // template file
         editConfiguration.setTemplate("addProjectUpdate.ftl");
 
-        //editConfiguration.addSparqlForExistingUris("publicationUri", publicationQuery);
-        //editConfiguration.addSparqlForExistingUris("instrumentUri", instrumentQuery);
-/*
-        editConfiguration.addField( new FieldVTwo(). // an autocomplete field
-                setName("publicationUri")
-                );
 
-        editConfiguration.addField( new FieldVTwo(). // an autocomplete field
-                setName("instrumentUri")
-                );
-*/
         editConfiguration.addValidator(new AntiXssValidation());
 //        editConfiguration.addValidator(new AutocompleteRequiredInputValidator("publicationUri", "publicationUri"));
 //        editConfiguration.addValidator(new PersonHasPublicationValidator());
@@ -105,7 +95,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         addFormSpecificData(editConfiguration, vreq);
 
         editConfiguration.addEditSubmissionPreprocessor(
-                new AddPublicationToProjectUpdatePreprocessor(editConfiguration));
+                new AddProjectUpdatePreprocessor(editConfiguration));
 
         prepare(vreq, editConfiguration);
         return editConfiguration;
@@ -153,7 +143,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForExistingInstrument() {
         return "@prefix dco: <" + dco + "> . " +
-                "?projectUpdateUri dco:refersToInstrument <http://info.deepcarbon.net/individual/n2850> . ";
+                "?projectUpdateUri dco:refersToInstrument ?instrumentUri . ";
     }
 
     private String getN3ForNewModificationNote() {
