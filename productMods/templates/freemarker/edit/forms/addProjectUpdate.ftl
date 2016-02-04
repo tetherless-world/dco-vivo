@@ -68,7 +68,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <img src="${urls.images}/iconAlert.png" width="24" height="24" alert="${i18n().error_alert_icon}" />
         <#--Checking if any required fields are empty-->
         <p>
-        <#if lvf.submissionErrorExists(editSubmission, "titleValue")>
+        <#if lvf.submissionErrorExists(editSubmission, "title")>
  	        Please enter project update title.
         </#if>
         </p>
