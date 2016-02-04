@@ -105,7 +105,7 @@ public class ProcessRdfForm {
 
         changes = getMinimalChanges(changes);
         logChanges( configuration, changes);
-        
+        System.out.println("changes:\n" + changes.toString());
         return changes;
     }
 

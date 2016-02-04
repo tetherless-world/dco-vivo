@@ -43,6 +43,19 @@ public class AddPublicationToProjectUpdatePreprocessor extends BaseEditSubmissio
             inputSubmission.setUrisFromForm(urisFromForm);
         }
 
+        if(inputSubmission.hasUriValue("instrumentUri")) {
+            Map<String, List<String>> urisFromForm = inputSubmission.getUrisFromForm();
+            List<String> insUris = urisFromForm.get("instrumentUri");
+            List<String> newInsUris = new ArrayList<String>();
+            for (String insUri : insUris) {
+                if (insUri != null && insUri.length() != 0 && !insUri.equals(">SUBMITTED VALUE WAS BLANK<")) {
+                    newInsUris.add(insUri);
+                }
+            }
+            urisFromForm.put("instrumentUri", newInsUris);
+            inputSubmission.setUrisFromForm(urisFromForm);
+        }
+
 //        System.out.println("Input submission: " + inputSubmission.toString());
     }
 
