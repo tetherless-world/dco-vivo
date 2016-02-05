@@ -21,9 +21,9 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTw
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.MultiValueEditSubmission;
 
 
-public class AddPublicationToProjectUpdatePreprocessor extends BaseEditSubmissionPreprocessorVTwo {
+public class AddProjectUpdatePreprocessor extends BaseEditSubmissionPreprocessorVTwo {
 
-    public AddPublicationToProjectUpdatePreprocessor(EditConfigurationVTwo editConfig) {
+    public AddProjectUpdatePreprocessor(EditConfigurationVTwo editConfig) {
         super(editConfig);
 
     }
@@ -40,6 +40,19 @@ public class AddPublicationToProjectUpdatePreprocessor extends BaseEditSubmissio
                 }
             }
             urisFromForm.put("publicationUri", newPubUris);
+            inputSubmission.setUrisFromForm(urisFromForm);
+        }
+
+        if(inputSubmission.hasUriValue("instrumentUri")) {
+            Map<String, List<String>> urisFromForm = inputSubmission.getUrisFromForm();
+            List<String> insUris = urisFromForm.get("instrumentUri");
+            List<String> newInsUris = new ArrayList<String>();
+            for (String insUri : insUris) {
+                if (insUri != null && insUri.length() != 0 && !insUri.equals(">SUBMITTED VALUE WAS BLANK<")) {
+                    newInsUris.add(insUri);
+                }
+            }
+            urisFromForm.put("instrumentUri", newInsUris);
             inputSubmission.setUrisFromForm(urisFromForm);
         }
 
