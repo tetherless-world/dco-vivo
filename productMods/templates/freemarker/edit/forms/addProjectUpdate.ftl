@@ -69,12 +69,17 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <textarea rows="10" cols="50" name="updateText" id="updateText" class="useTinyMce" role="textarea">${updateTextValue}</textarea>
     </p>
 
-    <p>
+
+    <p style="display: inline-block;">
         <label for="publication">${i18n().associated_publication}:</label>
-        <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
+    </p>
+    <i class="fa fa-info-circle HelperInfo" id="username-info">
+        <div class="HelperInfoContent" id="username-info-content">${i18n().associated_publication_info}</div>
+    </i>
+    <p>
+    <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
-
     <div class="acSelection" acGroupName="publication" id="pubAcSelection">
         <p class="inline">
             <label>${i18n().selected_publication}:</label>
@@ -149,6 +154,34 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     });
 </script>
 
+<script type="text/javascript">
+    function hideAll() {
+        for (var i = span.length; i--;) {
+            span[i].className = 'fa fa-info-circle HelperInfo';
+        }
+    }
+    var span = document.querySelectorAll('.HelperInfo');
+    $(document).ready(function(){
+        var span = document.querySelectorAll('.HelperInfo');
+        for (var i = span.length; i--;) {
+            (function () {
+                var t;
+                span[i].onmouseover = function () {
+                    hideAll();
+                    clearTimeout(t);
+                    this.className = 'fa fa-info-circle HelperInfoHover';
+                };
+                span[i].onmouseout = function () {
+                    var self = this;
+                    t = setTimeout(function () {
+                        self.className = 'fa fa-info-circle HelperInfo';
+                    }, 50);
+                };
+            })();
+        }
+    });
+</script>
+
 <script>
     var date = new Date();
     // GET YYYY, MM AND DD FROM THE DATE OBJECT
@@ -175,6 +208,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
+
+${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://idp.deepcarbon.net/idp/dco.css" />')}
+${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>')}
+
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
