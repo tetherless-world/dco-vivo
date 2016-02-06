@@ -15,16 +15,19 @@ import edu.cornell.mannlib.vitro.webapp.controller.freemarker.RevisionInfoContro
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.SiteAdminController;
 import edu.cornell.mannlib.vitro.webapp.controller.freemarker.UrlBuilder;
 import edu.cornell.mannlib.vitro.webapp.search.controller.IndexController;
+import edu.cornell.mannlib.vitro.webapp.config.ConfigurationProperties;
 
 public class User extends BaseTemplateModel {
     private final VitroRequest vreq;
     private final UserAccount currentUser;
     private final String profileUrl;
+    private final String defaultNamespace;
     
     public User(VitroRequest vreq) {
         this.vreq = vreq;
         this.currentUser = LoginStatusBean.getCurrentUser(vreq);
         this.profileUrl = figureAssociatedProfileUrl();
+		this.defaultNamespace = ConfigurationProperties.getBean(vreq).getProperty("Vitro.defaultNamespace");
     }
     
 	private String figureAssociatedProfileUrl() {
@@ -78,6 +81,10 @@ public class User extends BaseTemplateModel {
     */
     public String getUri() {
         return currentUser == null ? "" : currentUser.getUri();
+    }
+    
+    public String getDefaultNamespace() {
+        return defaultNamespace;
     }
     
     public boolean getHasSiteAdminAccess() {

@@ -224,7 +224,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 </script>
 
 <#assign creatorUrl = "${user.profileUrl}" >
-<#assign origuri = "${user.uri}" >
+<#assign defaultNamespace = "${user.defaultNamespace}" >
 <script type="text/javascript">
     // this is the display URL of the person editing this project update.
     var creatorUrlEncoded = '${creatorUrl}';
@@ -241,14 +241,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     var n = creatorUrlDecoded.lastIndexOf("/");
     var bas = n == -1 ? "" : creatorUrlDecoded.substring(n+1);
 
-    // this is the uri of the project we're adding this update to. We're interested in the namespace part
-    // which is the same as the namespace part of the user's uri
-    var origuri = '${origuri}';
-    var s = origuri.lastIndexOf("/");
-    var ns = s == -1 ? "" : origuri.substring(0,s);
+    // we're getting this from configuration
+    var dns = '${defaultNamespace}';
 
     // if either the end of the uri is empty or the namespace is empty then we just don't put anything there
-    var userUri = (s == -1 || n == -1) ? "" : ns + '/' + bas ;
+    var userUri = n == -1 ? "" : dns + bas;
 
     // the uri of the person editing this page is the namespace part of the project uri plus the ending of the display url
     document.getElementById("modifiedByUri").value = userUri;
