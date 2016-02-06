@@ -152,7 +152,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
     <#--<p>-->
         <#--<label for="modifiedByUri">${i18n().created_by}:</label>-->
-        <input type="text" name="modifiedByUri" id="modifiedByUri" label="modifiedByUri" size="30" role="input" value="${modifiedByUriValue}">
+        <input type="hidden" name="modifiedByUri" id="modifiedByUri" label="modifiedByUri" size="30" role="input" value="${modifiedByUriValue}">
         <#--<a href="${user.profileUrl}" class="verifyMatch"  title="${i18n().verify_match_capitalized}">-->
             <#--(${i18n().verify_match_capitalized})-->
         <#--</a>-->
