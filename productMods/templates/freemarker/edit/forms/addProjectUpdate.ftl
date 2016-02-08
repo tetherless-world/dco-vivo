@@ -7,7 +7,7 @@
 <#--Retrieve certain edit configuration information-->
 <#assign editMode = editConfiguration.pageData.editMode />
 
-<#assign sparqlForPublicationAcFilter = editConfiguration.pageData.sparqlForPublicationAcFilter />
+<#--<#assign sparqlForPublicationAcFilter = editConfiguration.pageData.sparqlForPublicationAcFilter />-->
 
 <#--If edit submission exists, then retrieve validation errors if they exist-->
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
@@ -34,11 +34,56 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign updateTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "updateText") />
 <#assign reportingYearValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "reportingYearUri") />
 <#assign publicationUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "publicationUri") />
+<#assign publicationLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "publicationLabel") />
+<#assign publicationLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "publicationLabelDisplay") />
+<#assign instrumentUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "instrumentUri") />
+<#assign instrumentLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "instrumentLabel") />
+<#assign instrumentLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "instrumentLabelDisplay") />
 <#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + "\"" + editConfiguration.subjectName + "\"" />
 <#assign modificationNoteTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modificationNoteText") />
 <#assign modifiedByUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedByUri") />
 <#assign modifiedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedOn") />
 
+<#if editMode == "edit">
+        <#assign titleVerb="${i18n().edit_capitalized}">
+        <#assign submitButtonText="${i18n().save_changes}">
+        <#assign disabledVal="disabled">
+<#else>
+        <#assign titleVerb="${i18n().create_capitalized}">
+        <#assign submitButtonText="${i18n().create_entry}">
+        <#assign disabledVal=""/>
+</#if>
+
+<#assign requiredHint = "<span class='requiredHint'> *</span>" />
+
+<#--Display error messages if any-->
+<#if submissionErrors?has_content>
+    <#if publicationLabelDisplayValue?has_content >
+        <#assign publicationLabelValue = publicationLabelDisplayValue />
+    </#if>
+    <#if instrumentLabelDisplayValue?has_content >
+        <#assign instrumentLabelValue = instrumentLabelDisplayValue />
+    </#if>
+    <section id="error-alert" role="alert">
+        <img src="${urls.images}/iconAlert.png" width="24" height="24" alert="${i18n().error_alert_icon}" />
+        <#--Checking if any required fields are empty-->
+        <p>
+        <#if lvf.submissionErrorExists(editSubmission, "title")>
+ 	        Please enter project update title.
+        </#if>
+        </p>
+        <p>
+        <#if lvf.submissionErrorExists(editSubmission, "reportingYearUri")>
+ 	        Please select a reporting year.
+        </#if>
+        </p>
+        <p>
+        <#if lvf.submissionErrorExists(editSubmission, "updateText")>
+ 	        Please enter project update text.
+        </#if>
+        </p>
+    </section>
+</#if>
 
 <h2 xmlns="http://www.w3.org/1999/html">${formTitle}</h2>
 <form class="editForm customForm" id="addProjectUpdate" method="post" enctype="multipart/form-data" action="${submitUrl}">
@@ -79,6 +124,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
     <p>
     <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
+        <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationLabel" acGroupName="publication"  value="${publicationLabelValue}" />
+        <input  class="display" acGroupName="publication" type="hidden" id="publicationDisplay" name="publicationLabelDisplay" value="${publicationLabelDisplayValue}" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
     <div class="acSelection" acGroupName="publication" id="pubAcSelection">
@@ -89,7 +136,25 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
-        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}"  ${flagClearLabelForExisting}="true" />
+        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}" />
+    </div>
+
+    <p>
+        <label for="instrument">${i18n().refers_to_instrument}:</label>
+        <input class="acSelector" size="60"  type="text" id="instrument" name="instrumentLabel" acGroupName="instrument"  value="${instrumentLabelValue}" />
+        <input  class="display" acGroupName="instrument" type="hidden" id="instrumentDisplay" name="instrumentLabelDisplay" value="${instrumentLabelDisplayValue}" />
+        <a href="#instrumentTitleClear" class="clear" name="instrumentTitleClear" id="instrumentTitleClear"> ${i18n().clear_link}</a>
+    </p>
+
+    <div class="acSelection" acGroupName="instrument" id="insAcSelection">
+        <p class="inline">
+            <label>${i18n().selected_instrument}:</label>
+            <span class="acSelectionInfo"></span>
+            <br />
+            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
+            <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
+        </p>
+        <input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrumentUriValue}" />
     </div>
 
     <#--<p>-->
@@ -105,10 +170,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input type="hidden" name="modifiedOn" id="modifiedOn" label="modifiedOn" size="30" role="input" value="${modifiedOnValue}">
     <#--</p>-->
 
-    <p>
-        <label for="modificationNoteText">${i18n().modification_label} ${requiredHint}:</label>
-        <input type="text" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
-    </p>
+    <#--<p>-->
+        <#--<label for="modificationNoteText">${i18n().modification_label} ${requiredHint}:</label>-->
+        <input type="hidden" name="modificationNoteText" id="modificationNoteText" label="modificationNoteText" size="50" role="input" value="${modificationNoteTextValue}">
+    <#--</p>-->
 
     <p class="submit">
         <input type="submit" id="submit" value="${i18n().create_entry}" role="button" />
@@ -151,15 +216,11 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <script type="text/javascript">
     var customFormData  = {
-        sparqlForAcFilter: '${sparqlForPublicationAcFilter}',
-        sparqlQueryUrl: '${sparqlQueryUrl}',
         acUrl: '${urls.base}/autocomplete?tokenize=true',
-        acTypes: {publication: 'http://purl.org/ontology/bibo/Document', collection: 'http://purl.org/ontology/bibo/Periodical', book: 'http://purl.org/ontology/bibo/Book', conference: 'http://purl.org/NET/c4dm/event.owl#Event', event: 'http://purl.org/NET/c4dm/event.owl#Event', editor: 'http://xmlns.com/foaf/0.1/Person', publisher: 'http://xmlns.com/foaf/0.1/Organization'},
+        acTypes: {publication: 'http://purl.org/ontology/bibo/Document', instrument: 'http://purl.obolibrary.org/obo/ERO_0000004'},
         editMode: '${editMode}',
-        acSelectOnly: 'true',
-        defaultTypeName: 'publication', // used in repair mode to generate button text
-        multipleTypeNames: {collection: 'publication', book: 'book', conference: 'conference', event: 'event', editor: 'editor', publisher: 'publisher'},
-        acFilterForIndividuals: ${acFilterForIndividuals},
+        defaultTypeName: 'publication',
+        multipleTypeNames: {publication: 'publication', instrument: 'instrument'},
         baseHref: '${urls.base}/individual?uri=',
         blankSentinel: '${blankSentinel}',
         flagClearLabelForExisting: '${flagClearLabelForExisting}'
@@ -228,6 +289,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     document.getElementById("modifiedByUri").value = creatorUri;
 </script>
 
+<#assign creatorName = "${user.firstName} ${user.lastName}" >
+<script type="text/javascript">
+    var creatorName = '${creatorName}';
+    var modificationNoteText = "Created by " + creatorName;
+    document.getElementById("modificationNoteText").value = modificationNoteText;
+</script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
