@@ -236,15 +236,15 @@ public class AddEditNewsFormGenerator extends BaseEditConfigurationGenerator imp
     }
 
 	private String getUrlPatternToReturnTo(VitroRequest vreq) {
-		String subjectUri = EditConfigurationUtils.getSubjectUri(vreq);
-		String predicateUri = EditConfigurationUtils.getPredicateUri(vreq);
+		String subjectUri = UrlBuilder.urlEncode(EditConfigurationUtils.getSubjectUri(vreq));
+		String predicateUri = UrlBuilder.urlEncode(EditConfigurationUtils.getPredicateUri(vreq));
 		//Also add domain and range uris if they exist to enable cancel to work properly
 		String domainUri = (String) vreq.getParameter("domainUri");
 		String rangeUri = (String) vreq.getParameter("rangeUri");
 		String generatorName = "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.ManageNewsForIndividualGenerator";
 		String editUrl = EditConfigurationUtils.getEditUrlWithoutContext(vreq);
-		String returnPath =  editUrl + "?subjectUri=" + UrlBuilder.urlEncode(subjectUri) + 
-		"&predicateUri=" + UrlBuilder.urlEncode(predicateUri) + 
+		String returnPath =  editUrl + "?subjectUri=" + subjectUri + 
+		"&predicateUri=" + predicateUri + 
 		"&editForm=" + UrlBuilder.urlEncode(generatorName);
 		if(domainUri != null && !domainUri.isEmpty()) {
 			returnPath += "&domainUri=" + UrlBuilder.urlEncode(domainUri);

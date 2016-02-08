@@ -39,7 +39,7 @@
                 <a href="${newsLink.url}" title="${i18n().newsLink_url}">${anchor}</a>
             </span>
             <span class="editingLinks">
-                <a href="${baseEditNewsLinkUrl}&objectUri=${newsLink.vcard}&predicateUri=${predicateUri}&linkUri=${newsLink.link}" class="edit" title="${i18n().edit_newsLink_link}">${i18n().edit_capitalized}</a> | 
+                <a href="${baseEditNewsLinkUrl}&objectUri=${newsLink.vcard}&predicateUri=${predicateUri?replace("#","%23")}&linkUri=${newsLink.link}" class="edit" title="${i18n().edit_newsLink_link}">${i18n().edit_capitalized}</a> | 
                 <a href="${urls.base}${deleteNewsLinkUrl}" class="remove" title="${i18n().delete_newsLink_link}">${i18n().delete_button}</a> 
             </span>
         </li>    

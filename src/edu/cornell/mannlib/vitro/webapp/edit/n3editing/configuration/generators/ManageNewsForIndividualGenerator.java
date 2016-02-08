@@ -51,7 +51,7 @@ public class ManageNewsForIndividualGenerator extends BaseEditConfigurationGener
 
         config.addFormSpecificData("rankPredicate", "http://vivoweb.org/ontology/core#rank" );
         config.addFormSpecificData("reorderUrl", "/edit/reorder" );       
-        config.addFormSpecificData("deleteNewsUrl", "/edit/primitiveDelete");              
+        config.addFormSpecificData("deleteNewsLinkUrl", "/edit/primitiveDelete");              
 
         ParamMap paramMap = new ParamMap();
         paramMap.put("subjectUri", config.getSubjectUri());
@@ -59,7 +59,7 @@ public class ManageNewsForIndividualGenerator extends BaseEditConfigurationGener
         paramMap.put("view", "form");
         String path = UrlBuilder.getUrl( UrlBuilder.Route.EDIT_REQUEST_DISPATCH ,paramMap);
 
-        config.addFormSpecificData("baseEditNewsUrl", path);                 
+        config.addFormSpecificData("baseEditNewsLinkUrl", path);                 
 
         //Also add domainUri and rangeUri if they exist, adding here instead of template
         String domainUri = (String) vreq.getParameter("domainUri");
