@@ -73,9 +73,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <p style="display: inline-block;">
         <label for="publication">${i18n().associated_publication}:</label>
     </p>
-    <i class="fa fa-info-circle HelperInfo" id="username-info">
+    <#--use div or i?-->
+    <div class="fa fa-info-circle HelperInfo" id="username-info">
         <div class="HelperInfoContent" id="username-info-content">${i18n().associated_publication_info}</div>
-    </i>
+    </div>
     <p>
     <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
@@ -120,6 +121,29 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <style type="text/css">
     form#addProjectUpdate p {
         text-indent: 0;
+    }
+    .HelperInfo {
+        position:relative;
+    }
+    .HelperInfo div {
+        display: none;
+    }
+    .HelperInfoHover {
+        position:relative;
+    }
+    .HelperInfoHover div {
+        display:block;
+        position:absolute;
+        width: 20em;
+        height: 6em;
+        bottom: 1em;
+        left: 1em;
+        z-index:1000;
+        background-color:#FFFFFF;
+        padding: 5px;
+        border-radius: 4px;
+        border-style: solid;
+        border-color:#5C85D6;
     }
 </style>
 
