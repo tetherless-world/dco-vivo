@@ -118,12 +118,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <p style="display: inline-block;">
         <label for="publication">${i18n().associated_publication}:</label>
     </p>
-    <#--use div or i?-->
     <div class="fa fa-info-circle HelperInfo" id="username-info">
         <div class="HelperInfoContent" id="username-info-content">${i18n().associated_publication_info}</div>
     </div>
     <p>
-    <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationTitle" acGroupName="publication"  value="" />
         <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationLabel" acGroupName="publication"  value="${publicationLabelValue}" />
         <input  class="display" acGroupName="publication" type="hidden" id="publicationDisplay" name="publicationLabelDisplay" value="${publicationLabelDisplayValue}" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
