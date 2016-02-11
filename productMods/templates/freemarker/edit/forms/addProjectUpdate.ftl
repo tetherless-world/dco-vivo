@@ -222,7 +222,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     .HelperInfoHover {
         position:relative;
     }
-    .HelperInfoHover div !important{
+    .HelperInfoHover div {
         display:block;
         position:absolute;
         width: 20em;
@@ -233,8 +233,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         background-color:#FFFFFF;
         padding: 5px;
         border-radius: 4px;
-        /*border-style: solid;*/
-        /*border-color: #5C85D6;*/
         border-top-color: #5C85D6;
         border-top-style: solid;
         border-top-width: 4px;
