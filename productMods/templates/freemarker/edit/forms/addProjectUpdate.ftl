@@ -233,9 +233,20 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         background-color:#FFFFFF;
         padding: 5px;
         border-radius: 4px;
-        border-style: solid;
-        border-color: #5C85D6;
-        /*border: 4px solid #5C85D6 !important ;*/
+        /*border-style: solid;*/
+        /*border-color: #5C85D6;*/
+        border-top-color: #5C85D6;
+        border-top-style: solid;
+        border-top-width: 4px;
+        border-right-color: #5C85D6;
+        border-right-style: solid;
+        border-right-width: 4px;
+        border-bottom-color: #5C85D6;
+        border-bottom-style: solid;
+        border-bottom-width: 4px;
+        border-left-color: #5C85D6;
+        border-left-style: solid;
+        border-left-width: 4px;
     }
 </style>
 
