@@ -93,13 +93,24 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input type="hidden" name="subjectUri" id="subjectUri" value="${editConfiguration.subjectUri}">
     </p>
 
-    <p>
+    <p style="display: inline-block;">
         <label for="title">${i18n().project_update_title} ${requiredHint}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="title-info">
+        <div class="HelperInfoContent" id="title-info-content">${i18n().project_update_title_info}</div>
+    </div>
+    <p>
         <input type="text" name="title" id="title" label="title" size="50" role="input" value="${titleValue}">
     </p>
 
-    <p>
+
+    <p style="display: inline-block;">
         <label for="reportingYear">${i18n().reporting_year} ${requiredHint}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="reportingYear-info">
+        <div class="HelperInfoContent" id="reportingYear-info-content">${i18n().reporting_year_info}</div>
+    </div>
+    <p>
         <#assign reportingYearOpts = editConfiguration.pageData.reportingYearUri />
         <select name="reportingYearUri" id="reportingYearUri" >
             <option value="" <#if reportingYearValue = "">selected</#if>>${i18n().select_one}</option>
@@ -109,8 +120,14 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </select>
     </p>
 
-    <p>
+
+    <p style="display: inline-block;">
         <label for="updateText">${i18n().project_update_text} ${requiredHint}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="updateText-info">
+        <div class="HelperInfoContent" id="updateText-info-content">${i18n().project_update_text_info}</div>
+    </div>
+    <p>
         <textarea rows="10" cols="50" name="updateText" id="updateText" class="useTinyMce" role="textarea">${updateTextValue}</textarea>
     </p>
 
@@ -118,8 +135,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <p style="display: inline-block;">
         <label for="publication">${i18n().associated_publication}:</label>
     </p>
-    <div class="fa fa-info-circle HelperInfo" id="username-info">
-        <div class="HelperInfoContent" id="username-info-content">${i18n().associated_publication_info}</div>
+    <div class="fa fa-info-circle HelperInfo" id="publication-info">
+        <div class="HelperInfoContent" id="publication-info-content">${i18n().associated_publication_info}</div>
     </div>
     <p>
         <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationLabel" acGroupName="publication"  value="${publicationLabelValue}" />
@@ -137,8 +154,13 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}" />
     </div>
 
-    <p>
+    <p style="display: inline-block;">
         <label for="instrument">${i18n().refers_to_instrument}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="instrument-info">
+        <div class="HelperInfoContent" id="instrument-info-content">${i18n().instrument_info}</div>
+    </div>
+    <p>
         <input class="acSelector" size="60"  type="text" id="instrument" name="instrumentLabel" acGroupName="instrument"  value="${instrumentLabelValue}" />
         <input  class="display" acGroupName="instrument" type="hidden" id="instrumentDisplay" name="instrumentLabelDisplay" value="${instrumentLabelDisplayValue}" />
         <a href="#instrumentTitleClear" class="clear" name="instrumentTitleClear" id="instrumentTitleClear"> ${i18n().clear_link}</a>
@@ -185,6 +207,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     form#addProjectUpdate p {
         text-indent: 0;
     }
+    .fa-info-circle {
+        color:#5C85D6;
+    }
+    .HelperInfoContent {
+        color:black;
+    }
     .HelperInfo {
         position:relative;
     }
@@ -194,7 +222,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     .HelperInfoHover {
         position:relative;
     }
-    .HelperInfoHover div {
+    .HelperInfoHover div !important{
         display:block;
         position:absolute;
         width: 20em;
@@ -206,7 +234,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         padding: 5px;
         border-radius: 4px;
         border-style: solid;
-        border-color:#5C85D6;
+        border-color: #5C85D6;
+        /*border: 4px solid #5C85D6 !important ;*/
     }
 </style>
 
