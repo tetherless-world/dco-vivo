@@ -103,13 +103,13 @@
 </div>
     <form id="addConceptForm" class="customForm" action="${submitUrl}">
 		<#assign checkedSource = false />
+	<!-- Hiding external vocabulary sources until DCO vocabulary is conceived
 	<h4 class="services">${i18n().external_vocabulary_services}</h4>
     <#list sources?values?sort_by("label") as thisSource>
         <input type="radio"  name="source" value="${thisSource.schema}" role="radio" <#if checkedSource = false><#assign checkedSource = true/>checked="checked"</#if>>
         <label class="inline" for="${thisSource.label}"> <a href="${thisSource.url}">${thisSource.label}</a> &nbsp;(${thisSource.description})</label>
         <br />
     </#list>
-		<!-- Hiding external vocabulary sources until DCO vocabulary is conceived
     <p class="inline-search">
         <input type="text" id="searchTerm" label="Search" class="acSelector" size="35" />
         <input type="button" class="submit concept-search" id="searchButton" name="searchButton" value="${i18n().search_button}"/>&nbsp;
