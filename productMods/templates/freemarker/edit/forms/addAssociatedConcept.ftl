@@ -103,7 +103,7 @@
 </div>
     <form id="addConceptForm" class="customForm" action="${submitUrl}">
 		<#assign checkedSource = false />
-	<!-- Hiding external vocabulary sources until DCO vocabulary is conceived
+    <#if (sources?size > 0) >
 	<h4 class="services">${i18n().external_vocabulary_services}</h4>
     <#list sources?values?sort_by("label") as thisSource>
         <input type="radio"  name="source" value="${thisSource.schema}" role="radio" <#if checkedSource = false><#assign checkedSource = true/>checked="checked"</#if>>
@@ -114,7 +114,7 @@
         <input type="text" id="searchTerm" label="Search" class="acSelector" size="35" />
         <input type="button" class="submit concept-search" id="searchButton" name="searchButton" value="${i18n().search_button}"/>&nbsp;
     </p><span id="createOwnOne"> ${i18n().or}
-		-->
+	</#if>
 		&nbsp;<a href="${userDefinedConceptUrl}" title="${i18n().create_own_concept}">${i18n().create_own_concept}&nbsp;</a></span>
     <input type="hidden" id="conceptNode" name="conceptNode" value=""/> <!-- Field value populated by JavaScript -->
     <input type="hidden" id="conceptLabel" name="conceptLabel" value="" />  <!-- Field value populated by JavaScript -->
