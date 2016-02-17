@@ -322,11 +322,31 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 </script>
 
 <#assign creatorUrl = "${user.profileUrl}" >
+<#assign defaultNamespace = "${user.defaultNamespace}" >
 <script type="text/javascript">
+    // this is the display URL of the person editing this project update.
     var creatorUrlEncoded = '${creatorUrl}';
+
+    // in test this url is encoded so decode it
     var creatorUrlDecoded = decodeURIComponent(creatorUrlEncoded);
+
+    // this is what we used before, but doesn't work in production
+    // in test the profile url is /vivo/display?uri=http://info.deepcarbon.net/individual/<end-of-uri>
+    // in production the profile url is /vivo/display/<end-of-uri>
     var creatorUri = creatorUrlDecoded.substring(21);
-    document.getElementById("modifiedByUri").value = creatorUri;
+
+    // grab the last slash in the url, we want what's after that
+    var n = creatorUrlDecoded.lastIndexOf("/");
+    var bas = n == -1 ? "" : creatorUrlDecoded.substring(n+1);
+
+    // we're getting this from configuration
+    var dns = '${defaultNamespace}';
+
+    // if either the end of the uri is empty or the namespace is empty then we just don't put anything there
+    var userUri = n == -1 ? "" : dns + bas;
+
+    // the uri of the person editing this page is the namespace part of the project uri plus the ending of the display url
+    document.getElementById("modifiedByUri").value = userUri;
 </script>
 
 <#assign creatorName = "${user.firstName} ${user.lastName}" >
