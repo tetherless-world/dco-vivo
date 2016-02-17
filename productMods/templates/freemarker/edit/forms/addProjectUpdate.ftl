@@ -159,10 +159,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
     <p style="display: inline-block;">
         <label for="instrument">${i18n().refers_to_instrument}:</label>
-        <span style="font-size:9pt;">${i18n().instrument_note}</span>
     </p>
     <div class="fa fa-info-circle HelperInfo" id="instrument-info">
         <div class="HelperInfoContent" id="instrument-info-content">${i18n().instrument_info}</div>
+    </div>
+    <div>
+        <span style="font-size:9pt;">${i18n().instrument_note}</span>
     </div>
     <p>
         <input class="acSelector" size="60"  type="text" id="instrument" name="instrumentLabel" acGroupName="instrument"  value="${instrumentLabelValue}" />
