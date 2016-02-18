@@ -93,13 +93,24 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input type="hidden" name="subjectUri" id="subjectUri" value="${editConfiguration.subjectUri}">
     </p>
 
-    <p>
+    <p style="display: inline-block;">
         <label for="title">${i18n().project_update_title} ${requiredHint}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="title-info">
+        <div class="HelperInfoContent" id="title-info-content">${i18n().project_update_title_info}</div>
+    </div>
+    <p>
         <input type="text" name="title" id="title" label="title" size="50" role="input" value="${titleValue}">
     </p>
 
-    <p>
+
+    <p style="display: inline-block;">
         <label for="reportingYear">${i18n().reporting_year} ${requiredHint}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="reportingYear-info">
+        <div class="HelperInfoContent" id="reportingYear-info-content">${i18n().reporting_year_info}</div>
+    </div>
+    <p>
         <#assign reportingYearOpts = editConfiguration.pageData.reportingYearUri />
         <select name="reportingYearUri" id="reportingYearUri" >
             <option value="" <#if reportingYearValue = "">selected</#if>>${i18n().select_one}</option>
@@ -109,18 +120,32 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </select>
     </p>
 
-    <p>
+
+    <p style="display: inline-block;">
         <label for="updateText">${i18n().project_update_text} ${requiredHint}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="updateText-info">
+        <div class="HelperInfoContent" id="updateText-info-content">${i18n().project_update_text_info}</div>
+    </div>
+    <p>
         <textarea rows="10" cols="50" name="updateText" id="updateText" class="useTinyMce" role="textarea">${updateTextValue}</textarea>
     </p>
 
-    <p>
+
+    <p style="display: inline-block;">
         <label for="publication">${i18n().associated_publication}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="publication-info">
+        <div class="HelperInfoContent" id="publication-info-content">${i18n().associated_publication_info}</div>
+    </div>
+    <div>
+        <span style="font-size:9pt;">${i18n().associated_publication_note}</span>
+    </div>
+    <p>
         <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationLabel" acGroupName="publication"  value="${publicationLabelValue}" />
         <input  class="display" acGroupName="publication" type="hidden" id="publicationDisplay" name="publicationLabelDisplay" value="${publicationLabelDisplayValue}" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
-
     <div class="acSelection" acGroupName="publication" id="pubAcSelection">
         <p class="inline">
             <label>${i18n().selected_publication}:</label>
@@ -132,8 +157,16 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}" />
     </div>
 
-    <p>
+    <p style="display: inline-block;">
         <label for="instrument">${i18n().refers_to_instrument}:</label>
+    </p>
+    <div class="fa fa-info-circle HelperInfo" id="instrument-info">
+        <div class="HelperInfoContent" id="instrument-info-content">${i18n().instrument_info}</div>
+    </div>
+    <div>
+        <span style="font-size:9pt;">${i18n().instrument_note}</span>
+    </div>
+    <p>
         <input class="acSelector" size="60"  type="text" id="instrument" name="instrumentLabel" acGroupName="instrument"  value="${instrumentLabelValue}" />
         <input  class="display" acGroupName="instrument" type="hidden" id="instrumentDisplay" name="instrumentLabelDisplay" value="${instrumentLabelDisplayValue}" />
         <a href="#instrumentTitleClear" class="clear" name="instrumentTitleClear" id="instrumentTitleClear"> ${i18n().clear_link}</a>
@@ -180,6 +213,45 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     form#addProjectUpdate p {
         text-indent: 0;
     }
+    .fa-info-circle {
+        color:#5C85D6;
+    }
+    .HelperInfoContent {
+        color:black;
+    }
+    .HelperInfo {
+        position:relative;
+    }
+    .HelperInfo div {
+        display: none;
+    }
+    .HelperInfoHover {
+        position:relative;
+    }
+    .HelperInfoHover div {
+        display:block;
+        position:absolute;
+        width: 20em;
+        height: 6em;
+        bottom: 1em;
+        left: 1em;
+        z-index:1000;
+        background-color:#FFFFFF;
+        padding: 5px;
+        border-radius: 4px;
+        border-top-color: #5C85D6;
+        border-top-style: solid;
+        border-top-width: 4px;
+        border-right-color: #5C85D6;
+        border-right-style: solid;
+        border-right-width: 4px;
+        border-bottom-color: #5C85D6;
+        border-bottom-style: solid;
+        border-bottom-width: 4px;
+        border-left-color: #5C85D6;
+        border-left-style: solid;
+        border-left-width: 4px;
+    }
 </style>
 
 <#assign sparqlQueryUrl = "${urls.base}/ajax/sparqlQuery" >
@@ -206,6 +278,34 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <script type="text/javascript">
     $(document).ready(function(){
         defaultDataPropertyUtils.onLoad();
+    });
+</script>
+
+<script type="text/javascript">
+    function hideAll() {
+        for (var i = span.length; i--;) {
+            span[i].className = 'fa fa-info-circle HelperInfo';
+        }
+    }
+    var span = document.querySelectorAll('.HelperInfo');
+    $(document).ready(function(){
+        var span = document.querySelectorAll('.HelperInfo');
+        for (var i = span.length; i--;) {
+            (function () {
+                var t;
+                span[i].onmouseover = function () {
+                    hideAll();
+                    clearTimeout(t);
+                    this.className = 'fa fa-info-circle HelperInfoHover';
+                };
+                span[i].onmouseout = function () {
+                    var self = this;
+                    t = setTimeout(function () {
+                        self.className = 'fa fa-info-circle HelperInfo';
+                    }, 50);
+                };
+            })();
+        }
     });
 </script>
 
@@ -261,6 +361,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
+
+${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://idp.deepcarbon.net/idp/dco.css" />')}
+${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>')}
+
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
