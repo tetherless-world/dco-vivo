@@ -36,12 +36,6 @@ import edu.rpi.twc.dcods.vivo.ServerInfo;
 
 public class AddDistributionGenerator extends BaseEditConfigurationGenerator implements EditConfigurationGenerator{
 
-	final static String vivoCore = "http://vivoweb.org/ontology/core#";
-	final static String dco = ServerInfo.getInstance().getDcoOntoNamespace();
-	final static String toDateCreated = dco + "dateCreated";
-	final static String valueType = vivoCore + "DateTimeValue";
-	final static String dateTimeValue = vivoCore + "dateTime";
-	final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 	private String subjectUri = null;
 	private String predicateUri = null;
 	private String objectUri = null;

@@ -36,15 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 
-import edu.rpi.twc.dcods.vivo.CKANAPI;
-import edu.rpi.twc.dcods.vivo.CKANException;
-import edu.rpi.twc.dcods.vivo.Client;
-import edu.rpi.twc.dcods.vivo.Connection;
-import edu.rpi.twc.dcods.vivo.DCOId;
-import edu.rpi.twc.dcods.vivo.Dataset;
-import edu.rpi.twc.dcods.vivo.Extra;
-import edu.rpi.twc.dcods.vivo.ServerInfo;
+import edu.rpi.twc.dcods.vivo.*;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -94,11 +88,6 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
     
     private static final long serialVersionUID = 1L;
     private String redirectSubjectUrl = "";
-    private String dcoNamespace = ServerInfo.getInstance().getDcoNamespace();
-    private String dcoOntNamespace = ServerInfo.getInstance().getDcoOntoNamespace();
-    private String absoluteMachineURL = ServerInfo.getInstance().getAbsoluteMachineURL();
-    private String machineURL = ServerInfo.getInstance().getMachineURL();
-    private String ckanURL = ServerInfo.getInstance().getCkanURL();
     private boolean debug = true;
     
     /** Limit file size to 6 megabytes. */
@@ -127,6 +116,9 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 			System.out.println(paraName+":"+req.getParameter(paraName));
 		}		
 		*/
+
+		ServletContext ctx = req.getSession().getServletContext();
+		String baseurl = ServerInfo.getInstance().getBaseURL( ctx );
     	
     	boolean isMultipart = ServletFileUpload.isMultipartContent(req);
     	DatasetDistributionFileUploadRequest depositRequest = null;
@@ -195,23 +187,23 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 				+ "}";
 		String USERURI = configuration.getSubjectUri();
 		
-		String AUTHORSHIPURI = nextSessionId();
+		String AUTHORSHIPURI = nextSessionId(ctx);
 		DCOId dcoid = new DCOId();		
-		dcoid.operate(AUTHORSHIPURI, "URL", "create");
+		dcoid.generateDCOId(AUTHORSHIPURI, ctx);
 		String AUTHORSHIPDCOID = dcoid.getDCOId();
 		String AUTHORSHIPDCOIDPURE = dcoid.getDCOId().substring(25);
 		
-		String DATASETURI = nextSessionId();
+		String DATASETURI = nextSessionId(ctx);
 		String DATASETNAME = datasetName;
 		dcoid = new DCOId();
-		dcoid.operate(DATASETURI, "URL", "create");
+		dcoid.generateDCOId(DATASETURI, ctx);
 		String DATASETDCOID = dcoid.getDCOId();
 		String DATASETDCOIDPURE = dcoid.getDCOId().substring(25);
 		
-		String DISTRIBUTIONURI = nextSessionId();
+		String DISTRIBUTIONURI = nextSessionId(ctx);
 		String DISTRIBUTIONNAME = distributionName;
 		dcoid = new DCOId();
-		dcoid.operate(DISTRIBUTIONURI, "URL", "create");
+		dcoid.generateDCOId(DISTRIBUTIONURI, ctx);
 		String DISTRIBUTIONDCOID = dcoid.getDCOId();
 		String DISTRIBUTIONDCOIDPURE = dcoid.getDCOId().substring(25);
 		
@@ -223,9 +215,9 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 		ArrayList<String> FILEDCOIDSPURE = new ArrayList<String>();
 		
 		for(int i = 0; i<filenames.size(); i++){
-			String FILEURI = nextSessionId();
+			String FILEURI = nextSessionId(ctx);
 			dcoid = new DCOId();
-			dcoid.operate(FILEURI, "URL", "create");
+			dcoid.generateDCOId(FILEURI, ctx);
 			FILEURIS.add(FILEURI);
 			String FILEDCOID = dcoid.getDCOId();
 			FILEDCOIDS.add(FILEDCOID);
@@ -327,7 +319,7 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 		// Push queries using VIVO API
 		int statusCode = 0;
 		try {
-			statusCode = sendPost(ServerInfo.getInstance().getRootPassword(),ServerInfo.getInstance().getRootName(),insertTemplate);
+			statusCode = SparqlQueryUtils.vivoSparqlInsert( insertTemplate, ctx );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -339,7 +331,7 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 		}
 		
 		// Return to the page
-		configuration.setUrlToReturnTo(configuration.getUrlToReturnTo().replace("http://localhost:8080", absoluteMachineURL));
+		configuration.setUrlToReturnTo(configuration.getUrlToReturnTo().replace("http://localhost:8080", baseurl));
 		if(debug){
 			System.out.println("Going back to the individual page:");
 			System.out.println(configuration.getUrlToReturnTo().toString());
@@ -348,111 +340,26 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 		
     }
 	
-	public String nextSessionId() {
+	public String nextSessionId(ServletContext ctx) {
 		
 		String subjectURI = "";
 		
 		do{
-			String prefix = ServerInfo.getInstance().getDcoNamespace();
+			String prefix = ServerInfo.getInstance().getDefaultNamespace(ctx);
 			SecureRandom random = new SecureRandom();
 		    String uuid = new BigInteger(130, random).toString(32);
 		    //Make sure there is no such a triple
-		    subjectURI = prefix+"/individual/"+uuid;
-		}while(sparqlForAccessURL(subjectURI).length()>=10);
+		    subjectURI = prefix+uuid;
+		}while(sparqlForAccessURL(subjectURI,ctx).length()>=10);
 		
 	    return subjectURI;
 	}
 
-	private int sendPost(String password, String email, String data) throws Exception {
-		 
-		String url = "http://128.213.3.13:8080/vivo/api/sparqlUpdate";
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
- 
-		//add reuqest header
-		con.setRequestMethod("POST");
-		con.setRequestProperty("User-Agent", "Mozilla/5.0");
-		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
- 
-		String payload = "password="+password+"&email="+email+"&update="+data;
-		try {
-			payload = URIUtil.encodeQuery(payload);
-		} catch (URIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String urlParameters = payload;
- 
-		// Send post request
-		con.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-		wr.close();
- 
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + urlParameters);
-		System.out.println("Response Code : " + responseCode);
- 
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
- 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
- 
-		//print result
-		return responseCode;
-	}
-	
-	public int vivoapiInsert(String password, String email, String data){
+	public String sparqlForAccessURL(String subjectUrl, ServletContext ctx){
 		
-		String endpoint = "http://128.213.3.13:8080/vivo/api/sparqlUpdate?";
-		String payload = "password="+password+"&email="+email+"&update="+data;
-		try {
-			payload = URIUtil.encodeQuery(payload);
-		} catch (URIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String requestURL = endpoint + payload;
-		
-		HttpClient client = new DefaultHttpClient();
-		HttpGet request = new HttpGet(requestURL);
-				
-		// add request header
-		request.addHeader("User-Agent", "Mozilla/5.0");
-		HttpResponse response = null;
-		StringBuffer result = new StringBuffer();
-		try {
-			response = client.execute(request);
-			
-			BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-		 
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				result.append(line);
-			}
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return response.getStatusLine().getStatusCode();
-	}
-	public String sparqlForAccessURL(String subjectUrl){
-		
-		String endpoint = "http://128.213.3.13:8080/vivo/admin/sparqlquery?query=";
+		String sparqlQueryAPI = ServerInfo.getInstance().getSparqlQueryAPI(ctx) + "?query=";
 		String queryInString = 
-		        "PREFIX dco: <"+ServerInfo.getInstance().getDcoOntoNamespace()+">  "+
+		        "PREFIX dco: <"+ServerInfo.getInstance().getDCOURI(ctx)+">  "+
 		        "select ?p"+
 		        "where { "+
 		         "<"+subjectUrl+"> ?p ?o .  "+
@@ -465,7 +372,7 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
 			e1.printStackTrace();
 		}
 		String queryParams = "&resultFormat=vitro%3Acsv&rdfResultFormat=RDF%2FXML";
-		String url = endpoint+encodedQuery+queryParams;
+		String url = sparqlQueryAPI+encodedQuery+queryParams;
 		
 		System.out.println("Request URL is\r\n"+url);
 		
@@ -505,7 +412,8 @@ public class DCOAddDatasetController extends FreemarkerHttpServlet{
     @Override
 	public ResponseValues processRequest(VitroRequest vreq) {
     	
-    	String entityToReturnTo = absoluteMachineURL;
+    	ServletContext ctx = vreq.getSession().getServletContext();
+		String entityToReturnTo = ServerInfo.getInstance().getBaseURL( ctx );
     	
 		try {
 			entityToReturnTo = this.processPost(vreq);	

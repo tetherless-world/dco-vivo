@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.logging.Log;
@@ -92,6 +94,7 @@ public class ProcessRdfForm {
         log.debug("configuration:\n" + configuration.toString());
         log.debug("submission:\n" + submission.toString());
 
+        ServletContext ctx = vreq != null ? vreq.getSession().getServletContext() : null ;
 
         applyEditSubmissionPreprocessors( configuration, submission, vreq );
 
@@ -100,7 +103,7 @@ public class ProcessRdfForm {
             changes = editExistingStatements(configuration, submission);
         } else {
             changes = createNewStatements(configuration, submission );
-            generateDcoIdN3(changes, submission);
+            generateDcoIdN3(changes, submission, ctx);
         }
 
         changes = getMinimalChanges(changes);
@@ -133,10 +136,11 @@ public class ProcessRdfForm {
 //    }
 
     /* DCO-ID N3 generation, by Han Wang (wangh17@rpi.edu) */
-    private void generateDcoIdN3(AdditionsAndRetractions changes, MultiValueEditSubmission submission) {
-    	String dcoIdClassStr = ServerInfo.getInstance().getDcoOntoNamespace() + "DCOID";
-        String hasDcoIdPropertyStr = ServerInfo.getInstance().getDcoOntoNamespace() + "hasDcoId";
-        String dcoIdForPropertyStr = ServerInfo.getInstance().getDcoOntoNamespace() + "dcoIdFor";
+    private void generateDcoIdN3(AdditionsAndRetractions changes, MultiValueEditSubmission submission, ServletContext req) {
+        String namespace = ServerInfo.getInstance().getDCOURI(req);
+    	String dcoIdClassStr = namespace + "DCOID";
+        String hasDcoIdPropertyStr = namespace + "hasDcoId";
+        String dcoIdForPropertyStr = namespace + "dcoIdFor";
         Resource dcoIdClass = ResourceFactory.createResource(dcoIdClassStr);
         Property hasDcoIdProperty = ResourceFactory.createProperty(hasDcoIdPropertyStr);
         Property dcoIdForProperty = ResourceFactory.createProperty(dcoIdForPropertyStr);
@@ -163,10 +167,10 @@ public class ProcessRdfForm {
                 Resource type;
                 while(typeItr.hasNext()) {
                     type = typeItr.next().asResource();
-                    if (checkTypeAgainstTripleStore(type.toString())) {
+                    if (checkTypeAgainstTripleStore(type.toString(), req)) {
                        	try {
                             DCOId dcoid = new DCOId();
-                            dcoid.operate(subj.toString(), "URL", "create");
+                            dcoid.generateDCOId(subj.toString(), req);
                             String dcoIdStr = dcoid.getDCOId();
                             String dcoIdLabelStr = dcoIdStr.substring(25);
                             Resource dcoId = ResourceFactory.createResource(dcoIdStr);
@@ -188,10 +192,12 @@ public class ProcessRdfForm {
     }
 
     /* Check the type of an individual, by Han Wang (wangh17@rpi.edu) */
-    private boolean checkTypeAgainstTripleStore(String type) {
+    private boolean checkTypeAgainstTripleStore(String type, ServletContext ctx) {
+        String namespace = ServerInfo.getInstance().getDCOURI(ctx);
+
     	String endpoint = "http://info.deepcarbon.net/endpoint";
     	String queryStr =
-    			"PREFIX dco: <" + ServerInfo.getInstance().getDcoOntoNamespace() + "> " +
+    			"PREFIX dco: <" + namespace + "> " +
     			"ASK { <" + type + "> <http://www.w3.org/2000/01/rdf-schema#subClassOf> dco:Object }";
     	String encodedQuery = new String();
 		try {

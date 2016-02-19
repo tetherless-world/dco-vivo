@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -57,12 +59,14 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 	@Override
 	protected ResponseValues processRequest(VitroRequest vreq) {
 		// Check if the publication with the given DOI is already in the system.
+        ServletContext ctx = vreq.getSession().getServletContext() ;
+
 		String doi = vreq.getParameter("doi");
 		String checkPublicationExistenQuery = 
 				"SELECT * WHERE {" + 
 				"{ ?pub <http://purl.org/ontology/bibo/doi> \"" + doi.toLowerCase() + "\" . } UNION { ?pub <http://purl.org/ontology/bibo/doi> \"" + doi.toUpperCase() + "\" . } " + 
 				"?pub <http://www.w3.org/2000/01/rdf-schema#label> ?label . }";
-		JSONArray checkPublicationExistenQueryResults = SparqlQueryUtils.vivoSparqlSelect(checkPublicationExistenQuery);
+		JSONArray checkPublicationExistenQueryResults = SparqlQueryUtils.vivoSparqlSelect(checkPublicationExistenQuery, ctx);
 		if (checkPublicationExistenQueryResults.length() >0 ) {
 			HashMap<String,Object> map = new HashMap<String,Object>();
 			map.put("errorMessage", "There is already a publication entry with this DOI in the system.");
@@ -95,10 +99,10 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 				Map<String, Object> metadataMap = parsePublicationMetadataJSONObject(metadata);
 				ArrayList<HashMap<String, Object>> authors = (ArrayList<HashMap<String, Object>>) metadataMap.get("authors");
 				for (HashMap<String, Object> author : authors) {
-					matchAuthor(author);
+					matchAuthor(author, ctx);
 				}
 				HashMap<String, Object> venue = (HashMap<String, Object>) metadataMap.get("venue");
-				matchVenue(venue);
+				matchVenue(venue, ctx);
 
 				Map<String, Object> templateData = new HashMap<String, Object>();
 	//			templateData.put("editConfiguration", editConfig);
@@ -256,7 +260,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		return years;
 	}
 	
-	private void matchAuthor(Map<String, Object> author) {
+	private void matchAuthor(Map<String, Object> author, ServletContext ctx) {
 		String familyName = (String) author.get("family");
 		String processedFamilyName = familyName.replaceAll("\\.", "").toLowerCase();
 		String givenName = (String) author.get("given");
@@ -268,7 +272,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			"SELECT DISTINCT ?uri WHERE " +
 			"{ ?uri a foaf:Person . { ?uri rdfs:label \"" + label + "\" . } UNION { ?uri rdfs:label \"" + label + "\"@en-US . } UNION { ?uri rdfs:label \"" + label + "\"^^xsd:string . } } ";
 		//System.out.println("Exact author name matching SPARQL query: " + exactNameMatchingQueryStr);
-		JSONArray exactNameMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(exactNameMatchingQueryStr);
+		JSONArray exactNameMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(exactNameMatchingQueryStr, ctx);
 		if (exactNameMatchingQueryResults.length() > 0) {
 			try {
 				JSONObject result = (JSONObject) exactNameMatchingQueryResults.get(0);
@@ -287,7 +291,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			"FILTER(contains(lcase(?fn), \"" + processedFamilyName + "\") || contains(\"" + processedFamilyName + "\", lcase(?fn))) . } ";
 //			"FILTER(contains(lcase(?gn), \"" + processedGivenName + "\") || contains(\"" + processedGivenName + "\", lcase(?gn))) . } ";
 		//System.out.println("Fuzzy author name matching SPARQL query: " + fuzzyNameMatchingQueryStr);
-		JSONArray fuzzyNameMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(fuzzyNameMatchingQueryStr);
+		JSONArray fuzzyNameMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(fuzzyNameMatchingQueryStr, ctx);
 		if (fuzzyNameMatchingQueryResults.length() > 0) {
 			try {
 				for (int i = 0; i < fuzzyNameMatchingQueryResults.length(); i++) {
@@ -310,7 +314,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		else author.put("matching", null);
 	}
 	
-	private void matchVenue(Map<String, Object> venue) {
+	private void matchVenue(Map<String, Object> venue, ServletContext ctx) {
 		String label = (String) venue.get("label");
 		String processedLabel = label.replaceAll("[^A-Za-z0-9\\s]", "").toLowerCase();
 		String [] processedLabelArray = processedLabel.split("\\s+");
@@ -320,7 +324,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			"SELECT DISTINCT ?uri WHERE " +
 			"{ ?uri a vivo:InformationResource . { ?uri rdfs:label \"" + label + "\" . } UNION { ?uri rdfs:label \"" + label + "\"@en-US . } UNION { ?uri rdfs:label \"" + label + "\"^^xsd:string . } } ";
 		//System.out.println("Exact venue label matching SPARQL query: " + exactLabelMatchingQueryStr);
-		JSONArray exactLabelMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(exactLabelMatchingQueryStr);
+		JSONArray exactLabelMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(exactLabelMatchingQueryStr, ctx);
 		if (exactLabelMatchingQueryResults.length() > 0) {
 			try {
 				JSONObject result = (JSONObject) exactLabelMatchingQueryResults.get(0);
@@ -341,7 +345,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		}
 		fuzzyLabelMatchingQueryStr += "}";
 		//System.out.println("Fuzzy venue label matching SPARQL query: " + fuzzyLabelMatchingQueryStr);
-		JSONArray fuzzyNameMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(fuzzyLabelMatchingQueryStr);
+		JSONArray fuzzyNameMatchingQueryResults = SparqlQueryUtils.vivoSparqlSelect(fuzzyLabelMatchingQueryStr, ctx);
 		if (fuzzyNameMatchingQueryResults.length() > 0) {
 			try {
 				for (int i = 0; i < fuzzyNameMatchingQueryResults.length(); i++) {

@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -90,7 +91,6 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 	private final VitroRequest vreq;
 	private final EditConfigurationVTwo configuration;
 	private FileUploadException fileUploadException;
-	private String ckanURL = ServerInfo.getInstance().getCkanURL();
 	
 	/**
 	 * Parse the multipart request. Store the info about the request parameters
@@ -99,6 +99,10 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 	public DatasetDistributionFileUploadRequest(HttpServletRequest request,
 			int maxFileSize) throws IOException {
 		super(request);		
+
+        ServletContext ctx = request.getSession().getServletContext() ;
+        String ckanURL = ServerInfo.getInstance().getCkanURL(ctx);
+
 		Map<String, List<String>> parameters = new HashMap<String, List<String>>();
 		Map<String, List<FileItem>> files = new HashMap<String, List<FileItem>>();
 		CKANAPI myCkanApi = new CKANAPI();
@@ -140,7 +144,7 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 			List<FileItem> uploadedFiles = this.files.get("file");
 			for(int i = 0; i<uploadedFiles.size(); i++){
 				fileNames.add(uploadedFiles.get(i).getName());
-				uploadAddr = myCkanApi.upload_rawdata(uploadedFiles.get(i).getInputStream(),uploadedFiles.get(i).getName());
+				uploadAddr = myCkanApi.upload_rawdata(uploadedFiles.get(i).getInputStream(),uploadedFiles.get(i).getName(), ctx);
 				uploadFileAddresses.add(uploadAddr);
 			}
 			
@@ -167,13 +171,13 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 			if(webFileName.length()>1 ){
 				System.out.println("For the raw files...");
 				for(int i = 0; i<fileNames.size(); i++){
-					myCkanApi.associateRepoWithDataset(accessAddr, uploadFileAddresses.get(i), fileNames.get(i));		
+					myCkanApi.associateRepoWithDataset(accessAddr, uploadFileAddresses.get(i), fileNames.get(i), ctx);		
 				}
 			}
 			else{
 				System.out.println("For the link files...");
 				System.out.println("!!!\r\n"+uploadAddr+" at "+uploadAddr.lastIndexOf('/'));
-				myCkanApi.associateRepoWithDataset(accessAddr, uploadAddr, uploadAddr.substring(uploadAddr.lastIndexOf('/')+1));
+				myCkanApi.associateRepoWithDataset(accessAddr, uploadAddr, uploadAddr.substring(uploadAddr.lastIndexOf('/')+1), ctx);
 			}
 		}
 		
@@ -189,7 +193,6 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 			System.out.println("Try with instance");
 			ServerInfo.getInstance();
 			System.out.println("Try with attribute");
-			ServerInfo.getInstance().getCkanURL();
 			Client c = new Client( new Connection(ckanURL, apiKey,true),apiKey);
 	        
 	        Dataset ds = new Dataset();
@@ -215,60 +218,6 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 	   		return repoURL;
 	   	}
 	
-	public String sparqlForAccessURL(String subjectUrl){
-		
-		String endpoint = "http://info.deepcarbon.net/vivo/admin/sparqlquery?query=";
-		String individualName = subjectUrl;
-		String queryInString = 
-		        "PREFIX dco: <"+ServerInfo.getInstance().getDcoOntoNamespace()+">  "+
-		        "select ?accessAddr "+
-		        "where { "+
-		         "<"+individualName+"> dco:accessURL ?accessAddr .  "+
-		        "} \n ";
-		String encodedQuery = "";
-		try {
-			encodedQuery = URIUtil.encodeQuery(queryInString);
-		} catch (URIException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String queryParams = "&resultFormat=vitro%3Acsv&rdfResultFormat=RDF%2FXML";
-		String url = endpoint+encodedQuery+queryParams;
-		
-		System.out.println("Request URL is\r\n"+url);
-		
-		HttpClient client = new DefaultHttpClient();
-		HttpGet request = new HttpGet(url);
-		
-		String accessURL = "";
-		
-		// add request header
-		request.addHeader("User-Agent", "Mozilla/5.0");
-		HttpResponse response;
-		try {
-			response = client.execute(request);
-			
-			BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-		 
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				result.append(line);
-			}
-			System.out.println("query result is:\r\n"+result.toString());
-			accessURL = result.toString().split("accessAddr")[1];
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return accessURL;
-	}
-
 	public String getDatasetName(){
 		return this.datasetName;
 	}

@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import javax.servlet.ServletContext;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +24,8 @@ import edu.rpi.twc.dcods.vivo.SparqlQueryUtils;
 public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private String absoluteMachineURL = ServerInfo.getInstance().getAbsoluteMachineURL();
-	private String rootUserPassword = ServerInfo.getInstance().getRootPassword();
-	private String rootUserEmail = ServerInfo.getInstance().getRootName();
-	private String returnURL = absoluteMachineURL;
-	
+	private String returnURL ;
+
 	@Override
 	protected Actions requiredActions(VitroRequest vreq) {
 		return SimplePermission.DO_FRONT_END_EDITING.ACTIONS;
@@ -35,13 +33,17 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 	
 	@Override
 	public ResponseValues processRequest(VitroRequest vreq) {
+
+		ServletContext ctx = vreq.getSession().getServletContext();
+		returnURL = ServerInfo.getInstance().getBaseURL( ctx );
+
 		// Check if the publication with the given DOI is already in the system.
 		String doi = vreq.getParameter("doi");
 		String checkPublicationExistenQuery = 
 			"SELECT * WHERE {" + 
 			"{ ?pub <http://purl.org/ontology/bibo/doi> \"" + doi.toLowerCase() + "\" . } UNION { ?pub <http://purl.org/ontology/bibo/doi> \"" + doi.toUpperCase() + "\" . } " + 
 			"?pub <http://www.w3.org/2000/01/rdf-schema#label> ?label . }";
-		JSONArray checkPublicationExistenQueryResults = SparqlQueryUtils.vivoSparqlSelect(checkPublicationExistenQuery);
+		JSONArray checkPublicationExistenQueryResults = SparqlQueryUtils.vivoSparqlSelect(checkPublicationExistenQuery, ctx);
 		if (checkPublicationExistenQueryResults.length() >0 ) {
 			HashMap<String,Object> map = new HashMap<String,Object>();
 			map.put("errorMessage", "There is already a publication entry with this DOI in the system.");
@@ -75,12 +77,13 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 				//System.out.println("Parameters: " + parameters);
 				
 				// Generate the n3 to be inserted.
-				String newPublicationN3 = generateN3(parameters);
-	//			System.out.println("New publication n3:\n" + newPublicationN3);
+				String newPublicationN3 = generateN3(parameters, ctx);
+    // FIXME
+				System.out.println("New publication n3:\n" + newPublicationN3);
 				
 				// Insert the N3 using VIVO API
 				int vivoInsertRequestStatusCode = 0;
-				vivoInsertRequestStatusCode = SparqlQueryUtils.vivoSparqlInsert(rootUserPassword, rootUserEmail, newPublicationN3);
+				vivoInsertRequestStatusCode = SparqlQueryUtils.vivoSparqlInsert(newPublicationN3, ctx);
 				//System.out.println("VIVO insert request response code:" + vivoInsertRequestStatusCode);		
 				//System.out.println("Insert done!");
 				
@@ -93,7 +96,7 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 		}
 	}
 	
-	private String generateN3(Map<String, String> parameters) {
+	private String generateN3(Map<String, String> parameters, ServletContext ctx) {
 		String triples = "";
 		for (Map.Entry<String, String> parameter : parameters.entrySet()) {
 			String key = parameter.getKey();
@@ -123,9 +126,9 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 							  "?newVenue rdfs:label \"" + value + "\" . \n" +
 							  "?newPub vivo:hasPublicationVenue ?newVenue . \n" +
 							  "?newVenue vivo:publicationVenueFor ?newPub . \n";
-						String venueURI = generateIndividualURI();
+						String venueURI = generateIndividualURI(ctx);
 						DCOId dcoId = new DCOId();
-						dcoId.operate(venueURI, "URI", "create");
+						dcoId.generateDCOId(venueURI, ctx);
 						String pubDCOId = dcoId.getDCOId();
 						String pubDCOIdLabel = pubDCOId.substring(25);
 						triples += "?newVenue dco:hasDcoId <" + pubDCOId + "> . \n" +
@@ -161,11 +164,11 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 						  "?newName a vcard:Name . \n" +
 						  "?newName vcard:familyName \"" + familyName + "\" . \n" +
 						  "?newName vcard:givenName \"" + givenName + "\" . \n";
-					String nameURI = generateIndividualURI();
-					String vCardURI = generateIndividualURI();
-					String authorURI = generateIndividualURI();
+					String nameURI = generateIndividualURI(ctx);
+					String vCardURI = generateIndividualURI(ctx);
+					String authorURI = generateIndividualURI(ctx);
 					DCOId dcoId = new DCOId();
-					dcoId.operate(authorURI, "URI", "create");
+					dcoId.generateDCOId(authorURI, ctx);
 					String pubDCOId = dcoId.getDCOId();
 					String pubDCOIdLabel = pubDCOId.substring(25);
 					triples += "?newAuthor dco:hasDcoId <" + pubDCOId + "> . \n" +
@@ -176,13 +179,13 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 					triples = triples.replaceAll("\\?\\bnewVCard\\b", "<" + vCardURI + ">");
 					triples = triples.replaceAll("\\?\\bnewAuthor\\b", "<" + authorURI + ">");
 				}
-				String authorshipURI = generateIndividualURI();
+				String authorshipURI = generateIndividualURI(ctx);
 				triples = triples.replaceAll("\\?\\bnewAuthorship\\b", "<" + authorshipURI + ">");
 			}
 		}
-		String publicationURI = generateIndividualURI();
+		String publicationURI = generateIndividualURI(ctx);
 		DCOId dcoId = new DCOId();
-		dcoId.operate(publicationURI, "URI", "create");
+		dcoId.generateDCOId(publicationURI, ctx);
 		String pubDCOId = dcoId.getDCOId();
 		String pubDCOIdLabel = pubDCOId.substring(25);
 		triples += "?newPub dco:hasDcoId <" + pubDCOId + "> . \n" +
@@ -208,13 +211,14 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 		return n3;
 	}
 
-	private String generateIndividualURI() {
+	private String generateIndividualURI(ServletContext ctx) {
 		String uri = new String();
-		String queryStr = "ASK { <" + uri + "> ?p ?o }";
-		String prefix = ServerInfo.getInstance().getDcoNamespace();
+        String queryStr ;
+		String prefix = ServerInfo.getInstance().getDefaultNamespace(ctx);
 		do {
-		    uri = prefix + "/individual/" + UUID.randomUUID().toString();	    
-		} while(SparqlQueryUtils.vivoSparqlAsk(queryStr));
+		    uri = prefix + UUID.randomUUID().toString();
+            queryStr = "ASK { <" + uri + "> ?p ?o }";
+		} while(SparqlQueryUtils.vivoSparqlAsk(queryStr, ctx));
 	    return uri;
 	}
 	

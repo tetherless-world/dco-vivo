@@ -10,6 +10,7 @@ import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.servlet.ServletContext;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +19,6 @@ import org.xml.sax.InputSource;
 public class DCOId {
 	
 	private String dcoId;
-	private String targetURL = ServerInfo.getInstance().getHandleURL();
 	public final String createCommand = "create";
 	public final String updateCommand = "update";
 	public final String modifyUrlCommand = "modifyurl";
@@ -28,13 +28,19 @@ public class DCOId {
 	/** generate dco id with the url as the target 
 	 *  @param url the target url of dco id
 	 * */
-	public void generateDCOId(String url) {
-		this.operate(url, "URL", this.createCommand);
+	public void generateDCOId( String url, ServletContext ctx )
+	{
+		this.operate( url, "URL", this.createCommand, ctx );
 	}
 	
 	/** generate dco id with empty target */
-	public void generateDCOId(){
-		this.operate("", "URL", this.createCommand);
+	public void generateDCOId( ServletContext ctx ){
+		this.operate("", "URL", this.createCommand, ctx );
+	}
+
+	public void modifyDCOId( String URL, ServletContext ctx )
+	{
+		operate( URL, "URL", this.modifyUrlCommand, ctx ) ;
 	}
 	
 	/** return dcoId */
@@ -69,12 +75,18 @@ public class DCOId {
 	 * @param type type of target
 	 * @param command command indicates to create, modify or update
 	 */
-	public void operate(String urlParameters, String type, String command){
+	private void operate( String urlParameters, String type, String command, ServletContext ctx )
+	{
 
-		System.out.println("The current id is "+this.dcoId);
+        System.out.println("DCOId operate " + command);
+        System.out.println("  parameters = " + urlParameters);
+        System.out.println("  type = " + type);
+		System.out.println("  the current id is "+this.dcoId);
 		urlParameters = "<handle><id>" + this.cleanDCOID(this.dcoId)+ "</id><type>" + type + "</type><value>" + urlParameters + "</value></handle>";
-		System.out.println("Request string: " + urlParameters);
-		String requestUrl = this.targetURL + command;
+		System.out.println("  request string: " + urlParameters);
+		String handleURL = ServerInfo.getInstance().getHandleURL( ctx ) ;
+		String requestUrl = handleURL + command;
+		System.out.println("  request url: " + requestUrl);
 		URL url;
 	    HttpURLConnection connection = null;  
 	    try {
@@ -120,6 +132,7 @@ public class DCOId {
 	    		Document document = builder.parse(new InputSource(new StringReader( xmlString ) ) );  
 	    		Element handleElement = (Element) document.getElementsByTagName("handle").item(0);
 	    		this.dcoId = handleElement.getElementsByTagName("id").item(0).getTextContent();          
+                System.out.println("  New dcoId " + this.dcoId);
 		    } catch (Exception e) {  
 	    		e.printStackTrace(); 
 	    		this.dcoId = null;
@@ -133,5 +146,4 @@ public class DCOId {
 	    	}
 	    }    
 	}
-
 }
