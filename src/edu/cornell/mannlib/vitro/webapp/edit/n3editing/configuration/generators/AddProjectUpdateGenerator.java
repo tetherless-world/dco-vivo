@@ -143,7 +143,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     private String getN3ForExistingInstrument() {
         return "@prefix dco: <" + dco + "> . " +
-                "?projectUpdateUri dco:refersToInstrument ?instrumentUri . ";
+                "?projectUpdateUri dco:updateRefersTo ?instrumentUri . ";
     }
 
     private String getN3ForNewModificationNote() {
