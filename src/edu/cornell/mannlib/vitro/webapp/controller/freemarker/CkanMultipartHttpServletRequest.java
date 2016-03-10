@@ -206,7 +206,7 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 	
 	public String sparqlForAccessURL(String subjectUrl, ServletContext ctx){
 		
-		String endpoint = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=";
+        String endpoint = ServerInfo.getInstance().getSparqlQueryAPI( ctx );
 		String individualName = subjectUrl;
 		String queryInString = 
 		        "PREFIX dco: <"+ServerInfo.getInstance().getDCOURI(ctx)+">  "+
@@ -222,7 +222,7 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 			e1.printStackTrace();
 		}
 		String queryParams = "&resultFormat=vitro%3Acsv&rdfResultFormat=RDF%2FXML";
-		String url = endpoint+encodedQuery+queryParams;
+		String url = endpoint+"?query="+encodedQuery+queryParams;
 		
 		System.out.println("Request URL is\r\n"+url);
 		
