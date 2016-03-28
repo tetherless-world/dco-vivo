@@ -38,10 +38,11 @@ public class SparqlQueryUtils {
         System.out.println("  query = " + queryStr);
         String encodedQuery = new String();
         try {
-            encodedQuery = URIUtil.encodeQuery(queryStr);
+            encodedQuery = URIUtil.encodeWithinQuery(queryStr);
         } catch (URIException e1) {
             e1.printStackTrace();
         }
+        System.out.println("  encodedQuery = " + encodedQuery);
         String outputFormat = "&output=json";
         String url = endpoint + "/sparql?query=" + encodedQuery + outputFormat;
         HttpClient client = new DefaultHttpClient();
@@ -79,7 +80,7 @@ public class SparqlQueryUtils {
         System.out.println("  ask query = " + queryStr);
         String encodedQuery = new String();
         try {
-            encodedQuery = URIUtil.encodeQuery(queryStr);
+            encodedQuery = URIUtil.encodeWithinQuery(queryStr);
         } catch (URIException e1) {
             e1.printStackTrace();
             return false;
@@ -132,14 +133,22 @@ public class SparqlQueryUtils {
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
  
-        String payload = "password=" + password + "&email=" + email + "&update=" + data;
+        try {
+            data = URIUtil.encodeWithinQuery(data);
+        } catch (URIException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String payload = "password=" + password + "&email=" + email + "&update=";
         try {
             payload = URIUtil.encodeQuery(payload);
         } catch (URIException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        String urlParameters = payload;
+
+        String urlParameters = payload+data;
  
         // Send post request
         con.setDoOutput(true);

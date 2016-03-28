@@ -74,6 +74,7 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 	protected ResponseValues processRequest(VitroRequest vreq) {			
         ServletContext ctx = vreq.getSession().getServletContext() ;
         String ckanURL = ServerInfo.getInstance().getCkanURL(ctx);
+        String apiKey = ServerInfo.getInstance().getCkanApiKey(ctx);
         String dcoOntoNamespace = ServerInfo.getInstance().getDCOURI(ctx);
         String predicateAccessURL = dcoOntoNamespace+"accessURL";
         String predicateDcoID = dcoOntoNamespace+"dcoId";
@@ -147,7 +148,6 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 		    			//System.out.println("The name for the object is "+(submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0]));
 	    				String dataRepoName = submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0].split("\\]")[0];
 	    				
-	    				String apiKey = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
 	    				//This is a distribution instance, create a corresponded ckan instance with the name of the distribution
 	    				System.out.println("Just check ckanURL is:\r\n"+ckanURL);
 	    				System.out.println("Try with instance");

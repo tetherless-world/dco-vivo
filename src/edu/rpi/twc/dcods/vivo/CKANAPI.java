@@ -75,7 +75,6 @@ public class CKANAPI {
 	private String rawDataString;
 	private String fileName="tempfile";
 	private String ckanDataRepoName;
-	private static String apiKey = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
 
 	public CKANAPI(){
 		
@@ -138,6 +137,8 @@ public class CKANAPI {
 				String dataFormat = datasetDownloadURL.split("\\.")[dotTokenArray-1];
 				
 				String udcoAPIAddr = ServerInfo.getInstance().getCkanURL(ctx)+"/api/rest/dataset/";
+                String apiKey = ServerInfo.getInstance().getCkanApiKey(ctx);
+
 				HttpClient httpClient = new DefaultHttpClient();
 				
 				// Get back the dataset , if there is any, coutn the number, grab thoose old ones, add new resource accordingly, genreate teh new message 
@@ -191,6 +192,7 @@ public class CKANAPI {
 				
 				try {
 					httppost.setHeader("Authorization", apiKey);
+                    httppost.setHeader("X-CKAN-API-KEY",api_key);
 					httppost.setEntity(new StringEntity(allJsonParams.toString(),"UTF-8"));
 					HttpResponse response;
 					
@@ -309,7 +311,7 @@ public class CKANAPI {
 	public String upload_rawdata(InputStream fileStream,String orgFileName, ServletContext ctx) throws IOException{
 		
 		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/upload_handle";
-		String api_key = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
+		String api_key = ServerInfo.getInstance().getCkanApiKey(ctx);
 		//Generate a date timestamp
 		long currentTime = System.currentTimeMillis();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hhmmss",Locale.US);
@@ -379,7 +381,7 @@ public class CKANAPI {
 	public String upload_rawdata(String dataPath, ServletContext ctx) throws IOException{
        		System.out.println("data path:\r\n"+dataPath); 
 		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/upload_handle";
-		String api_key = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
+		String api_key = ServerInfo.getInstance().getCkanURL(ctx);
 		//Generate a date timestamp
 		long currentTime = System.currentTimeMillis();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hhmmss",Locale.US);
@@ -442,7 +444,7 @@ public class CKANAPI {
 	public String upload_rawdata(String rawDataString,String fileName, ServletContext ctx) throws IOException{
 		
 		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/upload_handle";
-		String api_key = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
+		String api_key = ServerInfo.getInstance().getCkanURL(ctx);
 		//Generate a date timestamp
 		long currentTime = System.currentTimeMillis();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hhmmss",Locale.US);

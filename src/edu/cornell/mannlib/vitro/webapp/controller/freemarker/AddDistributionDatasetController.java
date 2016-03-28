@@ -107,7 +107,7 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 
 		ServletContext ctx = req.getSession().getServletContext();
 		String dcoNamespace = ServerInfo.getInstance().getDefaultNamespace( ctx ) ;
-		String baseURL = ServerInfo.getInstance().getBaseURL( ctx );
+		String baseNamespace = ServerInfo.getInstance().getBaseNamespace( ctx );
 
     	boolean isMultipart = ServletFileUpload.isMultipartContent(req);
     	CkanMultipartHttpServletRequest depositRequest = null;
@@ -192,7 +192,7 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 			e.printStackTrace();
 		}
 		
-		configuration.setUrlToReturnTo(configuration.getUrlToReturnTo().replace(dcoNamespace, baseURL));
+		configuration.setUrlToReturnTo(configuration.getUrlToReturnTo().replace(dcoNamespace, baseNamespace));
 		return configuration.getUrlToReturnTo();
 		
     }
@@ -206,7 +206,6 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 
 		try {
 			entityToReturnTo = this.processPost(vreq);	
-			//System.out.println("The return url is "+entityToReturnTo);
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

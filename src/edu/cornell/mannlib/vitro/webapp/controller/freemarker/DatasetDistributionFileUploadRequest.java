@@ -102,6 +102,7 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 
         ServletContext ctx = request.getSession().getServletContext() ;
         String ckanURL = ServerInfo.getInstance().getCkanURL(ctx);
+        String ckanApiKey = ServerInfo.getInstance().getCkanApiKey(ctx);
 
 		Map<String, List<String>> parameters = new HashMap<String, List<String>>();
 		Map<String, List<FileItem>> files = new HashMap<String, List<FileItem>>();
@@ -163,7 +164,7 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 		Date date = new Date();
 		this.distributionName = dateFormat.format(date);
 		   
-		accessAddr = createCkanRepo(distributionName,ckanURL);
+		accessAddr = createCkanRepo(distributionName,ckanURL,ckanApiKey);
 
 		//Only tries to associate the downloadURL with accessURL if it is to the CKAN repo
 		//Otherwise, do nothing
@@ -183,11 +184,10 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 		
 	}
 	
-	public String createCkanRepo(String repoName,String ckanURL){
+	public String createCkanRepo(String repoName,String ckanURL, String apiKey){
 	   	//System.out.println("The name for the object is "+(submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0]));
 			String dataRepoName = repoName;
 			
-			String apiKey = "89c2d25c-4ea3-44b4-9fc5-a1f7367fee92";
 			//This is a distribution instance, create a corresponded ckan instance with the name of the distribution
 			System.out.println("Just check ckanURL is:\r\n"+ckanURL);
 			System.out.println("Try with instance");
@@ -206,7 +206,6 @@ class DatasetDistributionFileUploadRequest extends FileUploadServletRequest {
 	        
 	        String repoURL = "";
 	        try {
-	        	
 				Dataset result = c.createDataset(ds);
 				System.out.println("Here is everything "+ckanURL+"/dataset/"+result.getName());
 				repoURL = ckanURL+"/dataset/"+result.getName();

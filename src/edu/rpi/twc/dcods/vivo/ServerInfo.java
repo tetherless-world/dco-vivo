@@ -9,8 +9,10 @@ public class ServerInfo {
 	private String baseURL  = "DCO.baseURL";
 	private String handleURL = "DCO.handleURL";
 	private String ckanURL = "DCO.ckanURL";
+	private String ckanApiKey = "DCO.ckanApiKey";
 	private String dcoURI = "DCO.URI";
 	private String defaultNamespace = "Vitro.defaultNamespace";
+	private String baseNamespace = "DCO.baseNamespace";
 	private String rootName = "DCO.rootName";
 	private String rootPassword = "DCO.rootPassword";
 	private String endpoint = "DCO.endpoint";
@@ -57,6 +59,10 @@ public class ServerInfo {
 		return getProperty( this.ckanURL, ctx ) ;
 	}
 	
+	public String getCkanApiKey( ServletContext ctx ){
+		return getProperty( this.ckanApiKey, ctx ) ;
+	}
+	
 	public String getDCOURI( ServletContext ctx )
 	{
 		return getProperty( this.dcoURI, ctx ) ;
@@ -65,6 +71,11 @@ public class ServerInfo {
 	public String getDefaultNamespace( ServletContext ctx )
 	{
 		return getProperty( this.defaultNamespace, ctx ) ;
+	}
+
+	public String getBaseNamespace( ServletContext ctx )
+	{
+		return getProperty( this.baseNamespace, ctx ) ;
 	}
 
 	public String getBaseURL( ServletContext ctx )

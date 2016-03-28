@@ -50,6 +50,7 @@ public class DCOAddDatasetGenerator extends BaseEditConfigurationGenerator imple
 		
        ServletContext ctx = vreq.getSession().getServletContext();
        String namespace = ServerInfo.getInstance().getDefaultNamespace(ctx);
+       String baseNamespace = ServerInfo.getInstance().getBaseNamespace(ctx);
        String baseURL = ServerInfo.getInstance().getBaseURL(ctx);
 
 	   EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
@@ -61,7 +62,7 @@ public class DCOAddDatasetGenerator extends BaseEditConfigurationGenerator imple
        editConfiguration.setVarNameForPredicate("predicate");
        editConfiguration.setSubjectUri(EditConfigurationUtils.getSubjectUri(vreq));
        //editConfiguration.setFields(Map<String, FieldVTwo>.Entry);
-       editConfiguration.setUrlToReturnTo(EditConfigurationUtils.getSubjectUri(vreq).replace(namespace, baseURL));
+       editConfiguration.setUrlToReturnTo(EditConfigurationUtils.getSubjectUri(vreq).replace(namespace, baseNamespace));
        
        //System.out.println("Generator configuraiton is here\r\n"+editConfiguration.toString());
        //System.out.println("Subject URL is"+EditConfigurationUtils.getSubjectUri(vreq));

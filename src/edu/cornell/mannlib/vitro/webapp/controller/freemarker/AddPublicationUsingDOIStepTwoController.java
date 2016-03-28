@@ -36,6 +36,8 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 
 		ServletContext ctx = vreq.getSession().getServletContext();
 		returnURL = ServerInfo.getInstance().getBaseURL( ctx );
+        String defaultNamespace = ServerInfo.getInstance().getDefaultNamespace( ctx ) ;
+        String baseNamespace = ServerInfo.getInstance().getBaseNamespace( ctx ) ;
 
 		// Check if the publication with the given DOI is already in the system.
 		String doi = vreq.getParameter("doi");
@@ -87,7 +89,7 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 				//System.out.println("VIVO insert request response code:" + vivoInsertRequestStatusCode);		
 				//System.out.println("Insert done!");
 				
-				return new RedirectResponseValues(returnURL);
+				return new RedirectResponseValues(returnURL.replace(defaultNamespace,baseNamespace));
 			} catch (Throwable th) {
 				HashMap<String,Object> map = new HashMap<String,Object>();
 		       	map.put("errorMessage", th.toString());
