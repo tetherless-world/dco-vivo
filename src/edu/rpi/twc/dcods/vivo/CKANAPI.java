@@ -192,7 +192,7 @@ public class CKANAPI {
 				
 				try {
 					httppost.setHeader("Authorization", apiKey);
-                    httppost.setHeader("X-CKAN-API-KEY",api_key);
+                    httppost.setHeader("X-CKAN-API-KEY",apiKey);
 					httppost.setEntity(new StringEntity(allJsonParams.toString(),"UTF-8"));
 					HttpResponse response;
 					
