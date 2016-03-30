@@ -50,7 +50,7 @@
             </#if>
 	    <#if dcoId??>
             	<h2 id="dcoId">
-            	    DCO ID <a href="http://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
+            	    DCO ID <a href="https://dx.deepcarbon.net/${dcoId!}" target="_blank" title="DCO-ID">${dcoId!}</a>
             	</h2>
             </#if>
         </header>
