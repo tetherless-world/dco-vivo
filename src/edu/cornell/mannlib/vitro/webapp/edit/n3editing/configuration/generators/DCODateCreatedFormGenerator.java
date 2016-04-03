@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.vocabulary.XSD;
@@ -28,8 +29,6 @@ public class DCODateCreatedFormGenerator extends BaseEditConfigurationGenerator
         implements EditConfigurationGenerator {
 	
 	final static String vivoCore = "http://vivoweb.org/ontology/core#";
-	final static String dco = ServerInfo.getInstance().getDcoOntoNamespace();
-	final static String toDateCreated = dco + "dateCreated";
 	final static String valueType = vivoCore + "DateTimeValue";
 	final static String dateTimeValue = vivoCore + "dateTime";
 	final static String dateTimePrecision = vivoCore + "dateTimePrecision";
@@ -37,6 +36,8 @@ public class DCODateCreatedFormGenerator extends BaseEditConfigurationGenerator
 	@Override
 	public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
 			HttpSession session) {
+        ServletContext ctx = vreq.getSession().getServletContext();
+
         EditConfigurationVTwo conf = new EditConfigurationVTwo();
         
         initBasics(conf, vreq);
@@ -49,15 +50,15 @@ public class DCODateCreatedFormGenerator extends BaseEditConfigurationGenerator
         conf.setVarNameForPredicate("toDateCreated");
         conf.setVarNameForObject("valueNode");
         
-        conf.setN3Optional(Arrays.asList(n3ForValue));
+        conf.setN3Optional(Arrays.asList(n3ForValue(ctx)));
         
         conf.addNewResource("valueNode", DEFAULT_NS_FOR_NEW_RESOURCE);
         
         conf.addSparqlForExistingLiteral(
-        		"dateTimeField-value", existingDateTimeValueQuery);
+        		"dateTimeField-value", existingDateTimeValueQuery(ctx));
         conf.addSparqlForExistingUris(
-        		"dateTimeField-precision", existingPrecisionQuery);
-        conf.addSparqlForExistingUris("valueNode", existingNodeQuery);
+        		"dateTimeField-precision", existingPrecisionQuery(ctx));
+        conf.addSparqlForExistingUris("valueNode", existingNodeQuery(ctx));
         
         FieldVTwo dateTimeField = new FieldVTwo().setName("dateTimeField");
         		dateTimeField.setEditElement(new DateTimeWithPrecisionVTwo(dateTimeField, 
@@ -73,28 +74,40 @@ public class DCODateCreatedFormGenerator extends BaseEditConfigurationGenerator
         return conf;
 	}
 	
-	final static String n3ForValue = 
-        "?subject <" + toDateCreated + "> ?valueNode . \n" +
+	String n3ForValue(ServletContext ctx) { 
+        String dco = ServerInfo.getInstance().getDCOURI(ctx);
+        String toDateCreated = dco + "dateCreated";
+        return "?subject <" + toDateCreated + "> ?valueNode . \n" +
         "?valueNode a <" + valueType + "> . \n" +
         "?valueNode  <" + dateTimeValue + "> ?dateTimeField-value . \n" +
         "?valueNode  <" + dateTimePrecision + "> ?dateTimeField-precision .";
+    }
 	
-	final static String existingDateTimeValueQuery = 
-        "SELECT ?existingDateTimeValue WHERE { \n" +
+	String existingDateTimeValueQuery(ServletContext ctx) {
+        String dco = ServerInfo.getInstance().getDCOURI(ctx);
+        String toDateCreated = dco + "dateCreated";
+        return "SELECT ?existingDateTimeValue WHERE { \n" +
         "?subject <" + toDateCreated + "> ?existingValueNode . \n" +
         "?existingValueNode a <" + valueType + "> . \n" +
         "?existingValueNode <" + dateTimeValue + "> ?existingDateTimeValue }";
+    }
 	
-	final static String existingPrecisionQuery = 
-        "SELECT ?existingPrecision WHERE { \n" +
+	String existingPrecisionQuery(ServletContext ctx) { 
+        String dco = ServerInfo.getInstance().getDCOURI(ctx);
+        String toDateCreated = dco + "dateCreated";
+        return "SELECT ?existingPrecision WHERE { \n" +
         "?subject <" + toDateCreated + "> ?existingValueNode . \n" +
         "?existingValueNode a <" + valueType + "> . \n" +
         "?existingValueNode <"  + dateTimePrecision + "> ?existingPrecision }";
+    }
 	
-	final static String existingNodeQuery =
-        "SELECT ?existingNode WHERE { \n" +
+	String existingNodeQuery(ServletContext ctx) {
+        String dco = ServerInfo.getInstance().getDCOURI(ctx);
+        String toDateCreated = dco + "dateCreated";
+        return "SELECT ?existingNode WHERE { \n" +
         "?subject <" + toDateCreated + "> ?existingNode . \n" +
         "?existingNode a <" + valueType + "> }";
+    }
 
 
 //Adding form specific data such as edit mode

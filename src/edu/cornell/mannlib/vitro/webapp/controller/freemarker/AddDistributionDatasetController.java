@@ -33,6 +33,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -77,10 +78,6 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
     
     private static final long serialVersionUID = 1L;
     private String redirectSubjectUrl = "";
-    private String dcoNamespace = ServerInfo.getInstance().getDcoNamespace();
-    private String dcoOntNamespace = ServerInfo.getInstance().getDcoOntoNamespace();
-    private String absoluteMachineURL = ServerInfo.getInstance().getAbsoluteMachineURL();
-    private String machineURL = ServerInfo.getInstance().getMachineURL();
     /** Limit file size to 6 megabytes. */
 	public static final int MAXIMUM_FILE_SIZE = 6 * 1024 * 1024;
     
@@ -107,7 +104,11 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 			System.out.println(paraName+":"+req.getParameter(paraName));
 		}		
 		*/
-    	
+
+		ServletContext ctx = req.getSession().getServletContext();
+		String dcoNamespace = ServerInfo.getInstance().getDefaultNamespace( ctx ) ;
+		String baseNamespace = ServerInfo.getInstance().getBaseNamespace( ctx );
+
     	boolean isMultipart = ServletFileUpload.isMultipartContent(req);
     	CkanMultipartHttpServletRequest depositRequest = null;
     	
@@ -140,6 +141,8 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 	    String key = "<"+configuration.getSubjectUri()+">";
 	    
 	    String actualDownloadURL = depositRequest.getUploadAddr();
+
+		String dcoOntNamespace = ServerInfo.getInstance().getDCOURI( ctx );
 	    
 		dcoidN3Optional = key + " <"+dcoOntNamespace+"hasFile> ?newIndividual .";
 		String instanceInverseStatement = "?newIndividual <"+dcoOntNamespace+"fileFor> "+key+" .";
@@ -147,7 +150,7 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 		//a dco:File, therefore we need to create and object, with data properties of dcoid,label and url.
 		DCOId dcoid = new DCOId();
 		// Go generate the new dco id
-		dcoid.generateDCOId();
+		dcoid.generateDCOId( ctx );
 		String newDcoId = dcoid.getDCOId();
 		String instanceStatement = " ?newIndividual a <"+dcoOntNamespace+"File> .";
 		String instanceDcoidStatment = " ?newIndividual <"+dcoOntNamespace+"dcoId> \""+newDcoId+"\" .";
@@ -173,7 +176,7 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 			String individualURI = submission.getNewIndividualURI().get("newIndividual");
 			//http://deepcarbon.net/vivo/individual/n6739
 			String registeredURI = dcoNamespace + "/individual?uri=" + individualURI;
-			dcoid.operate(registeredURI, "URL", "modifyurl");
+			dcoid.modifyDCOId(registeredURI, ctx);
 			//System.out.println("DCOID generated;Process RDFS:\r\n"+changes.toString());
 			N3EditUtils.preprocessModels(changes, configuration, vreq);		
 			//System.out.println("Apply changes to model\r\n");
@@ -189,7 +192,7 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
 			e.printStackTrace();
 		}
 		
-		configuration.setUrlToReturnTo(configuration.getUrlToReturnTo().replace(dcoNamespace, machineURL));
+		configuration.setUrlToReturnTo(configuration.getUrlToReturnTo().replace(dcoNamespace, baseNamespace));
 		return configuration.getUrlToReturnTo();
 		
     }
@@ -198,11 +201,11 @@ public class AddDistributionDatasetController extends FreemarkerHttpServlet{
     @Override
 	public ResponseValues processRequest(VitroRequest vreq) {
     	
-    	String entityToReturnTo = absoluteMachineURL;
-    	
+    	ServletContext ctx = vreq.getSession().getServletContext();
+		String entityToReturnTo = ServerInfo.getInstance().getBaseURL( ctx ) ;
+
 		try {
 			entityToReturnTo = this.processPost(vreq);	
-			//System.out.println("The return url is "+entityToReturnTo);
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

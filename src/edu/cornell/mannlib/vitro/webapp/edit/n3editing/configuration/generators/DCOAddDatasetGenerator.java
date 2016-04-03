@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -36,24 +37,22 @@ import edu.rpi.twc.dcods.vivo.ServerInfo;
 
 public class DCOAddDatasetGenerator extends BaseEditConfigurationGenerator implements EditConfigurationGenerator{
 
-	final static String vivoCore = "http://vivoweb.org/ontology/core#";
-	final static String dco = ServerInfo.getInstance().getDcoOntoNamespace();
-	final static String toDateCreated = dco + "dateCreated";
-	final static String valueType = vivoCore + "DateTimeValue";
-	final static String dateTimeValue = vivoCore + "dateTime";
-	final static String dateTimePrecision = vivoCore + "dateTimePrecision";
 	private String subjectUri = null;
 	private String predicateUri = null;
 	private String objectUri = null;
 	private static String objectVarName = "newIndividual";
 	private String template = "DCOAddDatasetGenerator.ftl";
 	private boolean isObjectPropForm = false;
-	private String machineURL = "http://localhost:8080";
 	
 	@Override
 	public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq,
 			HttpSession session) {
 		
+       ServletContext ctx = vreq.getSession().getServletContext();
+       String namespace = ServerInfo.getInstance().getDefaultNamespace(ctx);
+       String baseNamespace = ServerInfo.getInstance().getBaseNamespace(ctx);
+       String baseURL = ServerInfo.getInstance().getBaseURL(ctx);
+
 	   EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
          //this is just the name, not the full path of the template
        editConfiguration.setTemplate(template);  
@@ -63,7 +62,7 @@ public class DCOAddDatasetGenerator extends BaseEditConfigurationGenerator imple
        editConfiguration.setVarNameForPredicate("predicate");
        editConfiguration.setSubjectUri(EditConfigurationUtils.getSubjectUri(vreq));
        //editConfiguration.setFields(Map<String, FieldVTwo>.Entry);
-       editConfiguration.setUrlToReturnTo(EditConfigurationUtils.getSubjectUri(vreq).replace(ServerInfo.getInstance().getDcoNamespace(), machineURL));
+       editConfiguration.setUrlToReturnTo(EditConfigurationUtils.getSubjectUri(vreq).replace(namespace, baseNamespace));
        
        //System.out.println("Generator configuraiton is here\r\n"+editConfiguration.toString());
        //System.out.println("Subject URL is"+EditConfigurationUtils.getSubjectUri(vreq));

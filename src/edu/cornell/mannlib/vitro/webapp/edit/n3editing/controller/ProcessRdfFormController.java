@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -63,14 +64,6 @@ import edu.rpi.twc.dcods.vivo.ServerInfo;
 public class ProcessRdfFormController extends FreemarkerHttpServlet{
 	
     private Log log = LogFactory.getLog(ProcessRdfFormController.class);
-    private String absoluteMachineURL = ServerInfo.getInstance().getAbsoluteMachineURL();
-    private String namespace = ServerInfo.getInstance().getDcoNamespace();
-    private String ckanURL = ServerInfo.getInstance().getCkanURL();
-    private String dcoOntoNamespace = ServerInfo.getInstance().getDcoOntoNamespace();
-    private String predicateAccessURL = dcoOntoNamespace+"accessURL";
-    private String predicateDcoID = dcoOntoNamespace+"dcoId";
-    private String predicateHasDcoId = dcoOntoNamespace+"hasDcoId";
-    private String predicateOwnedBy = dcoOntoNamespace+"ownedBy";
     
     @Override
 	protected Actions requiredActions(VitroRequest vreq) {
@@ -79,6 +72,15 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 
 	@Override 
 	protected ResponseValues processRequest(VitroRequest vreq) {			
+        ServletContext ctx = vreq.getSession().getServletContext() ;
+        String ckanURL = ServerInfo.getInstance().getCkanURL(ctx);
+        String apiKey = ServerInfo.getInstance().getCkanApiKey(ctx);
+        String dcoOntoNamespace = ServerInfo.getInstance().getDCOURI(ctx);
+        String predicateAccessURL = dcoOntoNamespace+"accessURL";
+        String predicateDcoID = dcoOntoNamespace+"dcoId";
+        String predicateHasDcoId = dcoOntoNamespace+"hasDcoId";
+        String predicateOwnedBy = dcoOntoNamespace+"ownedBy";
+
 		//get the EditConfiguration 
 		EditConfigurationVTwo configuration = EditConfigurationUtils.getEditConfiguration(vreq);
         if(configuration == null)
@@ -146,13 +148,12 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 		    			//System.out.println("The name for the object is "+(submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0]));
 	    				String dataRepoName = submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0].split("\\]")[0];
 	    				
-	    				String apiKey = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
 	    				//This is a distribution instance, create a corresponded ckan instance with the name of the distribution
 	    				System.out.println("Just check ckanURL is:\r\n"+ckanURL);
 	    				System.out.println("Try with instance");
 	    				ServerInfo.getInstance();
 	    				System.out.println("Try with attribute");
-	    				ServerInfo.getInstance().getCkanURL();
+	    				ServerInfo.getInstance().getCkanURL(ctx);
 	    				Client c = new Client( new Connection(ckanURL, apiKey,true),apiKey);
 	    		        
 	    		        	Dataset ds = new Dataset();

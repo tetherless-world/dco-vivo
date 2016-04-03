@@ -1,64 +1,112 @@
 package edu.rpi.twc.dcods.vivo;
 
+import edu.cornell.mannlib.vitro.webapp.config.ConfigurationProperties;
+import javax.servlet.ServletContext;
+
 public class ServerInfo {
 
 	private static ServerInfo instance = null;
-	private String machineURL  = "http://info.deepcarbon.net/vivo";
-	private String absoluteMachineURL = "http://info.deepcarbon.net/vivo";
-	private String handleURL = "http://128.213.3.13:8080/dcohandleservice/services/handles/";
-	private String ckanURL = "http://data.deepcarbon.net/ckan";
-	private String dcoOntoNameSpace = "http://info.deepcarbon.net/schema#";
-	private String dcoNamespace = "http://info.deepcarbon.net";
-	private String rootName = "tw-dco@lists.rpi.edu";
-	private String rootPassword = "myts-eth-erd";
-	
-	private void ServerInfo(){
-		machineURL = "http://info.deepcarbon.net/vivo";
-		absoluteMachineURL = "http://info.deepcarbon.net/vivo";
-		handleURL = "http://128.213.3.13:8080/dcohandleservice/services/handles/";
-		ckanURL = "http://data.deepcarbon.net/ckan";
-		dcoOntoNameSpace = "http://info.deepcarbon.net/schema#";
-		dcoNamespace = "http://info.deepcarbon.net";
-		rootName = "tw-dco@lists.rpi.edu";
-		rootPassword = "myts-eth-erd";
-		
+	private String baseURL  = "DCO.baseURL";
+	private String handleURL = "DCO.handleURL";
+	private String ckanURL = "DCO.ckanURL";
+	private String ckanApiKey = "DCO.ckanApiKey";
+	private String dcoURI = "DCO.URI";
+	private String defaultNamespace = "Vitro.defaultNamespace";
+	private String baseNamespace = "DCO.baseNamespace";
+	private String rootName = "DCO.rootName";
+	private String rootPassword = "DCO.rootPassword";
+	private String endpoint = "DCO.endpoint";
+	private String sparqlEndpointAPI = "DCO.sparqlUpdateAPI";
+	private String sparqlQueryAPI = "DCO.sparqlQueryAPI";
+
+	private void ServerInfo()
+	{
 	}
 	
-	public static ServerInfo getInstance(){
-		if(instance==null){
-			return new ServerInfo();
-		}else{
-			return instance;
+	public static ServerInfo getInstance()
+	{
+		if( instance==null )
+		{
+			return new ServerInfo() ;
+		} else {
+			return instance ;
 		}
 	}
-	public String getRootName(){
-		return this.rootName;
+
+	private String getProperty( String property, ServletContext ctx )
+	{
+        if( ctx != null )
+            return ConfigurationProperties.getBean(ctx).getProperty(property);
+        return "" ;
+	}
+
+    /* vivo root email */
+	public String getRootName( ServletContext ctx )
+	{
+		return getProperty( this.rootName, ctx ) ;
 	}
 	
-	public String getRootPassword(){
-		return this.rootPassword;
+    /* vivo root password */
+	public String getRootPassword( ServletContext ctx )
+	{
+		return getProperty( this.rootPassword, ctx ) ;
 	}
 	
-	public String getMachineURL(){
-		return this.machineURL;
+    /* DCO Handle Service URL */
+	public String getHandleURL( ServletContext ctx )
+	{
+		return getProperty( this.handleURL, ctx ) ;
 	}
 	
-	public String getHandleURL(){
-		return this.handleURL;
+    /* DCO CKAN base URL. The API URL is appended to this */
+	public String getCkanURL( ServletContext ctx ){
+		return getProperty( this.ckanURL, ctx ) ;
 	}
 	
-	public String getCkanURL(){
-		return this.ckanURL;
+    /* DCO CKAN API Key used to create and modify packages */
+	public String getCkanApiKey( ServletContext ctx ){
+		return getProperty( this.ckanApiKey, ctx ) ;
 	}
 	
-	public String getDcoOntoNamespace(){
-		return this.dcoOntoNameSpace;
+    /* DCO schema URI */
+	public String getDCOURI( ServletContext ctx )
+	{
+		return getProperty( this.dcoURI, ctx ) ;
 	}
 	
-	public String getDcoNamespace(){
-		return this.dcoNamespace;
+    /* DCO instance namespace */
+	public String getDefaultNamespace( ServletContext ctx )
+	{
+		return getProperty( this.defaultNamespace, ctx ) ;
 	}
-	public String getAbsoluteMachineURL(){
-		return this.absoluteMachineURL;
+
+    /* in some cases want to replace the default namespace with this namespace when going to profile pages */
+	public String getBaseNamespace( ServletContext ctx )
+	{
+		return getProperty( this.baseNamespace, ctx ) ;
+	}
+
+    /* Base URL for VIVO */
+	public String getBaseURL( ServletContext ctx )
+	{
+		return getProperty( this.baseURL, ctx ) ;
+	}
+
+    /* Fuseki endpoint */
+	public String getEndpoint( ServletContext ctx )
+	{
+		return getProperty( this.endpoint, ctx ) ;
+	}
+
+    /* VIVO SPARQL update URL */
+	public String getSparqlUpdateAPI( ServletContext ctx )
+	{
+		return getProperty( this.sparqlEndpointAPI, ctx ) ;
+	}
+
+    /* VIVO SPARQL query URL */
+	public String getSparqlQueryAPI( ServletContext ctx )
+	{
+		return getProperty( this.sparqlQueryAPI, ctx ) ;
 	}
 }

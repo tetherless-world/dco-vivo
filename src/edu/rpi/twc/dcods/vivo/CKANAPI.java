@@ -24,6 +24,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.ServletContext;
 
 import org.apache.http.client.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -74,7 +75,6 @@ public class CKANAPI {
 	private String rawDataString;
 	private String fileName="tempfile";
 	private String ckanDataRepoName;
-	private static String apiKey = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
 
 	public CKANAPI(){
 		
@@ -95,8 +95,8 @@ public class CKANAPI {
 	// Check if there is already a repo exists;
 	// Return value reflects the existence of the repo
 	// If exists, then just return the url of the dataRepo;Otherwise, return an empty string
-	public String checkExistence(String dataRepoName){
-		Client client = new Client( new Connection(ServerInfo.getInstance().getCkanURL()), "");
+	public String checkExistence(String dataRepoName, ServletContext ctx){
+		Client client = new Client( new Connection(ServerInfo.getInstance().getCkanURL(ctx)), "");
 
         try {
             // Get the search results for the word gold
@@ -125,7 +125,10 @@ public class CKANAPI {
 	
 	//Associate a dataset with a data repo on ckan by name
 	//Return value is the accessURL for the corresponding data repo
-	public String associateRepoWithDataset(String dataRepoURL, String datasetDownloadURL,String rawDataName){
+	public String associateRepoWithDataset(String dataRepoURL,
+										   String datasetDownloadURL,
+										   String rawDataName,
+										   ServletContext ctx){
 		
 				
 				int arrayLen = dataRepoURL.split("/").length;
@@ -133,7 +136,9 @@ public class CKANAPI {
 				int dotTokenArray = datasetDownloadURL.split("\\.").length;
 				String dataFormat = datasetDownloadURL.split("\\.")[dotTokenArray-1];
 				
-				String udcoAPIAddr = ServerInfo.getInstance().getCkanURL()+"/api/rest/dataset/";
+				String udcoAPIAddr = ServerInfo.getInstance().getCkanURL(ctx)+"/api/rest/dataset/";
+                String apiKey = ServerInfo.getInstance().getCkanApiKey(ctx);
+
 				HttpClient httpClient = new DefaultHttpClient();
 				
 				// Get back the dataset , if there is any, coutn the number, grab thoose old ones, add new resource accordingly, genreate teh new message 
@@ -187,6 +192,7 @@ public class CKANAPI {
 				
 				try {
 					httppost.setHeader("Authorization", apiKey);
+                    httppost.setHeader("X-CKAN-API-KEY",apiKey);
 					httppost.setEntity(new StringEntity(allJsonParams.toString(),"UTF-8"));
 					HttpResponse response;
 					
@@ -223,9 +229,9 @@ public class CKANAPI {
 	
 	
 	// HTTP GET request
-	private void sendGet() throws Exception {
+	private void sendGet(ServletContext ctx) throws Exception {
  
-		String url = ServerInfo.getInstance().getCkanURL()+"/api/3/action/package_list";
+		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/api/3/action/package_list";
 		
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -263,7 +269,7 @@ public class CKANAPI {
 	}
 		
 	// HTTP POST request
-	private void sendPost() throws Exception {
+	private void sendPost(ServletContext ctx) throws Exception {
  
 		String url = "https://selfsolve.apple.com/wcResults.do";
 		URL obj = new URL(url);
@@ -302,10 +308,10 @@ public class CKANAPI {
 		System.out.println(response.toString());
  
 	}
-	public String upload_rawdata(InputStream fileStream,String orgFileName) throws IOException{
+	public String upload_rawdata(InputStream fileStream,String orgFileName, ServletContext ctx) throws IOException{
 		
-		String url = ServerInfo.getInstance().getCkanURL()+"/storage/upload_handle";
-		String api_key = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
+		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/upload_handle";
+		String api_key = ServerInfo.getInstance().getCkanApiKey(ctx);
 		//Generate a date timestamp
 		long currentTime = System.currentTimeMillis();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hhmmss",Locale.US);
@@ -363,7 +369,7 @@ public class CKANAPI {
         String entityContentAsString = new String(out.toByteArray());
         
         HttpResponse response = client.execute(post);
-        String storagePrefix = ServerInfo.getInstance().getCkanURL()+"/storage/f/";
+        String storagePrefix = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/f/";
 	    String resourcePath = storagePrefix+url_path;
 	    System.out.println("The path for the resource is"+resourcePath);
         System.out.println(response.toString());
@@ -372,10 +378,10 @@ public class CKANAPI {
         return resourcePath;
        		
 	}
-	public String upload_rawdata(String dataPath) throws IOException{
+	public String upload_rawdata(String dataPath, ServletContext ctx) throws IOException{
        		System.out.println("data path:\r\n"+dataPath); 
-		String url = ServerInfo.getInstance().getCkanURL()+"/storage/upload_handle";
-		String api_key = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
+		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/upload_handle";
+		String api_key = ServerInfo.getInstance().getCkanURL(ctx);
 		//Generate a date timestamp
 		long currentTime = System.currentTimeMillis();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hhmmss",Locale.US);
@@ -426,7 +432,7 @@ public class CKANAPI {
         System.out.println("Request being sent is \r\n"+entityContentAsString);
         
         HttpResponse response = client.execute(post);
-        String storagePrefix = ServerInfo.getInstance().getCkanURL()+"/storage/f/";
+        String storagePrefix = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/f/";
 	    String resourcePath = storagePrefix+url_path;
 	    System.out.println("The path for the resource is"+resourcePath);
         System.out.println(response.toString());
@@ -435,10 +441,10 @@ public class CKANAPI {
        
 	}
 	
-	public String upload_rawdata(String rawDataString,String fileName) throws IOException{
+	public String upload_rawdata(String rawDataString,String fileName, ServletContext ctx) throws IOException{
 		
-		String url = ServerInfo.getInstance().getCkanURL()+"/storage/upload_handle";
-		String api_key = "96c00a49-9604-42ca-84b1-e43674f6c0f8";
+		String url = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/upload_handle";
+		String api_key = ServerInfo.getInstance().getCkanURL(ctx);
 		//Generate a date timestamp
 		long currentTime = System.currentTimeMillis();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hhmmss",Locale.US);
@@ -487,7 +493,7 @@ public class CKANAPI {
         System.out.println("Request being sent is \r\n"+entityContentAsString);
         
         HttpResponse response = client.execute(post);
-        String storagePrefix = ServerInfo.getInstance().getCkanURL()+"/storage/f/";
+        String storagePrefix = ServerInfo.getInstance().getCkanURL(ctx)+"/storage/f/";
 	    String resourcePath = storagePrefix+url_path;
 	    System.out.println("The path for the resource is"+resourcePath);
         System.out.println(response.toString());
@@ -497,19 +503,19 @@ public class CKANAPI {
 
 
 	//Send metadata to CKAN and deposit
-	public int postMetaDataToCKAN(){
+	public int postMetaDataToCKAN(ServletContext ctx){
 		
 		return 0;
 	}
 	
 	//Send raw dataset to CKAN and deposit
-	public int postRawDataToCKAN(){
+	public int postRawDataToCKAN(ServletContext ctx){
 		
 		return 0;
 	}
 	
 	//Get metadata from CKAN
-	public int getMetaDataFromCKAN(){
+	public int getMetaDataFromCKAN(ServletContext ctx){
 		
 		return 0;
 	}

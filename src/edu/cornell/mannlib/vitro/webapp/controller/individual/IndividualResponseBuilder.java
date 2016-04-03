@@ -67,9 +67,6 @@ class IndividualResponseBuilder {
 	private final ExecuteDataRetrieval eDataRetrieval;
 
 	private final Individual individual;
-	private static String dcoOntoNamespace = ServerInfo.getInstance().getDcoOntoNamespace();
-	private static String predicateDcoID = dcoOntoNamespace+"dcoId";
-	private static String predicateNetworkID = dcoOntoNamespace+"networkId";
 	
 	public IndividualResponseBuilder(VitroRequest vreq, Individual individual) {
 		this.vreq = vreq;

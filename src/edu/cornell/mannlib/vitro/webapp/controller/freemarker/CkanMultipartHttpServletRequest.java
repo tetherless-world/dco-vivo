@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -75,7 +76,6 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 	private final VitroRequest vreq;
 	private final EditConfigurationVTwo configuration;
 	private FileUploadException fileUploadException;
-	private String ckanURL = ServerInfo.getInstance().getCkanURL();
 	
 	/**
 	 * Parse the multipart request. Store the info about the request parameters
@@ -84,6 +84,10 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 	public CkanMultipartHttpServletRequest(HttpServletRequest request,
 			int maxFileSize) throws IOException {
 		super(request);		
+
+        ServletContext ctx = request.getSession().getServletContext();
+        String ckanURL = ServerInfo.getInstance().getCkanURL(ctx);
+
 		Map<String, List<String>> parameters = new HashMap<String, List<String>>();
 		Map<String, List<FileItem>> files = new HashMap<String, List<FileItem>>();
 		CKANAPI myCkanApi = new CKANAPI();
@@ -174,14 +178,14 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 		//Now try to send a sparql request to the endpoint to get back the access url for the dataset, for a single individual
 		//Get the subjectUri
 		String querySubject = configuration.getSubjectUri();
-		String accessURL = this.sparqlForAccessURL(querySubject);
+		String accessURL = this.sparqlForAccessURL(querySubject, ctx);
 		remoteUrl = request.getParameter("remote_url");
 		if(remoteUrl.length()==0){
 			//Deposit to CKAN and get back the download url
 			webFileName = this.files.get("file").get(0).getName();
 			this.fileName = request.getParameter("file-name");
 			System.out.println("File name:\r\n"+webFileName);
-			uploadAddr = myCkanApi.upload_rawdata(this.files.get("file").get(0).getInputStream(),webFileName);
+			uploadAddr = myCkanApi.upload_rawdata(this.files.get("file").get(0).getInputStream(),webFileName, ctx);
 			System.out.println("The uploaded file address is "+uploadAddr);
 		}else{
 			//Not uploading the file; just create a triple, push to the triple store, and store the link here
@@ -193,19 +197,19 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 		//Otherwise, do nothing
 		if(accessURL.contains(ckanURL)){
 			if(webFileName.length()>0 )
-				myCkanApi.associateRepoWithDataset(accessURL, uploadAddr, fileName);		
+				myCkanApi.associateRepoWithDataset(accessURL, uploadAddr, fileName, ctx);		
 			else
-				myCkanApi.associateRepoWithDataset(accessURL, uploadAddr, "default-dataset-name");
+				myCkanApi.associateRepoWithDataset(accessURL, uploadAddr, "default-dataset-name", ctx);
 		}
 		
 	}
 	
-	public String sparqlForAccessURL(String subjectUrl){
+	public String sparqlForAccessURL(String subjectUrl, ServletContext ctx){
 		
-		String endpoint = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=";
+        String endpoint = ServerInfo.getInstance().getSparqlQueryAPI( ctx );
 		String individualName = subjectUrl;
 		String queryInString = 
-		        "PREFIX dco: <"+ServerInfo.getInstance().getDcoOntoNamespace()+">  "+
+		        "PREFIX dco: <"+ServerInfo.getInstance().getDCOURI(ctx)+">  "+
 		        "select ?accessAddr "+
 		        "where { "+
 		         "<"+individualName+"> dco:accessURL ?accessAddr .  "+
@@ -218,7 +222,7 @@ class CkanMultipartHttpServletRequest extends FileUploadServletRequest {
 			e1.printStackTrace();
 		}
 		String queryParams = "&resultFormat=vitro%3Acsv&rdfResultFormat=RDF%2FXML";
-		String url = endpoint+encodedQuery+queryParams;
+		String url = endpoint+"?query="+encodedQuery+queryParams;
 		
 		System.out.println("Request URL is\r\n"+url);
 		
