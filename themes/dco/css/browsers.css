@@ -15,3 +15,10 @@
 #facetview_filter_group_isDcoPublication {
     display: none; !important;
 }
+/* these fixes override the boostrap body font size declaration */
+section#searchbox {
+	margin-top: -26px;
+}
+ul.menu.sf-menu.sf-js-enabled {
+	font-size: 100%;
+}
