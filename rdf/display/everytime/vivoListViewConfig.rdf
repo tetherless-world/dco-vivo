@@ -104,4 +104,12 @@
         <display:listViewConfigFile rdf:datatype="http://www.w3.org/2001/XMLSchema#string">listViewConfig-doi.xml</display:listViewConfigFile>
     </rdf:Description>
 
+    <rdf:Description rdf:about="http://info.deepcarbon.net/schema#repositoryWebsite">
+        <display:listViewConfigFile rdf:datatype="http://www.w3.org/2001/XMLSchema#string">listViewConfig-repositoryWebsite.xml</display:listViewConfigFile>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://info.deepcarbon.net/schema#repositoryOnlineCatalog">
+        <display:listViewConfigFile rdf:datatype="http://www.w3.org/2001/XMLSchema#string">listViewConfig-repositoryOnlineCatalog.xml</display:listViewConfigFile>
+    </rdf:Description>
+
 </rdf:RDF>
