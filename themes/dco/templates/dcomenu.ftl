@@ -55,7 +55,7 @@
 	</ul></li>
 	<li class="leaf last"><a title="Media Contacts" href="https://deepcarbon.net/page/media-contacts">Media Contacts</a></li>
 	</ul></li>
-	<li class="expanded active-trail"><a title="" href="https://deepcarbon.net/page/welcome">Community Portal</a><ul class="menu">
+	<li class="expanded active-trail"><a title="" href="https://deepcarbon.net">Community Portal</a><ul class="menu">
 	<li class="leaf first"><a title="" href="https://deepcarbon.net/page/submit-community-content">Submit Community Content</a></li>
 	<li class="leaf"><a title="" href="https://deepcarbon.net/announcements">Announcements and Jobs</a></li>
 	
