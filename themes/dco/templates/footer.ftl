@@ -49,9 +49,11 @@
 		<p class="dco_footer"><img src="https://deepcarbon.net/sites/default/files/images/dco-icon-footer_0.png" style="float: left;"></p>
 		<p class="boiler"><strong>The Deep Carbon Observatory</strong> (DCO) is a global community of multi-disciplinary scientists unlocking the inner secrets of Earth through investigations into life, energy, and the fundamentally unique chemistry of carbon.</p>
 		<p class="boiler">&nbsp;</p>
-		<h6 class="dco_footer">DCO Website Privacy Policy</h6>
-		<h6 class="dco_footer">See <a target="_blank" class="dco_anchor" href="https://deepcarbon.net/page/dco-privacy-policy" target="_blank">https://deepcarbon.net/page/dco-privacy-policy</a>.</h6>
-		<h6 class="dco_footer">Additional policies may be introduced from time to time.</h6>
+		<h6 class="dco_footer boiler">DCO Website Privacy Policy</h6>
+		<h6 class="dco_footer boiler">See <a target="_blank" class="dco_anchor" href="https://deepcarbon.net/page/dco-privacy-policy" target="_blank">https://deepcarbon.net/page/dco-privacy-policy</a>.</h6>
+		<h6 class="dco_footer boiler">Additional policies may be introduced from time to time.</h6>
+		<p class="boiler">&nbsp;</p>
+		<h6 class="boiler">VIVO version 1.6.2 - DCO-VIVO version 1.7</h6>
 	    </td>
 	    <td style="width:25%;padding:1em;">
 		<p class="boiler">Site by</p>
