@@ -771,6 +771,9 @@ ul#main-nav {
     float: left;
     width: 960px;
     padding-bottom: 50px;
+    font-size: 13pt;
+    line-height: 140%;
+    text-align: justify;
 }
 body.loggedIn #intro {
     
