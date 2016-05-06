@@ -23,5 +23,5 @@
         }
     </query-construct>
     
-    <template>propStatement-downloadURL.ftl</template>
+    <template>propStatement-dcat-accessURL.ftl</template>
 </list-view-config>

@@ -1750,3 +1750,50 @@ local:yearAwardedConfig a :ObjectPropertyDisplayConfig ;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+
+# dco data
+local:accessURLContext a :ConfigContext ;
+    :hasConfiguration local:accessURLConfig ;
+    :configContextFor <http://www.w3.org/ns/dcat#accessURL> ;
+    :qualifiedByDomain  <http://www.w3.org/ns/dcat#Distribution>  ;
+    :qualifiedBy      <http://xmlns.com/foaf/0.1/Document> .
+
+local:accessURLConfig a :ObjectPropertyDisplayConfig ;
+    :listViewConfigFile "listViewConfig-dcat-accessURL.xml"^^xsd:string ;
+    :displayName "access URL" ;
+    vitro:displayRankAnnot 5;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DistributionAccessURLGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+
+local:downloadURLContext a :ConfigContext ;
+    :hasConfiguration local:downloadURLConfig ;
+    :configContextFor <http://www.w3.org/ns/dcat#downloadURL> ;
+    :qualifiedByDomain  <http://www.w3.org/ns/dcat#Distribution>  ;
+    :qualifiedBy      <http://xmlns.com/foaf/0.1/Document> .
+
+local:downloadURLConfig a :ObjectPropertyDisplayConfig ;
+    :listViewConfigFile "listViewConfig-dcat-downloadURL.xml"^^xsd:string ;
+    :displayName "download URL" ;
+    vitro:displayRankAnnot 10;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DistributionDownloadURLGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+
+local:landingPageContext a :ConfigContext ;
+    :hasConfiguration local:landingPageConfig ;
+    :configContextFor <http://www.w3.org/ns/dcat#landingPage> ;
+    :qualifiedByDomain  <http://www.w3.org/ns/dcat#Dataset>  ;
+    :qualifiedBy      <http://xmlns.com/foaf/0.1/Document> .
+
+local:landingPageConfig a :ObjectPropertyDisplayConfig ;
+    :listViewConfigFile "listViewConfig-dcat-landingPage.xml"^^xsd:string ;
+    :displayName "dataset page" ;
+    vitro:displayRankAnnot 35;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DistributionLandingPageGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+
