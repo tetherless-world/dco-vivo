@@ -132,7 +132,6 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
     		Map<String, String> newResources = configuration.getNewResources();
     		if (newResources.size() > 0) {
     			Set<String>  newResourcesKeys= newResources.keySet();
-    			System.out.println("The resource key set is "+newResourcesKeys.toString());
     			for (String key: newResourcesKeys) {
 				/*
 	    			if(profileUri.length()!=0){
@@ -145,14 +144,10 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 	    			if(configuration.getPredicateUri()!=null&&configuration.getPredicateUri().toLowerCase().endsWith("distribution")
 	    					&&submission.getLiteralsFromForm().get("label")!=null){
 	    				
-		    			//System.out.println("The name for the object is "+(submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0]));
 	    				String dataRepoName = submission.getLiteralsFromForm().get("label").toString().split("\\[")[1].split("\\^\\^")[0].split("\\]")[0];
 	    				
 	    				//This is a distribution instance, create a corresponded ckan instance with the name of the distribution
-	    				System.out.println("Just check ckanURL is:\r\n"+ckanURL);
-	    				System.out.println("Try with instance");
 	    				ServerInfo.getInstance();
-	    				System.out.println("Try with attribute");
 	    				ServerInfo.getInstance().getCkanURL(ctx);
 	    				Client c = new Client( new Connection(ckanURL, apiKey,true),apiKey);
 	    		        
@@ -168,7 +163,6 @@ public class ProcessRdfFormController extends FreemarkerHttpServlet{
 	    		        	try {
 	    		        	
 	    					Dataset result = c.createDataset(ds);
-	    					System.out.println("Here is everything "+ckanURL+"/dataset/"+result.getName());
 	    					String value = ckanURL+"/dataset/"+result.getName();
 				    	   	String accessURLTriple = "?" + key + " <"+predicateAccessURL+"> " + '"' + value + '"' + " .";
 				    		configuration.addN3Optional(accessURLTriple);
