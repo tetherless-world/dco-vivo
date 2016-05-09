@@ -804,6 +804,7 @@ div.image {
 	width: 500px;
 }
 span.caption {
+    line-height:100%;
 	font-size: 11px;
 	padding: 11px;
 	padding-top: 0px;
