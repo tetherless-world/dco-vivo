@@ -44,19 +44,8 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     public AddProjectUpdateGenerator() {}
 
     @Override
-    public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq, HttpSession session) throws Exception {
-
-        if( EditConfigurationUtils.getObjectUri(vreq) == null ){
-            return doAddNew(vreq,session);
-        } else {
-            // TODO: need to decide what to do here
-            return null;
-        }
-    }
-
-
-    protected EditConfigurationVTwo doAddNew(VitroRequest vreq,
-                                             HttpSession session) throws Exception {
+    public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq, HttpSession session) throws Exception
+    {
         EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
         initBasics(editConfiguration, vreq);
         initPropertyParameters(vreq, session, editConfiguration);
@@ -208,12 +197,16 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     }
 
     /** Set SPARQL Queries and supporting methods. */
-    //In this case no queries for existing
     private void setSparqlQueries(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
-        editConfiguration.setSparqlForExistingUris(new HashMap<String, String>());
-        editConfiguration.setSparqlForAdditionalLiteralsInScope(new HashMap<String, String>());
-        editConfiguration.setSparqlForAdditionalUrisInScope(new HashMap<String, String>());
-        editConfiguration.setSparqlForExistingLiterals(new HashMap<String, String>());
+        editConfiguration.addSparqlForExistingLiteral("title", existingTitleQuery);
+        editConfiguration.addSparqlForExistingLiteral("modifiedOn", existingModifiedOn);
+        editConfiguration.addSparqlForExistingLiteral("modificationNoteText", existingModificationNoteText);
+        editConfiguration.addSparqlForExistingLiteral("updateText", existingUpdateText);
+        
+        editConfiguration.addSparqlForExistingUris("reportingYearUri", existingReportingYears);
+        editConfiguration.addSparqlForExistingUris("modifiedByUri", existingModifiedByUris);
+        editConfiguration.addSparqlForExistingUris("publicationUri", existingPublicationUris);
+        editConfiguration.addSparqlForExistingUris("instrumentUri", existingInstrumentUris);
     }
 
     /**
@@ -315,4 +308,46 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         return editMode;
     }
 
+    final static String existingTitleQuery  =  
+        "SELECT ?title WHERE {\n"+
+        "?projectUpdateUri <"+ label +"> ?title . }";
+
+    final static String existingUpdateText  =  
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?updateText WHERE {\n"+
+        "?projectUpdateUri dco:updateText ?updateText .}";
+
+    final static String existingModifiedOn =
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?modfiedOn WHERE {\n"+
+        "?projectUpdateUri dco:modificationNote ?newModificationNoteUri .\n"+
+        "?newModificationNoteUri dco:modifiedOn ?modifiedOn .}";
+
+    final static String existingModificationNoteText =
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?modificationNoteText WHERE {\n"+
+        "?projectUpdateUri dco:modificationNote ?newModificationNoteUri .\n"+
+        "?newModificationNoteUri <" + label + "> ?modificationNoteText .}";
+
+    final static String existingReportingYears =
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?reportingYearUri WHERE {\n"+
+        "?projectUpdateUri dco:forReportingYear ?reportingYearUri .}";
+
+    final static String existingModifiedByUris =
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?modifiedByUri WHERE {\n"+
+        "?projectUpdateUri dco:modificationNote ?newModificationNoteUri .\n"+
+        "?newModificationNoteUri dco:modifiedBy ?modifiedByUri .}";
+
+    final static String existingPublicationUris =
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?publicationUri WHERE {\n"+
+        "?projectUpdateUri dco:associatedPublication ?publicationUri .}";
+
+    final static String existingInstrumentUris =
+        "PREFIX dco: <" + dco + ">\n"+
+        "SELECT ?instrumentUri WHERE {\n"+
+        "?projectUpdateUri dco:updateRefersTo ?instrumentUri .}";
 }
+
