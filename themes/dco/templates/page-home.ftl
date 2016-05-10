@@ -30,6 +30,10 @@
 
 <style>
 
+  text[id$=_title] {
+    transform: translateY(10px);
+  }
+
   svg {
     padding-top:10px;
     padding-bottom:10px;
