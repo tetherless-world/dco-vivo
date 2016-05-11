@@ -120,7 +120,7 @@
                     <div class="slide">
                         <div id="slide3">
                             <script type="text/javascript">
-                                pubWordCloud("#slide3",500,300);
+                                $(document).ready(function() { pubWordCloud("#slide3",500,300); })
                             </script>
                         </div>
                         <span class="caption">This word cloud represents areas of expertise of the various members of the DCO community. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/AreasWordCloud.html">Click to enlarge Cloud</a>.</span>
@@ -128,7 +128,7 @@
                     <div class="slide">
                         <div id="slide4">
                             <script type="text/javascript">
-                                commPubCounts("#slide4",500,280);
+                                $(document).ready(function() { commPubCounts("#slide4",500,280); })
                             </script>
                         </div>
                         <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
@@ -136,7 +136,7 @@
                     <div class="slide">
                         <div id="slide5">
                             <script type="text/javascript">
-                                commMemberCounts("#slide5",500,280);
+                                $(document).ready(function() { commMemberCounts("#slide5",500,280); })
                             </script>
                         </div>
                         <span class="caption">This chart represents the number of members of the DCO per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChart.html">Click to enlarge Chart</a>.</span>
@@ -189,5 +189,76 @@
         }  
     </script>
     </body>
-<script src="/dco-viz/js/slideshow.js"></script>
+<script type="text/javascript">
+
+    function slideShow() {
+        var timer,obj;
+
+        obj = {}
+        obj.resume = function() {
+            timerOn = true;
+            timer =
+                setInterval(obj.step, 7000);
+        };
+        obj.pause = function() {
+            clearInterval(timer);
+        };
+
+        obj.step = function() {
+            $('#slideshow > div:first')
+                .fadeOut(100)
+                .next()
+                .fadeIn(100)
+                .end()
+                .appendTo('#slideshow');
+        };
+        obj.resume();
+        return obj;
+
+    }
+
+    $("#slideshow > div:gt(0)").hide();
+
+    var slideShow = slideShow();
+
+    $("#forward").click(function() {
+
+        $('#slideshow > div:first')
+            .fadeOut(100)
+            .next()
+            .fadeIn(100)
+            .end()
+            .appendTo('#slideshow');
+
+    });
+
+    $("#back").click(function() {
+
+        $('#slideshow > div').filter(":last")
+            .fadeOut(100)
+            .next()
+            .fadeIn(100)
+            .end()
+            .prependTo('#slideshow');
+
+        $("#slideshow > div").filter(":eq(0)").show();
+
+        $("#slideshow > div").filter(":gt(0)").hide();
+
+    });
+
+    $("#pause").click(function() {
+
+        if ($("#pause").text() == "ll") {
+
+            console.log('ll');
+            slideShow.pause();
+            $("#pause").html(">");
+        } else {
+            console.log('>');
+            slideShow.resume();
+            $("#pause").html("ll");
+        }
+    });
+</script>
 </html>
