@@ -102,6 +102,14 @@
                 </div>
                 <div id="slideshow">
                     <div class="slide">
+                        <div id="slide4">
+                            <script type="text/javascript">
+                                $(document).ready(function() { commPubCounts("#slide4",500,280); })
+                            </script>
+                        </div>
+                        <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
+                    </div>
+                    <div class="slide">
                         <div id="slide1">
                             <div class="image">
                                 <a href="${urls.base}/field-studies"><img src="${urls.theme}/images/dco-images/DCO-Field-Study-Map-Slide-copy.jpg" /></a>
@@ -124,14 +132,6 @@
                             </script>
                         </div>
                         <span class="caption">This word cloud represents areas of expertise of the various members of the DCO community. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/AreasWordCloud.html">Click to enlarge Cloud</a>.</span>
-                    </div>
-                    <div class="slide">
-                        <div id="slide4">
-                            <script type="text/javascript">
-                                $(document).ready(function() { commPubCounts("#slide4",500,280); })
-                            </script>
-                        </div>
-                        <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
                     </div>
                     <div class="slide">
                         <div id="slide5">
