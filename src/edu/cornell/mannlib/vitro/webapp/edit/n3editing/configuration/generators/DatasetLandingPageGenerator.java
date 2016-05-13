@@ -74,7 +74,9 @@ public class DatasetLandingPageGenerator extends VivoBaseGenerator implements Ed
         // would be replaced with the type of literal (as defined in setVarNames
         setUrisAndLiteralsOnForm(editConfiguration, vreq);
 
-        // Not sure what this does
+        // These are the queries that get used to pre-populate the fields in the form. Using the subject, predicate and object from above build the queries
+        // so that they return the appropriate value using the appropriate variable name in the query. For this form we do not pre-populate the form because
+        // we do not allow editing.
         setSparqlQueries(editConfiguration, vreq);
 
         // set the field names that are used in the form. This tells VIVO the form names, whether they are required or not, and if a Literal you can
@@ -85,10 +87,10 @@ public class DatasetLandingPageGenerator extends VivoBaseGenerator implements Ed
         editConfiguration.setTemplate("addLandingPage.ftl");
 
 
-        // This does basic validation on all of the fields, if they are required.
+        // This does basic validation on all of the fields, if they are required. This is a default validator provided by VIVO
         editConfiguration.addValidator(new AntiXssValidation());
 
-        // Adding additional data, specifically edit mode
+        // Adding additional data, specifically edit mode, to be used by the freemarker template (ftl)
         addFormSpecificData(editConfiguration, vreq);
 
         // if we had any pre-processing to do on any of the fields in the form we would use the AddLandingPagePreprocessor object. Right now it does nothing.
@@ -114,6 +116,9 @@ public class DatasetLandingPageGenerator extends VivoBaseGenerator implements Ed
         return list(getLandingPageN3());
     }
 
+    // what we do is we have the user specify a URL that is used to access datasets, not a download link). We then use that URL as the URI of a
+    // foaf:Document. In the custom display we use the URI of the foaf:Document in the display that links to that URI. We do not set any
+    // properties for the foaf:Document itself.
     private String getLandingPageN3() {
         String ret = "@prefix foaf: <" + foaf + "> . " +
                 "@prefix dcat: <" + dcat + "> ." +
@@ -153,8 +158,7 @@ public class DatasetLandingPageGenerator extends VivoBaseGenerator implements Ed
         editConfiguration.setLiteralsOnForm(literalsOnForm);
     }
 
-    /** Set SPARQL Queries and supporting methods. */
-    //In this case no queries for existing
+    //In this case no queries for existing values of the foaf:Document.
     private void setSparqlQueries(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         editConfiguration.setSparqlForExistingUris(new HashMap<String, String>());
         editConfiguration.setSparqlForAdditionalLiteralsInScope(new HashMap<String, String>());
@@ -168,6 +172,8 @@ public class DatasetLandingPageGenerator extends VivoBaseGenerator implements Ed
      * @throws Exception
      */
 
+    // set the field names that are used in the form. This tells VIVO the form names, whether they are required or not, and if a Literal you can
+    // tell it what type of literal
     private void setFields(EditConfigurationVTwo editConfiguration, VitroRequest vreq) throws Exception {
         setURIField(editConfiguration);
     }
@@ -179,12 +185,15 @@ public class DatasetLandingPageGenerator extends VivoBaseGenerator implements Ed
                 setValidators(list("nonempty")));
     }
 
+    // Adding additional data, specifically edit mode, to be used by the freemarker template (ftl)
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
         formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
         editConfiguration.setFormSpecificData(formSpecificData);
     }
 
+    // returns the mode, whether adding a new entity or editing an existing one. This could be used in the ftl to determine how to display the fields of the form,
+    // what text to use for labels, etc...
     public EditMode getEditMode(VitroRequest vreq) {
         String objectUri = EditConfigurationUtils.getObjectUri(vreq);
         EditMode editMode = FrontEndEditingUtils.EditMode.ADD;

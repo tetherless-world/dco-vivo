@@ -55,7 +55,7 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         initPropertyParameters(vreq, session, editConfiguration);
         initObjectPropForm(editConfiguration, vreq);
 
-        // This sets the variable names for subject, predicate and object in the generated N3
+        // This sets the variable names for subject, predicate and object in the generated N3. Use these labels to build up the rest of the SPARQL.
         setVarNames(editConfiguration);
 
         // This is the N3 for required fields in the form. Any fields in the form replace the corresponding variables in the SPARQL. For example, in this
@@ -66,7 +66,7 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         // form we use the form field "uri", though required in our case, and in the N3 we use "?uri" wherever we want the value to be replaced.
         editConfiguration.setNewResources(generateNewResources(vreq));
 
-        // In scope
+        // In scope. Not used in this form but available. Not sure what it does.
         setUrisAndLiteralsInScope(editConfiguration, vreq);
 
         // This tells VIVO which fields in the form are literals and which ones are URIs. This informs the processing code how to render the replacement for
@@ -74,10 +74,12 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         // would be replaced with the type of literal (as defined in setVarNames
         setUrisAndLiteralsOnForm(editConfiguration, vreq);
 
-        // Not sure what this does
+        // These are the queries that get used to pre-populate the fields in the form. Using the subject, predicate and object from above build the queries
+        // so that they return the appropriate value using the appropriate variable name in the query. For this form we do not pre-populate the form because
+        // we do not allow editing.
         setSparqlQueries(editConfiguration, vreq);
 
-        // set the field names that are used in the form. This tells VIVO the form names, whether they are required or not, and if a Literal you can
+        // set the field names that are used in the form. This tells VIVO the field names, whether they are required or not, and if a Literal you can
         // tell it what type of literal
         setFields(editConfiguration, vreq);
 
@@ -85,10 +87,10 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         editConfiguration.setTemplate("addAccessURL.ftl");
 
 
-        // This does basic validation on all of the fields, if they are required.
+        // This does basic validation on all of the fields, if they are required. This is a default validator provided by VIVO
         editConfiguration.addValidator(new AntiXssValidation());
 
-        // Adding additional data, specifically edit mode
+        // Adding additional data, specifically edit mode, to be used by the freemarker template (ftl)
         addFormSpecificData(editConfiguration, vreq);
 
         // if we had any pre-processing to do on any of the fields in the form we would use the AddAccessURLPreprocessor object. Right now it does nothing.
@@ -98,10 +100,12 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         */
 
         prepare(vreq, editConfiguration);
+
         return editConfiguration;
     }
 
-    // sets the variable names for the subject, predicate and object use in the generation of the N3
+    // sets the variable names for the subject, predicate and object use in the generation of the N3. We use these labels in the rest of the sparql queries,
+    // n3 used for updates.
     private void setVarNames(EditConfigurationVTwo editConfiguration) {
         editConfiguration.setVarNameForSubject("distribution");
         editConfiguration.setVarNameForPredicate("accessURL");
@@ -114,6 +118,9 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         return list(getAccessURLN3());
     }
 
+    // what we do is we have the user specify a URL that is used to access distributions of datasets (not necessarily the download link). We then use that
+    // URL as the URI of a foaf:Document. In the custom display we use the URI of the foaf:Document in the display that links to that URI. We do not set any
+    // properties for the foaf:Document itself.
     private String getAccessURLN3() {
         String ret = "@prefix foaf: <" + foaf + "> . " +
                 "@prefix dcat: <" + dcat + "> ." +
@@ -122,7 +129,8 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         return ret ;
     }
 
-    // if we had any new resources, like creating a new object or a new sub object, then we would do that here
+    // if we had any new resources, like creating a new object or a new sub object, then we would do that here. This would give us new URIs using the
+    // default namespace.
     private Map<String, String> generateNewResources(VitroRequest vreq) {
         String DEFAULT_NS_TOKEN=null; //null forces the default NS
 
@@ -153,8 +161,7 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         editConfiguration.setLiteralsOnForm(literalsOnForm);
     }
 
-    /** Set SPARQL Queries and supporting methods. */
-    //In this case no queries for existing
+    //In this case no queries for existing values of the foaf:Document.
     private void setSparqlQueries(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         editConfiguration.setSparqlForExistingUris(new HashMap<String, String>());
         editConfiguration.setSparqlForAdditionalLiteralsInScope(new HashMap<String, String>());
@@ -168,6 +175,8 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
      * @throws Exception
      */
 
+    // set the field names that are used in the form. This tells VIVO the field names, whether they are required or not, and if a Literal you can
+    // tell it what type of literal
     private void setFields(EditConfigurationVTwo editConfiguration, VitroRequest vreq) throws Exception {
         setURIField(editConfiguration);
     }
@@ -179,12 +188,15 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
                 setValidators(list("nonempty")));
     }
 
+    // Adding additional data, specifically edit mode, to be used by the freemarker template (ftl)
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
         HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
         formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
         editConfiguration.setFormSpecificData(formSpecificData);
     }
 
+    // returns the mode, whether adding a new entity or editing an existing one. This could be used in the ftl to determine how to display the fields of the form,
+    // what text to use for labels, etc...
     public EditMode getEditMode(VitroRequest vreq) {
         String objectUri = EditConfigurationUtils.getObjectUri(vreq);
         EditMode editMode = FrontEndEditingUtils.EditMode.ADD;
