@@ -1,13 +1,12 @@
 <#-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
 
-<#-- Template for adding a dco:ProjectUpdate to a vivo:Project -->
+<#-- Template for adding a accessURL to a dcat:Distribution-->
 
+<#-- This ftl contains a lot of inforamtion that is used by other ftl -->
 <#import "lib-vivo-form.ftl" as lvf>
 
-<#--Retrieve certain edit configuration information-->
+<#--Retrieve certain edit configuration information, are we in create mode or edit mode-->
 <#assign editMode = editConfiguration.pageData.editMode />
-
-<#--<#assign sparqlForPublicationAcFilter = editConfiguration.pageData.sparqlForPublicationAcFilter />-->
 
 <#--If edit submission exists, then retrieve validation errors if they exist-->
 <#if editSubmission?has_content && editSubmission.submissionExists = true && editSubmission.validationErrors?has_content>
@@ -22,13 +21,14 @@ if nothing is selected for that object -->
     <#assign blankSentinel = editConfigurationConstants["BLANK_SENTINEL"] />
 </#if>
 
-<#--In order to fill out the subject-->
+<#--In order to fill out the subject. In this case the subjectUri is distribution-->
 <#assign acFilterForIndividuals =  "['" + editConfiguration.subjectUri + "']" />
 
 <#-- This flag is for clearing the label field on submission for an existing object being selected from autocomplete.
 Set this flag on the input acUriReceiver where you would like this behavior to occur. -->
 <#assign flagClearLabelForExisting = "flagClearLabelForExisting" />
 
+<#--we only allow creation and deletion, since we would have to change the URI of the foaf:Document-->
 <#if editMode == "edit">
 To edit an access URL you must add a new one and delete the old one
 <br /><br />
@@ -72,6 +72,7 @@ To edit an access URL you must add a new one and delete the old one
 
 <#assign sparqlQueryUrl = "${urls.base}/ajax/sparqlQuery" >
 
+<#--any javascript or style sheets that we use to display content in the form-->
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
