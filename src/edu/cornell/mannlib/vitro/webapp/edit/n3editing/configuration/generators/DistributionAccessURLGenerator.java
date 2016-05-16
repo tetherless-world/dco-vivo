@@ -62,10 +62,6 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
         // form we use the form field "uri" and in the N3 we use "?uri" wherever we want the value to be replaced.
         editConfiguration.setN3Required(generateN3Required());
 
-        // This is the N3 for optional fields in the form. Any fields in the form replace the corresponding variables in the SPARQL. For example, in this
-        // form we use the form field "uri", though required in our case, and in the N3 we use "?uri" wherever we want the value to be replaced.
-        editConfiguration.setNewResources(generateNewResources(vreq));
-
         // In scope. Not used in this form but available. Not sure what it does.
         setUrisAndLiteralsInScope(editConfiguration, vreq);
 
@@ -127,15 +123,6 @@ public class DistributionAccessURLGenerator extends VivoBaseGenerator implements
                 "?distribution dcat:accessURL ?uri ." +
                 "?uri a foaf:Document ." ;
         return ret ;
-    }
-
-    // if we had any new resources, like creating a new object or a new sub object, then we would do that here. This would give us new URIs using the
-    // default namespace.
-    private Map<String, String> generateNewResources(VitroRequest vreq) {
-        String DEFAULT_NS_TOKEN=null; //null forces the default NS
-
-        HashMap<String, String> newResources = new HashMap<String, String>();
-        return newResources;
     }
 
     /** Set URIS and Literals In Scope and on form and supporting methods	 */

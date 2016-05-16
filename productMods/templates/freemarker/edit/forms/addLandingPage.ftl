@@ -29,7 +29,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <#--we only allow the creation and deletion of the landingPage URL since changing it means changing the URI of the foaf:Document-->
 <#if editMode == "edit">
-To edit an dataset page you must add a new one and delete the old one
+To edit a dataset page you must add a new one and delete the old one
 <br /><br />
 <a title="${i18n().cancel_title}" href="${editConfiguration.urlToReturnTo}">Return to Dataset</a>
 <#else>

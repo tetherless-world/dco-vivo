@@ -27,11 +27,11 @@ if nothing is selected for that object -->
 Set this flag on the input acUriReceiver where you would like this behavior to occur. -->
 <#assign flagClearLabelForExisting = "flagClearLabelForExisting" />
 
-<#--we only allow the creation and deletion of the download URL because changing it would require modifying the foaf:Document URI
+<#--we only allow the creation and deletion of the download URL because changing it would require modifying the foaf:Document URI-->
 <#if editMode == "edit">
-To edit a download URL you must add a new one and delete the old one
-<br /><br />
-<a title="${i18n().cancel_title}" href="${editConfiguration.urlToReturnTo}">Return to Distribution</a>
+    To edit a download URL you must add a new one and delete the old one
+    <br /><br />
+    <a title="${i18n().cancel_title}" href="${editConfiguration.urlToReturnTo}">Return to Distribution</a>
 <#else>
         <#assign titleVerb="${i18n().create_capitalized}">
         <#assign submitButtonText="${i18n().create_entry}">
@@ -44,7 +44,7 @@ To edit a download URL you must add a new one and delete the old one
         <#--Checking if any required fields are empty-->
         <p>
         <#if lvf.submissionErrorExists(editSubmission, "uri")>
- 	        Please enter a download URL.
+            Please enter a download URL.
         </#if>
         </p>
     </section>
