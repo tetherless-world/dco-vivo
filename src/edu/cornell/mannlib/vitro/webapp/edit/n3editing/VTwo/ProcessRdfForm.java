@@ -187,15 +187,13 @@ public class ProcessRdfForm {
                 }
             }
         }
-        //System.out.println("With DCO-IDs:");
-        //System.out.println(changes.toString());
     }
 
     /* Check the type of an individual, by Han Wang (wangh17@rpi.edu) */
     private boolean checkTypeAgainstTripleStore(String type, ServletContext ctx) {
         String namespace = ServerInfo.getInstance().getDCOURI(ctx);
+    	String endpoint = ServerInfo.getInstance().getEndpoint(ctx);
 
-    	String endpoint = "http://info.deepcarbon.net/endpoint";
     	String queryStr =
     			"PREFIX dco: <" + namespace + "> " +
     			"ASK { <" + type + "> <http://www.w3.org/2000/01/rdf-schema#subClassOf> dco:Object }";
@@ -231,7 +229,7 @@ public class ProcessRdfForm {
 		} finally {
 	        	client.getConnectionManager().shutdown();
 	    	}
-	return result;
+        return result;
     }
 
     private void applyEditSubmissionPreprocessors(
