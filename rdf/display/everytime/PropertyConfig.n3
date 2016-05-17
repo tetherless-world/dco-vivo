@@ -1790,7 +1790,7 @@ local:landingPageContext a :ConfigContext ;
 
 local:landingPageConfig a :ObjectPropertyDisplayConfig ;
     :listViewConfigFile "listViewConfig-dcat-landingPage.xml"^^xsd:string ;
-    :displayName "dataset page" ;
+    :displayName "external dataset webpage" ;
     vitro:displayRankAnnot 35;
     vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
     vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
