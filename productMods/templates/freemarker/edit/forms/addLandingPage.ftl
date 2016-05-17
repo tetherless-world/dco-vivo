@@ -1,6 +1,6 @@
 <#-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
 
-<#-- Template for adding a dco:ProjectUpdate to a vivo:Project -->
+<#-- Template for adding a dcat:landingPage to a dcat:Dataset -->
 
 <#import "lib-vivo-form.ftl" as lvf>
 
@@ -29,7 +29,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <#--we only allow the creation and deletion of the landingPage URL since changing it means changing the URI of the foaf:Document-->
 <#if editMode == "edit">
-To edit a dataset page you must add a new one and delete the old one
+To edit an external dataset page you must add a new one and delete this old one
 <br /><br />
 <a title="${i18n().cancel_title}" href="${editConfiguration.urlToReturnTo}">Return to Dataset</a>
 <#else>
@@ -50,7 +50,7 @@ To edit a dataset page you must add a new one and delete the old one
     </section>
 </#if>
 
-<h2 xmlns="http://www.w3.org/1999/html">Dataset Landing Page</h2>
+<h2 xmlns="http://www.w3.org/1999/html">External Dataset Webpage</h2>
 <form class="editForm customForm" id="addLandingPage" method="post" enctype="multipart/form-data" action="${submitUrl}">
 
     <p>

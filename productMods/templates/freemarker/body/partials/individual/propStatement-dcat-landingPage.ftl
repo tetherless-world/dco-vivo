@@ -9,5 +9,5 @@
 <@showStatement statement />
 
 <#macro showStatement statement>
-    <a href="${statement.value!}" title="Dataset Page" target="_blank">${statement.value!"dataset page not found"}</a>
+    <a href="${statement.value!}" title="External Dataset Webpage" target="_blank">${statement.value!"external dataset webpage not found"}</a>
 </#macro>
