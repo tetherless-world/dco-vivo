@@ -190,7 +190,7 @@
                              </div>
                              <div id="slideshow">
                                  <div class="slide">
-                                     <div id="slide1">
+                                     <div id="image">
                                          <div class="image">
                                              <a href="${urls.base}/field-studies"><img src="${urls.theme}/images/dco-images/DCO-Field-Study-Map-Slide-copy.jpg" /></a>
                                              <span class="caption">This map depicts the locations of Deep Carbon Observatory field studies. Visit <a href="${urls.base}/field-studies">the DCO Field Study page</a> for the interactive version.</span>
@@ -200,28 +200,28 @@
                                  <div class="slide">
                                      <div id="expertiseWordCloud">
                                      </div>
-                                     <span class="caption">This word cloud represents keywords found in publications contributed to the DCO. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/PubWordCloud.html">Click to enlarge Cloud</a>.</span>
-                                 </div>
-                                 <div class="slide">
-                                     <div id="pubWordCloud">
-                                     </div>
                                      <span class="caption">This word cloud represents areas of expertise of the various members of the DCO community. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/AreasWordCloud.html">Click to enlarge Cloud</a>.</span>
-                                 </div>
-                                 <div class="slide">
-                                     <div id="commPubCounts">
-                                     </div>
-                                     <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
                                  </div>
                                  <div class="slide">
                                      <div id="commMemberCounts">
                                      </div>
                                      <span class="caption">This chart represents the number of members of the DCO per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChart.html">Click to enlarge Chart</a>.</span>
                                  </div>
-                                 <div class="slide" id="slide6">
+                                 <div class="slide" id="barchart">
                                      <iframe src="/dco-viz/NewMemberBarChart.php" scrolling="no"></iframe>
                                      <span class="caption">This chart represents the number of new members of the DCO over a given period of time. Pause the slide show to examine further. <a target="_blank" href="/dco-viz/NewMemberBarChart.php">Click to enlarge Chart</a>.</span>
                                  </div>
-                                 <div class="slide" id="slide7">
+                                 <div class="slide">
+                                     <div id="pubWordCloud">
+                                     </div>
+                                     <span class="caption">This word cloud represents keywords found in publications contributed to the DCO. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/PubWordCloud.html">Click to enlarge Cloud</a>.</span>
+                                 </div>
+                                 <div class="slide">
+                                     <div id="commPubCounts">
+                                     </div>
+                                     <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
+                                 </div>
+                                 <div class="slide" id="timeseries">
                                      <iframe src="/dco-viz/TotalMemberTimeSeries.php" scrolling="no"></iframe>
                                      <span class="caption">This chart represents the number of new members of the DCO over the life of the project. Pause the slide show to examine further. <a target="_blank" href="/dco-viz/TotalMemberTimeSeries.php">Click to enlarge Chart</a>.</span>
                                  </div>
@@ -385,8 +385,9 @@
                             var slideShow = slideShow();
 
                             $("#forward").click(function() {
-                                slideshow.pause();
+                                slideShow.pause();
                                 slideShow.step();
+                                slideShow.resume();
                             });
 
 
