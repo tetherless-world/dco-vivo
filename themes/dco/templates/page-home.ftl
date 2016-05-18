@@ -22,7 +22,8 @@
             <#include "geoFocusMapScripts.ftl">
         </#if>
         <script type="text/javascript" src="${urls.base}/js/homePageUtils.js?version=x"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
         <script>
             function setClassCount(queryUrl, selector){
                 $.getJSON({
@@ -34,22 +35,80 @@
                 });
             }
 
-            var queryUrl = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=PREFIX+rdf%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+rdfs%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+xsd%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0D%0APREFIX+owl%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+swrl%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrl%23%3E%0D%0APREFIX+swrlb%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrlb%23%3E%0D%0APREFIX+vitro%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2F0.7%23%3E%0D%0APREFIX+bibo%3A+%3Chttp%3A%2F%2Fpurl.org%2Fontology%2Fbibo%2F%3E%0D%0APREFIX+c4o%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fc4o%2F%3E%0D%0APREFIX+cito%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fcito%2F%3E%0D%0APREFIX+dcat%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23%3E%0D%0APREFIX+dcosample%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fsample%2Fschema%23%3E%0D%0APREFIX+dco%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fschema%23%3E%0D%0APREFIX+dc%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%3E%0D%0APREFIX+dct%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0D%0APREFIX+event%3A+%3Chttp%3A%2F%2Fpurl.org%2FNET%2Fc4dm%2Fevent.owl%23%3E%0D%0APREFIX+fabio%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Ffabio%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+geo%3A+%3Chttp%3A%2F%2Faims.fao.org%2Faos%2Fgeopolitical.owl%23%3E%0D%0APREFIX+obo%3A+%3Chttp%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F%3E%0D%0APREFIX+ocrer%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fresearch.owl%23%3E%0D%0APREFIX+ocresd%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fstudy_design.owl%23%3E%0D%0APREFIX+p.1%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fprovenance-support%23%3E%0D%0APREFIX+prov%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fprov%23%3E%0D%0APREFIX+samfl%3A+%3Chttp%3A%2F%2Fdef.seegrid.csiro.au%2Fontology%2Fom%2Fsam-lite%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0APREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E%0D%0APREFIX+vitro-public%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2Fpublic%23%3E%0D%0APREFIX+vivo%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fcore%23%3E%0D%0APREFIX+scires%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fscientific-research%23%3E%0D%0A%0D%0A%23%0D%0A%23+This+example+query+gets+20+geographic+locations%0D%0A%23+and+%28if+available%29+their+labels%0D%0A%23%0D%0ASELECT+%28COUNT%28DISTINCT+%3Fs%29+AS+%3Fcount%29%0D%0A++++++++WHERE%0D%0A++++++++%7B%0D%0A++++++++++++%3Fs+a+foaf%3APerson+.%0D%0A++++++++++++%3Fs+%3Chttp%3A%2F%2Fvivo.mydomain.edu%2Fns%23networkId%3E+%3Fid+.%0D%0A++++++++%7D&resultFormat=RS_JSON&rdfResultFormat=JSON-LD";
-            var selector = "p.stats-count#members";
-            setClassCount(queryUrl, selector);
-            var queryUrl = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=PREFIX+rdf%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+rdfs%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+xsd%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0D%0APREFIX+owl%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+swrl%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrl%23%3E%0D%0APREFIX+swrlb%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrlb%23%3E%0D%0APREFIX+vitro%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2F0.7%23%3E%0D%0APREFIX+bibo%3A+%3Chttp%3A%2F%2Fpurl.org%2Fontology%2Fbibo%2F%3E%0D%0APREFIX+c4o%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fc4o%2F%3E%0D%0APREFIX+cito%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fcito%2F%3E%0D%0APREFIX+dcat%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23%3E%0D%0APREFIX+dcosample%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fsample%2Fschema%23%3E%0D%0APREFIX+dco%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fschema%23%3E%0D%0APREFIX+dc%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%3E%0D%0APREFIX+dct%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0D%0APREFIX+event%3A+%3Chttp%3A%2F%2Fpurl.org%2FNET%2Fc4dm%2Fevent.owl%23%3E%0D%0APREFIX+fabio%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Ffabio%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+geo%3A+%3Chttp%3A%2F%2Faims.fao.org%2Faos%2Fgeopolitical.owl%23%3E%0D%0APREFIX+obo%3A+%3Chttp%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F%3E%0D%0APREFIX+ocrer%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fresearch.owl%23%3E%0D%0APREFIX+ocresd%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fstudy_design.owl%23%3E%0D%0APREFIX+p.1%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fprovenance-support%23%3E%0D%0APREFIX+prov%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fprov%23%3E%0D%0APREFIX+samfl%3A+%3Chttp%3A%2F%2Fdef.seegrid.csiro.au%2Fontology%2Fom%2Fsam-lite%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0APREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E%0D%0APREFIX+vitro-public%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2Fpublic%23%3E%0D%0APREFIX+vivo%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fcore%23%3E%0D%0APREFIX+scires%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fscientific-research%23%3E%0D%0A%0D%0A%23%0D%0A%23+This+example+query+gets+20+geographic+locations%0D%0A%23+and+%28if+available%29+their+labels%0D%0A%23%0D%0ASELECT+%28COUNT%28DISTINCT+%3Fs%29+AS+%3Fcount%29%0D%0A++++++++WHERE%0D%0A++++++++%7B%0D%0A++++++++%3Fs+a+vivo%3ADataset+.%0D%0A++++++++%3Fs+vitro%3AmostSpecificType+vivo%3ADataset+.%0D%0A++++++++%7D&resultFormat=RS_JSON&rdfResultFormat=JSON-LD";
-            var selector = "p.stats-count#datasets";
-            setClassCount(queryUrl, selector);
-            var queryUrl = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=PREFIX+rdf%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+rdfs%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+xsd%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0D%0APREFIX+owl%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+swrl%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrl%23%3E%0D%0APREFIX+swrlb%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrlb%23%3E%0D%0APREFIX+vitro%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2F0.7%23%3E%0D%0APREFIX+bibo%3A+%3Chttp%3A%2F%2Fpurl.org%2Fontology%2Fbibo%2F%3E%0D%0APREFIX+c4o%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fc4o%2F%3E%0D%0APREFIX+cito%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fcito%2F%3E%0D%0APREFIX+dcat%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23%3E%0D%0APREFIX+dcosample%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fsample%2Fschema%23%3E%0D%0APREFIX+dco%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fschema%23%3E%0D%0APREFIX+dc%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%3E%0D%0APREFIX+dct%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0D%0APREFIX+event%3A+%3Chttp%3A%2F%2Fpurl.org%2FNET%2Fc4dm%2Fevent.owl%23%3E%0D%0APREFIX+fabio%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Ffabio%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+geo%3A+%3Chttp%3A%2F%2Faims.fao.org%2Faos%2Fgeopolitical.owl%23%3E%0D%0APREFIX+obo%3A+%3Chttp%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F%3E%0D%0APREFIX+ocrer%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fresearch.owl%23%3E%0D%0APREFIX+ocresd%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fstudy_design.owl%23%3E%0D%0APREFIX+p.1%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fprovenance-support%23%3E%0D%0APREFIX+prov%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fprov%23%3E%0D%0APREFIX+samfl%3A+%3Chttp%3A%2F%2Fdef.seegrid.csiro.au%2Fontology%2Fom%2Fsam-lite%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0APREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E%0D%0APREFIX+vitro-public%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2Fpublic%23%3E%0D%0APREFIX+vivo%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fcore%23%3E%0D%0APREFIX+scires%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fscientific-research%23%3E%0D%0A%0D%0A%23%0D%0A%23+This+example+query+gets+20+geographic+locations%0D%0A%23+and+%28if+available%29+their+labels%0D%0A%23%0D%0A+SELECT+%28COUNT%28DISTINCT+%3Fs%29+AS+%3Fcount%29%0D%0A++++++++WHERE%0D%0A++++++++%7B%0D%0A++++++++%3Fs+a+vivo%3AProject+.%0D%0A++++++++%3Fs+vitro%3AmostSpecificType+vivo%3AProject+.%0D%0A++++++++%7D&resultFormat=RS_JSON&rdfResultFormat=JSON-LD";
-            var selector = "p.stats-count#projects";
-            setClassCount(queryUrl, selector);
-            var queryUrl = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=PREFIX+rdf%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+rdfs%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+xsd%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0D%0APREFIX+owl%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+swrl%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrl%23%3E%0D%0APREFIX+swrlb%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrlb%23%3E%0D%0APREFIX+vitro%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2F0.7%23%3E%0D%0APREFIX+bibo%3A+%3Chttp%3A%2F%2Fpurl.org%2Fontology%2Fbibo%2F%3E%0D%0APREFIX+c4o%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fc4o%2F%3E%0D%0APREFIX+cito%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fcito%2F%3E%0D%0APREFIX+dcat%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23%3E%0D%0APREFIX+dcosample%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fsample%2Fschema%23%3E%0D%0APREFIX+dco%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fschema%23%3E%0D%0APREFIX+dc%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%3E%0D%0APREFIX+dct%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0D%0APREFIX+event%3A+%3Chttp%3A%2F%2Fpurl.org%2FNET%2Fc4dm%2Fevent.owl%23%3E%0D%0APREFIX+fabio%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Ffabio%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+geo%3A+%3Chttp%3A%2F%2Faims.fao.org%2Faos%2Fgeopolitical.owl%23%3E%0D%0APREFIX+obo%3A+%3Chttp%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F%3E%0D%0APREFIX+ocrer%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fresearch.owl%23%3E%0D%0APREFIX+ocresd%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fstudy_design.owl%23%3E%0D%0APREFIX+p.1%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fprovenance-support%23%3E%0D%0APREFIX+prov%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fprov%23%3E%0D%0APREFIX+samfl%3A+%3Chttp%3A%2F%2Fdef.seegrid.csiro.au%2Fontology%2Fom%2Fsam-lite%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0APREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E%0D%0APREFIX+vitro-public%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2Fpublic%23%3E%0D%0APREFIX+vivo%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fcore%23%3E%0D%0APREFIX+scires%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fscientific-research%23%3E%0D%0A%0D%0A%23%0D%0A%23+This+example+query+gets+20+geographic+locations%0D%0A%23+and+%28if+available%29+their+labels%0D%0A%23%0D%0ASELECT+%28COUNT%28DISTINCT+%3Fs%29+AS+%3Fcount%29%0D%0A++++++++WHERE%0D%0A++++++++%7B%0D%0A++++++++%3Fs+a+dco%3AFieldStudy+.%0D%0A++++++++%3Fs+vitro%3AmostSpecificType+dco%3AFieldStudy+.%0D%0A++++++++%7D&resultFormat=RS_JSON&rdfResultFormat=JSON-LD";
-            var selector = "p.stats-count#field-studies";
-            setClassCount(queryUrl, selector);
-            var queryUrl = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=PREFIX+rdf%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+rdfs%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0APREFIX+xsd%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0D%0APREFIX+owl%3A+++%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0D%0APREFIX+swrl%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrl%23%3E%0D%0APREFIX+swrlb%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F11%2Fswrlb%23%3E%0D%0APREFIX+vitro%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2F0.7%23%3E%0D%0APREFIX+bibo%3A+%3Chttp%3A%2F%2Fpurl.org%2Fontology%2Fbibo%2F%3E%0D%0APREFIX+c4o%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fc4o%2F%3E%0D%0APREFIX+cito%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Fcito%2F%3E%0D%0APREFIX+dcat%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23%3E%0D%0APREFIX+dcosample%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fsample%2Fschema%23%3E%0D%0APREFIX+dco%3A+%3Chttp%3A%2F%2Finfo.deepcarbon.net%2Fschema%23%3E%0D%0APREFIX+dc%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%3E%0D%0APREFIX+dct%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0D%0APREFIX+event%3A+%3Chttp%3A%2F%2Fpurl.org%2FNET%2Fc4dm%2Fevent.owl%23%3E%0D%0APREFIX+fabio%3A+%3Chttp%3A%2F%2Fpurl.org%2Fspar%2Ffabio%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+geo%3A+%3Chttp%3A%2F%2Faims.fao.org%2Faos%2Fgeopolitical.owl%23%3E%0D%0APREFIX+obo%3A+%3Chttp%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F%3E%0D%0APREFIX+ocrer%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fresearch.owl%23%3E%0D%0APREFIX+ocresd%3A+%3Chttp%3A%2F%2Fpurl.org%2Fnet%2FOCRe%2Fstudy_design.owl%23%3E%0D%0APREFIX+p.1%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fprovenance-support%23%3E%0D%0APREFIX+prov%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fprov%23%3E%0D%0APREFIX+samfl%3A+%3Chttp%3A%2F%2Fdef.seegrid.csiro.au%2Fontology%2Fom%2Fsam-lite%23%3E%0D%0APREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0APREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E%0D%0APREFIX+vitro-public%3A+%3Chttp%3A%2F%2Fvitro.mannlib.cornell.edu%2Fns%2Fvitro%2Fpublic%23%3E%0D%0APREFIX+vivo%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fcore%23%3E%0D%0APREFIX+scires%3A+%3Chttp%3A%2F%2Fvivoweb.org%2Fontology%2Fscientific-research%23%3E%0D%0A%0D%0A%23%0D%0A%23+This+example+query+gets+20+geographic+locations%0D%0A%23+and+%28if+available%29+their+labels%0D%0A%23%0D%0ASELECT+%28COUNT%28DISTINCT+%3Fpublication%29+AS+%3Fcount%29%0D%0AWHERE+%7B%0D%0A++++%7B+%3Fpublication+a+bibo%3AArticle+.+%7D%0D%0A++++UNION+%7B+%3Fpublication+a+bibo%3ABook+.+%7D%0D%0A++++UNION+%7B+%3Fpublication+a+bibo%3ADocumentPart+.+%7D%0D%0A++++UNION+%7B+%3Fpublication+a+dco%3APoster+.+%7D%0D%0A++++UNION+%7B+%3Fpublication+a+bibo%3AThesis+.+%7D%0D%0A++++%3Fpublication+dco%3AisContributionToDCO+%3FisDcoPublication+.%0D%0A++++FILTER+%28lcase%28str%28%3FisDcoPublication%29%29+%3D+%22yes%22%29%0D%0A%7D&resultFormat=RS_JSON&rdfResultFormat=JSON-LD";
-            var selector = "p.stats-count#dco-publications";
-            setClassCount(queryUrl, selector);
+            var queryPrefixes = "PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+                    "PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>" +
+                    "PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>" +
+                    "PREFIX owl:   <http://www.w3.org/2002/07/owl#>" +
+                    "PREFIX swrl:  <http://www.w3.org/2003/11/swrl#>" +
+                    "PREFIX swrlb: <http://www.w3.org/2003/11/swrlb#>" +
+                    "PREFIX vitro: <http://vitro.mannlib.cornell.edu/ns/vitro/0.7#>" +
+                    "PREFIX bibo: <http://purl.org/ontology/bibo/>" +
+                    "PREFIX c4o: <http://purl.org/spar/c4o/>" +
+                    "PREFIX cito: <http://purl.org/spar/cito/>" +
+                    "PREFIX dcat: <http://www.w3.org/ns/dcat#>" +
+                    "PREFIX dcodata: <http://info.deepcarbon.net/data/schema#>" +
+                    "PREFIX dcosample: <http://info.deepcarbon.net/sample/schema#>" +
+                    "PREFIX dco: <http://info.deepcarbon.net/schema#>" +
+                    "PREFIX dc: <http://purl.org/dc/elements/1.1/>" +
+                    "PREFIX dct: <http://purl.org/dc/terms/>" +
+                    "PREFIX event: <http://purl.org/NET/c4dm/event.owl#>" +
+                    "PREFIX fabio: <http://purl.org/spar/fabio/>" +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "PREFIX geo: <http://aims.fao.org/aos/geopolitical.owl#>" +
+                    "PREFIX obo: <http://purl.obolibrary.org/obo/>" +
+                    "PREFIX ocrer: <http://purl.org/net/OCRe/research.owl#>" +
+                    "PREFIX ocresd: <http://purl.org/net/OCRe/study_design.owl#>" +
+                    "PREFIX p.1: <http://vivoweb.org/ontology/provenance-support#>" +
+                    "PREFIX prov: <http://www.w3.org/ns/prov#>" +
+                    "PREFIX samfl: <http://def.seegrid.csiro.au/ontology/om/sam-lite#>" +
+                    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>" +
+                    "PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>" +
+                    "PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#>" +
+                    "PREFIX vivo: <http://vivoweb.org/ontology/core#>" +
+                    "PREFIX scires: <http://vivoweb.org/ontology/scientific-research#>";
 
+            var statistics_queries = {
+                members: "SELECT (COUNT(DISTINCT ?s) AS ?count)" +
+                "WHERE" +
+                "{ " +
+                "?s a foaf:Person . " +
+                "?s <http://vivo.mydomain.edu/ns#networkId> ?id ." +
+                "}",
+                datasets: "SELECT (COUNT(DISTINCT ?s) AS ?count)" +
+                "WHERE" +
+                "{ " +
+                "?s a dcodata:Dataset . " +
+                "?s vitro:mostSpecificType dcodata:Dataset ." +
+                "}",
+                projects: "SELECT (COUNT(DISTINCT ?s) AS ?count)" +
+                "WHERE" +
+                "{ " +
+                "?s a vivo:Project . " +
+                "?s vitro:mostSpecificType vivo:Project ." +
+                "}",
+                field_studies: "SELECT (COUNT(DISTINCT ?s) AS ?count)" +
+                "WHERE" +
+                "{ " +
+                "?s a dco:FieldStudy . " +
+                "?s vitro:mostSpecificType dco:FieldStudy ." +
+                "}",
+                dco_publications: "SELECT (COUNT(DISTINCT ?publication) AS ?count) WHERE {" +
+                "{ ?publication a bibo:Article . }" +
+                "UNION { ?publication a bibo:Book . }" +
+                "UNION { ?publication a bibo:DocumentPart . }" +
+                "UNION { ?publication a dco:Poster . }" +
+                "UNION { ?publication a bibo:Thesis . } " +
+                "?publication dco:isContributionToDCO ?isDcoPublication ." +
+                "FILTER (lcase(str(?isDcoPublication)) = 'yes')" +
+                "}"
+            };
+
+            for (var key in statistics_queries) {
+                var queryUrl = "https://info.deepcarbon.net/vivo/admin/sparqlquery?query=" +
+                        encodeURIComponent(queryPrefixes) + encodeURIComponent(statistics_queries[key]) +
+                        "&resultFormat=RS_JSON&rdfResultFormat=JSON-LD";
+                setClassCount(queryUrl, "p.stats-count#" + key);
+            }
         </script>
     </head>
     
@@ -81,6 +140,7 @@
         <#--<@lh.allClassGroups vClassGroups! />-->
 
         <#-- Statistical information relating of entities of interest of DCO-->
+        <#--Added by Hao 05/18/2016-->
         <section id="home-stats" class="home-sections" >
             <h4>${i18n().statistics}</h4>
             <ul id="stats">
@@ -92,8 +152,8 @@
                 </li>
                 <li>
                     <a href="${urls.base}/browse">
-                        <p class="stats-count" id="dco-publications">...</p>
-                        <p class="stats-type" id="dco-publications">Publications</p>
+                        <p class="stats-count" id="dco_publications">...</p>
+                        <p class="stats-type" id="dco_publications">Publications</p>
                     </a>
                 </li>
                 <li>
@@ -110,8 +170,8 @@
                 </li>
                 <li>
                     <a href="${urls.base}/browse">
-                        <p class="stats-count" id="field-studies">...</p>
-                        <p class="stats-type" id="field-studies">Field Studies</p>
+                        <p class="stats-count" id="field_studies">...</p>
+                        <p class="stats-type" id="field_studies">Field Studies</p>
                     </a>
                 </li>
             </ul>
