@@ -2,13 +2,13 @@
 
 <@widget name="login" include="assets" />
 
-<#-- 
-        With release 1.6, the home page no longer uses the "browse by" class group/classes display. 
+<#--
+        With release 1.6, the home page no longer uses the "browse by" class group/classes display.
         If you prefer to use the "browse by" display, replace the import statement below with the
         following include statement:
-        
+
             <#include "browse-classgroups.ftl">
-            
+
         Also ensure that the homePage.geoFocusMaps flag in the runtime.properties file is commented
         out.
 -->
@@ -81,12 +81,12 @@
 
 </style>
     </head>
-    
+
     <body class="${bodyClasses!}" onload="${bodyOnload!}">
     <#-- supplies the faculty count to the js function that generates a random row number for the solr query -->
         <@lh.facultyMemberCount  vClassGroups! />
         <#include "identity.ftl">
-       
+
 		<#-- added by Josh 10/9/2015 -->
         <#include "dcomenu.ftl">
 
@@ -102,14 +102,6 @@
                 </div>
                 <div id="slideshow">
                     <div class="slide">
-                        <div id="slide4">
-                            <script type="text/javascript">
-                                $(document).ready(function() { commPubCounts("#slide4",500,280); })
-                            </script>
-                        </div>
-                        <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
-                    </div>
-                    <div class="slide">
                         <div id="slide1">
                             <div class="image">
                                 <a href="${urls.base}/field-studies"><img src="${urls.theme}/images/dco-images/DCO-Field-Study-Map-Slide-copy.jpg" /></a>
@@ -118,26 +110,22 @@
                         </div>
                     </div>
                     <div class="slide">
-                        <div id="slide2">
-                            <script type="text/javascript">
-                                expertiseWordCloud("#slide2",500,300);
-                            </script>
+                        <div id="expertiseWordCloud">
                         </div>
                         <span class="caption">This word cloud represents keywords found in publications contributed to the DCO. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/PubWordCloud.html">Click to enlarge Cloud</a>.</span>
                     </div>
                     <div class="slide">
-                        <div id="slide3">
-                            <script type="text/javascript">
-                                $(document).ready(function() { pubWordCloud("#slide3",500,300); })
-                            </script>
+                        <div id="pubWordCloud">
                         </div>
                         <span class="caption">This word cloud represents areas of expertise of the various members of the DCO community. Pause the slide show to examine further by clicking on one of the words. <a target="_blank" href="/dco-viz/AreasWordCloud.html">Click to enlarge Cloud</a>.</span>
                     </div>
                     <div class="slide">
-                        <div id="slide5">
-                            <script type="text/javascript">
-                                $(document).ready(function() { commMemberCounts("#slide5",500,280); })
-                            </script>
+                        <div id="commPubCounts">
+                        </div>
+                        <span class="caption">This chart represents the number of publications per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChartPublications.html">Click to enlarge Chart</a>.</span>
+                    </div>
+                    <div class="slide">
+                        <div id="commPubCounts">
                         </div>
                         <span class="caption">This chart represents the number of members of the DCO per science community. Pause the slide show to examine further by click on a part of the chart and then clicking more information. <a target="_blank" href="/dco-viz/PieChart.html">Click to enlarge Chart</a>.</span>
                     </div>
@@ -159,11 +147,11 @@
             </div>
             </div>
         </section> <!-- #intro -->
-        
+
         <#include "footer.ftl">
         <#-- builds a json object that is used by js to render the academic departments section -->
         <@lh.listAcademicDepartments />
-    <script>       
+    <script>
         var i18nStrings = {
             researcherString: '${i18n().researcher}',
             researchersString: '${i18n().researchers}',
@@ -184,81 +172,116 @@
             noDepartmentsFound: '${i18n().no_departments_found}'
         };
         // set the 'limmit search' text and alignment
-        if  ( $('input.search-homepage').css('text-align') == "right" ) {       
+        if  ( $('input.search-homepage').css('text-align') == "right" ) {
              $('input.search-homepage').attr("value","${i18n().limit_search} \u2192");
-        }  
+        }
     </script>
     </body>
-<script type="text/javascript">
+    <script type="text/javascript">
+        interval=1;
+        function drawChart(chartType) {
+            switch (chartType) {
+                case "expertiseWordCloud":
+                    expertiseWordCloud("#expertiseWordCloud",500,255);
+                    break;
+                case "pubWordCloud":
+                    pubWordCloud("#pubWordCloud",500,255);
+                    break;
+                case "commPubCounts":
+                    commPubCounts("#commPubCounts",500,225);
+                    break;
+                case "commMemberCounts":
+                    commMemberCounts("#commMemberCounts",500,225);
+                    break;
 
-    function slideShow() {
-        var timer,obj;
+                default:
 
-        obj = {}
-        obj.resume = function() {
-            timerOn = true;
-            timer =
-                setInterval(obj.step, 7000);
-        };
-        obj.pause = function() {
-            clearInterval(timer);
-        };
+            }
+        }
 
-        obj.step = function() {
-            $('#slideshow > div:first')
-                .fadeOut(100)
+        function slideShow() {
+            var timer,obj;
+
+            var elementId = $('#slideshow > div:first > div').attr('id');
+            if ( elementId != 'iframe' ) {
+
+                drawChart(elementId);
+            }
+
+            $("#slideshow > div").filter(":gt(0)").hide();
+
+            $("#slideshow > div").filter(":eq(0)").show();
+
+            obj = {}
+
+            obj.resume = function() {
+                timerOn = true;
+                timer =
+                    setInterval(obj.step, 7000);
+            };
+
+            obj.pause = function() {
+                clearInterval(timer);
+            };
+
+            obj.step = function() {
+                interval++;
+
+                $('#slideshow > div:first')
+                    .hide()
+                    .next()
+                    .fadeIn(100)
+                    .end()
+                    .appendTo('#slideshow');
+
+                var elementId = $('#slideshow > div:first > div').attr('id');
+
+                if ( elementId != 'iframe' && interval < 7 ) {
+
+                    drawChart(elementId);
+                }
+            };
+
+            obj.resume();
+
+            return obj;
+
+        }
+
+        var slideShow = slideShow();
+
+        $("#forward").click(function() {
+            slideShow.step();
+        });
+
+
+        $("#back").click(function() {
+            slideShow.pause();
+            $('#slideshow > div').filter(":last")
+                .hide()
                 .next()
                 .fadeIn(100)
                 .end()
-                .appendTo('#slideshow');
-        };
-        obj.resume();
-        return obj;
+                .prependTo('#slideshow');
 
-    }
+            $("#slideshow > div").filter(":eq(0)").show();
+            $("#slideshow > div").filter(":gt(0)").hide();
 
-    $("#slideshow > div:gt(0)").hide();
-
-    var slideShow = slideShow();
-
-    $("#forward").click(function() {
-
-        $('#slideshow > div:first')
-            .fadeOut(100)
-            .next()
-            .fadeIn(100)
-            .end()
-            .appendTo('#slideshow');
-
-    });
-
-    $("#back").click(function() {
-
-        $('#slideshow > div').filter(":last")
-            .fadeOut(100)
-            .next()
-            .fadeIn(100)
-            .end()
-            .prependTo('#slideshow');
-
-        $("#slideshow > div").filter(":eq(0)").show();
-
-        $("#slideshow > div").filter(":gt(0)").hide();
-
-    });
-
-    $("#pause").click(function() {
-
-        if ($("#pause").text() == "ll") {
-
-            console.log('ll');
-            slideShow.pause();
-            $("#pause").html(">");
-        } else {
-            console.log('>');
             slideShow.resume();
-            $("#pause").html("ll");
-        }
-    });
+        });
+
+        $("#pause").click(function() {
+
+            if ($("#pause").text() == "ll") {
+
+                console.log('ll');
+                slideShow.pause();
+                $("#pause").html(">");
+            } else {
+                console.log('>');
+                slideShow.resume();
+                $("#pause").html("ll");
+            }
+        });
 </script>
 </html>
