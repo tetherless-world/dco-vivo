@@ -77,8 +77,8 @@
                 datasets: "SELECT (COUNT(DISTINCT ?s) AS ?count)" +
                 "WHERE" +
                 "{ " +
-                "?s a vivo:Dataset . " +
-                "?s vitro:mostSpecificType vivo:Dataset ." +
+                "?s a dcodata:Dataset . " +
+                "?s vitro:mostSpecificType dcodata:Dataset ." +
                 "}",
                 projects: "SELECT (COUNT(DISTINCT ?s) AS ?count)" +
                 "WHERE" +
