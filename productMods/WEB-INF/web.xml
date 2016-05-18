@@ -1401,6 +1401,7 @@
   
   <!-- ==================== DCO: upload distribution file ============== -->
  
+  <!--
   <servlet>
     <servlet-name>AddDistributionDatasetController</servlet-name>
     <servlet-class>edu.cornell.mannlib.vitro.webapp.controller.freemarker.AddDistributionDatasetController</servlet-class>
@@ -1418,6 +1419,7 @@
     <servlet-name>DCOAddDatasetController</servlet-name>
     <url-pattern>/DCOAddDatasetController</url-pattern>
   </servlet-mapping>
+  -->
   
    <!-- ==================== DCO: create publication using DOI ============== -->
  
