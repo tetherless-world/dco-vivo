@@ -77,11 +77,11 @@
   </style>
           <script type="text/javascript" src="${urls.base}/js/homePageUtils.js?version=x"></script>
           <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-          <!--<script src="/dco-viz/js/jquery-2.1.4.js"></script>-->
+          <!--<script src="/vivo/themes/dco/js/jquery-2.1.4.js"></script>-->
           <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-          <script src="/dco-viz/js/d3.layout.cloud.js"></script>
-          <script src="/dco-viz/js/d3pie.min.js"></script>
-          <script src="/dco-viz/js/visualizations.js"></script>
+          <script src="/vivo/themes/dco/js/d3.layout.cloud.js"></script>
+          <script src="/vivo/themes/dco/js/d3pie.min.js"></script>
+          <script src="/vivo/themes/dco/js/visualizations.js"></script>
            <script>
               function setClassCount(queryUrl, selector){
                   $.getJSON({
