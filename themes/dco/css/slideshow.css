@@ -1,0 +1,53 @@
+text[id$=_title] {
+transform: translateY(10px);
+}
+
+svg {
+padding-top:10px;
+padding-bottom:10px;
+padding-right:10px;
+padding-left:0px;
+}
+
+#container {
+width: 500px;
+height: 320px;
+}
+#slideshow {
+  position: relative;
+  width: 500px;
+  height: 320px;
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.slide {
+  margin: 1%;
+  /*position: absolute;*/
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+}
+
+
+#slideshow > div > iframe {
+  width:500px;
+  height:320px
+}
+
+#slideshow > div > div {
+  width:500px;
+  height:330px
+}
+
+#slideshow > div > a {
+    margin: 1%;
+  float: right;
+}
+
+#nav {
+  margin: 1%;
+  width: 100%;
+}
+
