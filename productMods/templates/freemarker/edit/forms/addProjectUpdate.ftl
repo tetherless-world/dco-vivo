@@ -44,6 +44,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign modifiedByUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedByUri") />
 <#assign modifiedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedOn") />
 
+<#--FIXME: This doesn't seem to be working because we still see "Create Entry" in the form when editing instead of "Save Changes"-->
 <#if editMode == "edit">
         <#assign titleVerb="${i18n().edit_capitalized}">
         <#assign submitButtonText="${i18n().save_changes}">
