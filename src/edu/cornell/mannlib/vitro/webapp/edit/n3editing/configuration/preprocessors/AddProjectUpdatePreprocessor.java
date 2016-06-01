@@ -28,6 +28,8 @@ public class AddProjectUpdatePreprocessor extends BaseEditSubmissionPreprocessor
 
     }
 
+/* FIXME: This doesn't seem to be called
+*/
     @Override
     public void preprocess(MultiValueEditSubmission inputSubmission, VitroRequest vreq) {
         if(inputSubmission.hasUriValue("publicationUri")) {
