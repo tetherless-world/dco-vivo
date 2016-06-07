@@ -29,8 +29,12 @@ import edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.validators.
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils;
 import edu.cornell.mannlib.vitro.webapp.utils.FrontEndEditingUtils.EditMode;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class AddProjectUpdateGenerator extends VivoBaseGenerator implements EditConfigurationGenerator {
+
+    private static final Log log = LogFactory.getLog(AddProjectUpdatePreprocessor.class);
 
     final static String dco ="http://info.deepcarbon.net/schema#";
     final static String rdfs ="http://www.w3.org/2000/01/rdf-schema#";
@@ -46,6 +50,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     @Override
     public EditConfigurationVTwo getEditConfiguration(VitroRequest vreq, HttpSession session) throws Exception
     {
+        log.debug("in editConfiguration::constructor");
         EditConfigurationVTwo editConfiguration = new EditConfigurationVTwo();
         initBasics(editConfiguration, vreq);
         initPropertyParameters(vreq, session, editConfiguration);
@@ -159,6 +164,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     /**  Get new resources	 */
     private Map<String, String> generateNewResources(VitroRequest vreq) {
+        log.debug("in editConfiguration::generateNewResources");
         String DEFAULT_NS_TOKEN=null; //null forces the default NS
 
         HashMap<String, String> newResources = new HashMap<String, String>();
@@ -169,6 +175,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     /** Set URIS and Literals In Scope and on form and supporting methods	 */
     private void setUrisAndLiteralsInScope(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        log.debug("in editConfiguration::getEditConfiguration");
         HashMap<String, List<String>> urisInScope = new HashMap<String, List<String>>();
         urisInScope.put(editConfiguration.getVarNameForSubject(),
                 Arrays.asList(new String[]{editConfiguration.getSubjectUri()}));
@@ -181,6 +188,7 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     }
 
     private void setUrisAndLiteralsOnForm(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        log.debug("in editConfiguration::setUrisAndLiteralsOnForm");
         List<String> urisOnForm = new ArrayList<String>();
         urisOnForm.add("reportingYearUri");
         urisOnForm.add("publicationUri");
@@ -198,11 +206,12 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     /** Set SPARQL Queries and supporting methods. */
     private void setSparqlQueries(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        log.debug("in editConfiguration::setSparqlQueries");
         editConfiguration.addSparqlForExistingLiteral("title", existingTitleQuery);
         editConfiguration.addSparqlForExistingLiteral("modifiedOn", existingModifiedOn);
         editConfiguration.addSparqlForExistingLiteral("modificationNoteText", existingModificationNoteText);
         editConfiguration.addSparqlForExistingLiteral("updateText", existingUpdateText);
-        
+
         editConfiguration.addSparqlForExistingUris("reportingYearUri", existingReportingYears);
         editConfiguration.addSparqlForExistingUris("modifiedByUri", existingModifiedByUris);
         editConfiguration.addSparqlForExistingUris("publicationUri", existingPublicationUris);
@@ -282,10 +291,12 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     }
 
     public void addFormSpecificData(EditConfigurationVTwo editConfiguration, VitroRequest vreq) {
+        log.debug("in editConfiguration::addFormSpecificData");
         HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
         formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
         //formSpecificData.put("sparqlForPublicationAcFilter", getSparqlForPublicationAcFilter(vreq));
         editConfiguration.setFormSpecificData(formSpecificData);
+        log.debug("formSpecificData: " + formSpecificData.toString());
     }
 
     public String getSparqlForPublicationAcFilter(VitroRequest vreq) {
@@ -308,11 +319,11 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         return editMode;
     }
 
-    final static String existingTitleQuery  =  
+    final static String existingTitleQuery  =
         "SELECT ?title WHERE {\n"+
         "?projectUpdateUri <"+ label +"> ?title . }";
 
-    final static String existingUpdateText  =  
+    final static String existingUpdateText  =
         "PREFIX dco: <" + dco + ">\n"+
         "SELECT ?updateText WHERE {\n"+
         "?projectUpdateUri dco:updateText ?updateText .}";
@@ -350,4 +361,3 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         "SELECT ?instrumentUri WHERE {\n"+
         "?projectUpdateUri dco:updateRefersTo ?instrumentUri .}";
 }
-
