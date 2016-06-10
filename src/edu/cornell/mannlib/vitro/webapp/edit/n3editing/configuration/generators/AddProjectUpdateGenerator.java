@@ -19,6 +19,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.resultset.ResultSetMem;
 
+import edu.cornell.mannlib.vitro.webapp.beans.Individual;
 import edu.cornell.mannlib.vitro.webapp.controller.VitroRequest;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationUtils;
 import edu.cornell.mannlib.vitro.webapp.edit.n3editing.VTwo.EditConfigurationVTwo;
@@ -39,7 +40,8 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
     final static String dco ="http://info.deepcarbon.net/schema#";
     final static String rdfs ="http://www.w3.org/2000/01/rdf-schema#";
     final static String bibo ="http://purl.org/ontology/bibo/";
-    final static String dateTimePred = dco + "submittedOn";
+    final static String assocPub = dco + "associatedPublication";
+    final static String assocInstr = dco + "updateRefersTo";
     final static String dateTimeValueType = vivoCore + "DateTimeValue";
     final static String dateTimeValue = vivoCore + "dateTime";
     final static String dateTimePrecision = vivoCore + "dateTimePrecision";
@@ -294,9 +296,24 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
         log.debug("in editConfiguration::addFormSpecificData");
         HashMap<String, Object> formSpecificData = new HashMap<String, Object>();
         formSpecificData.put("editMode", getEditMode(vreq).name().toLowerCase());
+        formSpecificData.put("publications", getIndividuals(vreq, assocPub));
+        formSpecificData.put("instruments", getIndividuals(vreq, assocInstr));
         //formSpecificData.put("sparqlForPublicationAcFilter", getSparqlForPublicationAcFilter(vreq));
         editConfiguration.setFormSpecificData(formSpecificData);
         log.debug("formSpecificData: " + formSpecificData.toString());
+    }
+
+    public List<HashMap<String,String>> getIndividuals(VitroRequest vreq, String predicate) {
+        Individual individual = EditConfigurationUtils.getObjectIndividual( vreq ) ;
+        List<Individual> individuals = individual.getRelatedIndividuals( predicate );
+        List<HashMap<String, String>> retlist= new ArrayList<HashMap<String, String>>() ;
+        for( Individual i : individuals ) {
+            HashMap<String, String> l = new HashMap<String, String>();
+            l.put( "uri", i.getURI() ) ;
+            l.put( "label", i.getName() ) ;
+            retlist.add( l ) ;
+        }
+        return retlist ;
     }
 
     public String getSparqlForPublicationAcFilter(VitroRequest vreq) {
