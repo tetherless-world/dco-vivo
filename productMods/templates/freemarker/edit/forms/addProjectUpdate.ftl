@@ -401,8 +401,10 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <script type="text/javascript">
 var customFormData = {
-        subjectUri: '${editConfiguration.objectUri}',
-        predicateUri: 'http://info.deepcarbon.net/schema#associatedPublication'
+        <#if editConfiguration.objectUri??>
+            subjectUri: '${editConfiguration.objectUri}',
+            predicateUri: 'http://info.deepcarbon.net/schema#associatedPublication'
+        </#if>
 };
 var i18nStrings = {
     confirmTermDelete: '${i18n().confirm_term_deletion}',
