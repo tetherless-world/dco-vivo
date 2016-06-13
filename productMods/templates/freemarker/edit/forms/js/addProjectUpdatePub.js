@@ -126,7 +126,6 @@ var addProjectUpdatePubForm = {
     },
     generateDeletionN3: function(projectUpdatePubNodeUri) {
     	var n3String = "<" + addProjectUpdatePubForm.subjectUri + "> <" + addProjectUpdatePubForm.predicateUri + "> <" + projectUpdatePubNodeUri + "> .";
-        alert(n3String);
     	return n3String;
     }
 };

@@ -308,12 +308,18 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         multipleTypeNames: {publication: 'publication', instrument: 'instrument'},
         baseHref: '${urls.base}/individual?uri=',
         blankSentinel: '${blankSentinel}',
-        flagClearLabelForExisting: '${flagClearLabelForExisting}'
+        flagClearLabelForExisting: '${flagClearLabelForExisting}',
+        <#if editConfiguration.objectUri??>
+            subjectUri: '${editConfiguration.objectUri}',
+            predicateUri: 'http://info.deepcarbon.net/schema#associatedPublication'
+        </#if>
     };
     var i18nStrings = {
         selectAnExisting: '${i18n().select_an_existing}',
         orCreateNewOne: '${i18n().or_create_new_one}',
-        selectedString: '${i18n().selected}'
+        selectedString: '${i18n().selected}',
+        confirmTermDelete: '${i18n().confirm_term_deletion}',
+        errorPubNotRemoved: '${i18n().error_term_not_deleted}'
     };
 </script>
 
@@ -399,19 +405,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     document.getElementById("modificationNoteText").value = modificationNoteText;
 </script>
 
-<script type="text/javascript">
-var customFormData = {
-        <#if editConfiguration.objectUri??>
-            subjectUri: '${editConfiguration.objectUri}',
-            predicateUri: 'http://info.deepcarbon.net/schema#associatedPublication'
-        </#if>
-};
-var i18nStrings = {
-    confirmTermDelete: '${i18n().confirm_term_deletion}',
-    errorPubNotRemoved: '${i18n().error_term_not_deleted}'
-};
-</script>
-
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addProjectUpdatePub.css" />')}
@@ -422,7 +415,6 @@ ${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://maxcdn.b
 
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
-            '<script type="text/javascript" src="${urls.base}/js/json2.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addProjectUpdatePub.js"></script>',

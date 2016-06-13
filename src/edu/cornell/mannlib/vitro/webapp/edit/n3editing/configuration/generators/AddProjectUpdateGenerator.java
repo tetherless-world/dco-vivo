@@ -305,13 +305,16 @@ public class AddProjectUpdateGenerator extends VivoBaseGenerator implements Edit
 
     public List<HashMap<String,String>> getIndividuals(VitroRequest vreq, String predicate) {
         Individual individual = EditConfigurationUtils.getObjectIndividual( vreq ) ;
-        List<Individual> individuals = individual.getRelatedIndividuals( predicate );
         List<HashMap<String, String>> retlist= new ArrayList<HashMap<String, String>>() ;
-        for( Individual i : individuals ) {
-            HashMap<String, String> l = new HashMap<String, String>();
-            l.put( "uri", i.getURI() ) ;
-            l.put( "label", i.getName() ) ;
-            retlist.add( l ) ;
+        if( individual != null )
+        {
+            List<Individual> individuals = individual.getRelatedIndividuals( predicate );
+            for( Individual i : individuals ) {
+                HashMap<String, String> l = new HashMap<String, String>();
+                l.put( "uri", i.getURI() ) ;
+                l.put( "label", i.getName() ) ;
+                retlist.add( l ) ;
+            }
         }
         return retlist ;
     }
