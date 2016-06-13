@@ -1,6 +1,6 @@
 /* $This file is distributed under the terms of the license in /doc/license.txt$ */
 
-var addProjectUpdatePubForm = {
+var addProjectUpdateInstrForm = {
 
     /* *** Initial page setup *** */
    
@@ -44,7 +44,7 @@ var addProjectUpdatePubForm = {
         this.submit = this.form.find(':submit');
         this.cancel = this.form.find('.cancel'); 
         //remove links
-        this.removeProjectUpdatePubLinks = $('a.premove');
+        this.removeProjectUpdateInstrLinks = $('a.iremove');
         this.errors = $('#errors');
         this.createOwn1 = $('#createOwnOne');
         this.createOwn2 = $('#createOwnTwo');
@@ -54,42 +54,42 @@ var addProjectUpdatePubForm = {
     },
     
     initPage: function() {
-    	this.initProjectUpdatePubData();
+    	this.initProjectUpdateInstrData();
         this.bindEventListeners();
               
     },
     bindEventListeners: function() {
-    	 this.removeProjectUpdatePubLinks.click(function() {
-             addProjectUpdatePubForm.removeExistingProjectUpdatePub(this);
+    	 this.removeProjectUpdateInstrLinks.click(function() {
+             addProjectUpdateInstrForm.removeExistingProjectUpdateInstr(this);
              return false;
          });
     },
     // On page load, associate data with each existing term  element. Then we don't
     // have to keep retrieving data from or modifying the DOM as we manipulate the
     // authorships.
-    initProjectUpdatePubData: function() {
-        $('.existingProjectUpdatePub').each(function(index) {
-            $(this).data(existingProjectUpdatePubsData[index]);    
-            $(this).data('position', index+1);      
+    initProjectUpdateInstrData: function() {
+        $('.existingProjectUpdateInstr').each(function(iindex) {
+            $(this).data(existingProjectUpdateInstrsData[iindex]);    
+            $(this).data('iposition', iindex+1);
         });
     },
     clearSearchResults:function() {
-    	$('#selectedProjectUpdatePub').empty();
+    	$('#selectedProjectUpdateInstr').empty();
     	//Hide the indicator icon if still there
     	$("#indicator").addClass("hidden");
     },
     clearErrors:function() {
-    	addProjectUpdatePubForm.errors.empty();
+    	addProjectUpdateInstrForm.errors.empty();
     },
-    removeExistingProjectUpdatePub: function(link) {
+    removeExistingProjectUpdateInstr: function(link) {
         var removeLast = false,
-            message = addProjectUpdatePubForm.confirmTermDelete;
+            message = addProjectUpdateInstrForm.confirmTermDelete;
             
         if (!confirm(message)) {
             return false;
         }
         
-        if ($(link)[0] === $('.premove:last')[0]) {
+        if ($(link)[0] === $('.iremove:last')[0]) {
             removeLast = true;
         } 
         //Using primitive rdf edit which expects an n3 string for deletion
@@ -98,38 +98,41 @@ var addProjectUpdatePubForm = {
             type: 'POST', 
             data: {
         		additions: '', 
-                retractions: addProjectUpdatePubForm.generateDeletionN3($(link).parents('.existingProjectUpdatePub').data('projectUpdatePubNodeUri'))
+                retractions: addProjectUpdateInstrForm.generateDeletionN3($(link).parents('.existingProjectUpdateInstr').data('projectUpdateInstrNodeUri'))
             },
             dataType: 'json',
             context: link, // context for callback
             complete: function(request, status) {
-                var existingProjectUpdatePub,
-                    projectUpdatePubNodeUri;
+                var existingProjectUpdateInstr,
+                    projectUpdateInstrNodeUri;
             
                 if (status === 'success') {
                     
-                    existingProjectUpdatePub = $(this).parents('.existingProjectUpdatePub');
-                    existingProjectUpdatePub.fadeOut(400, function() {
-                        var numProjectUpdatePubs;
+                    existingProjectUpdateInstr = $(this).parents('.existingProjectUpdateInstr');
+                    existingProjectUpdateInstr.fadeOut(400, function() {
+                        var numProjectUpdateInstrs;
                         // For undo link: add to a deletedAuthorships array
                         // Remove from the DOM                       
                         $(this).remove();
                         // Actions that depend on the author having been removed from the DOM:
-                        numProjectUpdatePubs = $('.existingProjectUpdatePub').length; // retrieve the length after removing authorship from the DOM        
+                        numProjectUpdateInstrs = $('.existingProjectUpdateInstr').length; // retrieve the length after removing authorship from the DOM        
                     });
 
                 } else {
-                    alert(addProjectUpdatePubForm.errorPubNotRemoved);
+                    alert(addProjectUpdateInstrForm.errorInstrNotRemoved);
                 }
             }
         });        
     },
-    generateDeletionN3: function(projectUpdatePubNodeUri) {
-    	var n3String = "<" + addProjectUpdatePubForm.subjectUri + "> <" + addProjectUpdatePubForm.pubPredicateUri + "> <" + projectUpdatePubNodeUri + "> .";
+    generateDeletionN3: function(projectUpdateInstrNodeUri) {
+    	var n3String = "<" + addProjectUpdateInstrForm.subjectUri + "> <" + addProjectUpdateInstrForm.instrPredicateUri + "> <" + projectUpdateInstrNodeUri + "> ."
+    	             + "<" + projectUpdateInstrNodeUri + "> <" + addProjectUpdateInstrForm.instrInvPredicateUri + "> <" + addProjectUpdateInstrForm.subjectUri + "> .";
+        alert(n3String);
     	return n3String;
     }
 };
 
 $(document).ready(function() {   
-    addProjectUpdatePubForm.onLoad();
+    addProjectUpdateInstrForm.onLoad();
 }); 
+

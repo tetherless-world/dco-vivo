@@ -163,6 +163,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </div>
     <script type="text/javascript">
         var existingProjectUpdatePubsData = [];
+        var existingProjectUpdateInstrsData = [];
     </script>
     <#if (publications?size > 0)>
         <p style="display: inline-block;">
@@ -176,7 +177,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
                             <a href="${publication.uri}">${publication.label}</a><input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publication.uri}" />
                         </div>
                         <div class="column projectUpdatePubRemoval">
-                             <a href="${urls.base}/edit/primitiveRdfEdit" class="remove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
+                             <a href="${urls.base}/edit/primitiveRdfEdit" class="premove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
                         </div>
                     </div>
                 </li>
@@ -221,7 +222,22 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </p>
         <ul>
         <#list instruments as instrument>
-                <li style="font-size:10pt;"><a href="${instrument.uri}">${instrument.label}</a><input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrument.uri}" /></li>
+                <li class="existingProjectUpdateInstr projectUpdateInstrsListContainer" style="font-size:10pt;">
+                    <div class="row">
+                        <div class="column projectUpdateInstrLabel">
+                            <a href="${instrument.uri}">${instrument.label}</a><input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrument.uri}" />
+                        </div>
+                        <div class="column projectUpdateInstrRemoval">
+                             <a href="${urls.base}/edit/primitiveRdfEdit" class="iremove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
+                        </div>
+                    </div>
+                </li>
+                <script type="text/javascript">
+                    existingProjectUpdateInstrsData.push({
+                        "projectUpdateInstrNodeUri": "${instrument.uri}",
+                        "projectUpdateInstrLabel": "${instrument.label}"      
+                    });
+                </script>
         </#list>
         </ul>
     </#if>
@@ -311,7 +327,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         flagClearLabelForExisting: '${flagClearLabelForExisting}',
         <#if editConfiguration.objectUri??>
             subjectUri: '${editConfiguration.objectUri}',
-            predicateUri: 'http://info.deepcarbon.net/schema#associatedPublication'
+            pubPredicateUri: 'http://info.deepcarbon.net/schema#associatedPublication',
+            instrPredicateUri: 'http://info.deepcarbon.net/schema#updateRefersTo',
+            instrInvPredicateUri: 'http://info.deepcarbon.net/schema#referencedByUpdate'
         </#if>
     };
     var i18nStrings = {
@@ -319,7 +337,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         orCreateNewOne: '${i18n().or_create_new_one}',
         selectedString: '${i18n().selected}',
         confirmTermDelete: '${i18n().confirm_term_deletion}',
-        errorPubNotRemoved: '${i18n().error_term_not_deleted}'
+        errorPubNotRemoved: '${i18n().error_term_not_deleted}',
+        errorInstrNotRemoved: '${i18n().error_term_not_deleted}'
     };
 </script>
 
@@ -408,6 +427,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addProjectUpdatePub.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addProjectUpdateInstr.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
 
 ${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://idp.deepcarbon.net/idp/dco.css" />')}
@@ -418,5 +438,6 @@ ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/
             '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addProjectUpdatePub.js"></script>',
+            '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addProjectUpdateInstr.js"></script>',
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForMultipleSelection.js"></script>',
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/defaultDataPropertyUtils.js"></script>')}
