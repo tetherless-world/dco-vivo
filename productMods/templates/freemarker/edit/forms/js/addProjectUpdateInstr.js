@@ -127,7 +127,6 @@ var addProjectUpdateInstrForm = {
     generateDeletionN3: function(projectUpdateInstrNodeUri) {
     	var n3String = "<" + addProjectUpdateInstrForm.subjectUri + "> <" + addProjectUpdateInstrForm.instrPredicateUri + "> <" + projectUpdateInstrNodeUri + "> ."
     	             + "<" + projectUpdateInstrNodeUri + "> <" + addProjectUpdateInstrForm.instrInvPredicateUri + "> <" + addProjectUpdateInstrForm.subjectUri + "> .";
-        alert(n3String);
     	return n3String;
     }
 };
