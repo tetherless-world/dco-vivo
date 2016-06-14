@@ -310,11 +310,13 @@ var customForm = {
                 //That will be overwritten if value selected from autocomplete
                 //We do this everytime the user types anything in the autocomplete box
                 customForm.initDefaultBlankURI(selectedObj);
+                /* Ahmed: commented to get rid of previous ac results - pubs/instruments issue
                 if (request.term in customForm.acCache) {
                     // console.log('found term in cache');
                     response(customForm.acCache[request.term]);
                     return;
                 }
+                */
                 // console.log('not getting term from cache');
                 $.ajax({
                     url: customForm.acUrl,
