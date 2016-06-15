@@ -29,6 +29,8 @@ if nothing is selected for that object -->
 Set this flag on the input acUriReceiver where you would like this behavior to occur. -->
 <#assign flagClearLabelForExisting = "flagClearLabelForExisting" />
 
+<#assign publications = editConfiguration.pageData.publications/>
+<#assign instruments = editConfiguration.pageData.instruments/>
 <#assign requiredHint = "<span class='requiredHint'> *</span>" />
 <#assign titleValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "title") />
 <#assign updateTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "updateText") />
@@ -39,19 +41,22 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign instrumentUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "instrumentUri") />
 <#assign instrumentLabelValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "instrumentLabel") />
 <#assign instrumentLabelDisplayValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "instrumentLabelDisplay") />
-<#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + "\"" + editConfiguration.subjectName + "\"" />
 <#assign modificationNoteTextValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modificationNoteText") />
 <#assign modifiedByUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedByUri") />
 <#assign modifiedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedOn") />
 
+<#--FIXME: This doesn't seem to be working because we still see "Create Entry" in the form when editing instead of "Save Changes"-->
 <#if editMode == "edit">
-        <#assign titleVerb="${i18n().edit_capitalized}">
+        <#assign formTitle = "${i18n().edit_project_update}" + " \"" + editConfiguration.subjectName + "\"" />
         <#assign submitButtonText="${i18n().save_changes}">
         <#assign disabledVal="disabled">
+        <#assign modificationType="Modified">
 <#else>
+        <#assign formTitle = "${i18n().create_project_update}" + " ${i18n().for} " + "\"" + editConfiguration.subjectName + "\"" />
         <#assign titleVerb="${i18n().create_capitalized}">
         <#assign submitButtonText="${i18n().create_entry}">
         <#assign disabledVal=""/>
+        <#assign modificationType="Created">
 </#if>
 
 <#assign requiredHint = "<span class='requiredHint'> *</span>" />
@@ -156,6 +161,35 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </p>
         <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}" />
     </div>
+    <script type="text/javascript">
+        var existingProjectUpdatePubsData = [];
+        var existingProjectUpdateInstrsData = [];
+    </script>
+    <#if (publications?size > 0)>
+        <p style="display: inline-block;">
+            <label for="publications">${i18n().current_pu_publications}:</label>
+        </p>
+        <ul>
+        <#list publications as publication>
+                <li class="existingProjectUpdatePub projectUpdatePubsListContainer" style="font-size:10pt;">
+                    <div class="row">
+                        <div class="column projectUpdatePubLabel">
+                            <a href="${publication.uri}">${publication.label}</a><input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publication.uri}" />
+                        </div>
+                        <div class="column projectUpdatePubRemoval">
+                             <a href="${urls.base}/edit/primitiveRdfEdit" class="premove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
+                        </div>
+                    </div>
+                </li>
+                <script type="text/javascript">
+                    existingProjectUpdatePubsData.push({
+                        "projectUpdatePubNodeUri": "${publication.uri}",
+                        "projectUpdatePubLabel": "${publication.label}"      
+                    });
+                </script>
+        </#list>
+        </ul>
+    </#if>
 
     <p style="display: inline-block;">
         <label for="instrument">${i18n().refers_to_instrument}:</label>
@@ -182,6 +216,31 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </p>
         <input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrumentUriValue}" />
     </div>
+    <#if (instruments?size > 0)>
+        <p style="display: inline-block;">
+            <label for="instruments">${i18n().current_pu_instruments}:</label>
+        </p>
+        <ul>
+        <#list instruments as instrument>
+                <li class="existingProjectUpdateInstr projectUpdateInstrsListContainer" style="font-size:10pt;">
+                    <div class="row">
+                        <div class="column projectUpdateInstrLabel">
+                            <a href="${instrument.uri}">${instrument.label}</a><input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrument.uri}" />
+                        </div>
+                        <div class="column projectUpdateInstrRemoval">
+                             <a href="${urls.base}/edit/primitiveRdfEdit" class="iremove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
+                        </div>
+                    </div>
+                </li>
+                <script type="text/javascript">
+                    existingProjectUpdateInstrsData.push({
+                        "projectUpdateInstrNodeUri": "${instrument.uri}",
+                        "projectUpdateInstrLabel": "${instrument.label}"      
+                    });
+                </script>
+        </#list>
+        </ul>
+    </#if>
 
     <#--<p>-->
         <#--<label for="modifiedByUri">${i18n().created_by}:</label>-->
@@ -202,7 +261,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     <#--</p>-->
 
     <p class="submit">
-        <input type="submit" id="submit" value="${i18n().create_entry}" role="button" />
+        <input type="submit" id="submit" value="${submitButtonText}" role="button" />
         <span class="or">${i18n().or}</span>
         <a title="${i18n().cancel_title}" href="${editConfiguration.urlToReturnTo}">${i18n().cancel_link}</a>
     </p>
@@ -265,12 +324,21 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         multipleTypeNames: {publication: 'publication', instrument: 'instrument'},
         baseHref: '${urls.base}/individual?uri=',
         blankSentinel: '${blankSentinel}',
-        flagClearLabelForExisting: '${flagClearLabelForExisting}'
+        flagClearLabelForExisting: '${flagClearLabelForExisting}',
+        <#if editConfiguration.objectUri??>
+            subjectUri: '${editConfiguration.objectUri}',
+            pubPredicateUri: 'http://info.deepcarbon.net/schema#associatedPublication',
+            instrPredicateUri: 'http://info.deepcarbon.net/schema#updateRefersTo',
+            instrInvPredicateUri: 'http://info.deepcarbon.net/schema#referencedByUpdate'
+        </#if>
     };
     var i18nStrings = {
         selectAnExisting: '${i18n().select_an_existing}',
         orCreateNewOne: '${i18n().or_create_new_one}',
-        selectedString: '${i18n().selected}'
+        selectedString: '${i18n().selected}',
+        confirmTermDelete: '${i18n().confirm_term_deletion}',
+        errorPubNotRemoved: '${i18n().error_term_not_deleted}',
+        errorInstrNotRemoved: '${i18n().error_term_not_deleted}'
     };
 </script>
 
@@ -309,20 +377,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     });
 </script>
 
-<script>
-    var date = new Date();
-    // GET YYYY, MM AND DD FROM THE DATE OBJECT
-    var yyyy = date.getFullYear().toString();
-    var mm = (date.getMonth()+1).toString();
-    var dd  = date.getDate().toString();
-    // CONVERT mm AND dd INTO chars
-    var mmChars = mm.split('');
-    var ddChars = dd.split('');
-    // CONCAT THE STRINGS IN YYYY-MM-DD FORMAT
-    var datestring = yyyy + '-' + (mmChars[1]?mm:"0"+mmChars[0]) + '-' + (ddChars[1]?dd:"0"+ddChars[0]);
-    document.getElementById("modifiedOn").defaultValue = datestring;
-</script>
-
 <#assign creatorUrl = "${user.profileUrl}" >
 <#assign defaultNamespace = "${user.defaultNamespace}" >
 <script type="text/javascript">
@@ -353,13 +407,27 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <#assign creatorName = "${user.firstName} ${user.lastName}" >
 <script type="text/javascript">
+    var date = new Date();
+    // GET YYYY, MM AND DD FROM THE DATE OBJECT
+    var yyyy = date.getFullYear().toString();
+    var mm = (date.getMonth()+1).toString();
+    var dd  = date.getDate().toString();
+    // CONVERT mm AND dd INTO chars
+    var mmChars = mm.split('');
+    var ddChars = dd.split('');
+    // CONCAT THE STRINGS IN YYYY-MM-DD FORMAT
+    var datestring = yyyy + '-' + (mmChars[1]?mm:"0"+mmChars[0]) + '-' + (ddChars[1]?dd:"0"+ddChars[0]);
+    document.getElementById("modifiedOn").defaultValue = datestring;
+
     var creatorName = '${creatorName}';
-    var modificationNoteText = "Created by " + creatorName;
+    var modificationNoteText = "${modificationType} on " + datestring + " by " + creatorName;
     document.getElementById("modificationNoteText").value = modificationNoteText;
 </script>
 
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addProjectUpdatePub.css" />')}
+${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addProjectUpdateInstr.css" />')}
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customFormWithAutocomplete.css" />')}
 
 ${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://idp.deepcarbon.net/idp/dco.css" />')}
@@ -369,6 +437,7 @@ ${stylesheets.add('<link rel="stylesheet" type="text/css" href="https://maxcdn.b
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>',
             '<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>',
+            '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addProjectUpdatePub.js"></script>',
+            '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addProjectUpdateInstr.js"></script>',
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocompleteForMultipleSelection.js"></script>',
-            <#--'<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/customFormWithAutocomplete.js"></script>',-->
             '<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/defaultDataPropertyUtils.js"></script>')}

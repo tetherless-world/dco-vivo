@@ -1,0 +1,55 @@
+/* $This file is distributed under the terms of the license in /doc/license.txt$ */
+
+.projectUpdatePubsListContainer {
+	overflow:hidden;
+	width:100%;
+}
+.projectUpdatePubs .column {
+	float:left;
+	padding-right:3px;
+	clear:none !important; /*Overriding customFor div's clearing*/
+}
+
+.projectUpdatePubs .row {
+	clear:both;
+	float:left;
+	border-bottom: 1px solid #5F6464;
+}
+
+.projectUpdatePubLabel {
+	width:500px;
+}
+
+.projectUpdatePubRemoval {
+	width:50px;
+}
+
+form#addProjectUpdatePubForm {
+	display:none;
+}
+
+/*For existing projectUpdatePubs, display will also be tabular with columns*/
+
+.existingProjectUpdatePub .row, .projectUpdatePubHeadings .row {
+	clear:both;
+	float:left;
+}
+
+.existingProjectUpdatePub .column , .projectUpdatePubHeadings .column {
+	float:left;
+	padding-right:3px;
+	clear:none !important; /*Overriding customFor div's clearing*/
+}
+/*label and semantic type if it exists*/
+.existingProjectUpdatePub .projectUpdatePubLabelInfo, .projectUpdatePubHeadings .projectUpdatePubLabelInfo {
+	width:220px;
+}
+
+.existingProjectUpdatePub .projectUpdatePubVocabSource, .projectUpdatePubHeadings .projectUpdatePubVocabSource {
+	width:220px;
+}
+
+.projectUpdatePubHeadings .row {
+	border-bottom: 1px solid #5F6464;
+}
+

@@ -1,0 +1,55 @@
+/* $This file is distributed under the terms of the license in /doc/license.txt$ */
+
+.projectUpdateInstrsListContainer {
+	overflow:hidden;
+	width:100%;
+}
+.projectUpdateInstrs .column {
+	float:left;
+	padding-right:3px;
+	clear:none !important; /*Overriding customFor div's clearing*/
+}
+
+.projectUpdateInstrs .row {
+	clear:both;
+	float:left;
+	border-bottom: 1px solid #5F6464;
+}
+
+.projectUpdateInstrLabel {
+	width:500px;
+}
+
+.projectUpdateInstrRemoval {
+	width:50px;
+}
+
+form#addProjectUpdateInstrForm {
+	display:none;
+}
+
+/*For existing projectUpdateInstrs, display will also be tabular with columns*/
+
+.existingProjectUpdateInstr .row, .projectUpdateInstrHeadings .row {
+	clear:both;
+	float:left;
+}
+
+.existingProjectUpdateInstr .column , .projectUpdateInstrHeadings .column {
+	float:left;
+	padding-right:3px;
+	clear:none !important; /*Overriding customFor div's clearing*/
+}
+/*label and semantic type if it exists*/
+.existingProjectUpdateInstr .projectUpdateInstrLabelInfo, .projectUpdateInstrHeadings .projectUpdateInstrLabelInfo {
+	width:220px;
+}
+
+.existingProjectUpdateInstr .projectUpdateInstrVocabSource, .projectUpdateInstrHeadings .projectUpdateInstrVocabSource {
+	width:220px;
+}
+
+.projectUpdateInstrHeadings .row {
+	border-bottom: 1px solid #5F6464;
+}
+
