@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
+
+<!-- See guidelines in vitro/doc/list_view_configuration_guidelines.txt -->
+
+<list-view-config>
+    <query-select>    
+        PREFIX rdfs:  &lt;http://www.w3.org/2000/01/rdf-schema#&gt;    
+        PREFIX core:  &lt;http://vivoweb.org/ontology/core#&gt;
+        PREFIX afn:   &lt;http://jena.hpl.hp.com/ARQ/function#&gt;
+        PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+        PREFIX vitro: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/0.7#&gt;
+        PREFIX vcard:  &lt;http://www.w3.org/2006/vcard/ns#&gt;
+        PREFIX dco:  &lt;http://info.deepcarbon.net/schema#&gt;
+        PREFIX dcodata:  &lt;http://info.deepcarbon.net/data/schema#&gt;
+                
+        SELECT DISTINCT ?subclass
+                        ?creatorship
+                        ?creator ?creatorName 
+        WHERE {
+                ?subject ?property ?creatorship .
+                OPTIONAL { ?creatorship core:rank ?rank } 
+                OPTIONAL { ?creatorship core:relates ?creator .
+                           ?creator a foaf:Agent .                      
+                           ?creator rdfs:label ?creatorName 
+                
+                OPTIONAL { ?creatorship core:relates ?creator .
+                           ?creator a foaf:Agent .  
+                           ?creator vitro:mostSpecificType ?subclass .
+                           ?subclass rdfs:subClassOf foaf:Agent 
+                } 
+                }
+                OPTIONAL { ?creatorship core:relates ?creator .
+                           ?creator a vcard:Kind .                      
+				           ?creator vcard:hasName ?vName .
+				           ?vName vcard:givenName ?firstName .
+				           ?vName vcard:familyName ?lastName .
+				           OPTIONAL { ?vName core:middleName ?middleName . }
+						   bind ( COALESCE(?firstName, "") As ?firstName1) .
+				           bind ( COALESCE(?middleName, "") As ?middleName1) .
+				           bind ( COALESCE(?lastName, "") As ?lastName1) .
+				           bind (concat(str(?lastName1 + ", "),str(?firstName1),str(?middleName1 + " ")) as ?creatorName) .
+                 
+                OPTIONAL { ?creatorship core:relates ?creator .
+                           ?creator a vcard:Kind .  
+                           ?creator vitro:mostSpecificType ?subclass .
+                           ?subclass rdfs:subClassOf vcard:Kind 
+                } 
+            }
+            <critical-data-required>
+            FILTER ( bound(?creator) )
+            </critical-data-required>
+        } ORDER BY <collated> ?subclass </collated> ?rank ?creatorName   
+    </query-select>
+   
+    <query-construct>
+        PREFIX core: &lt;http://vivoweb.org/ontology/core#&gt;
+        PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; 
+        PREFIX vitro: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/0.7#&gt; 
+        PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; 
+        PREFIX dco:  &lt;http://info.deepcarbon.net/schema#&gt;
+        PREFIX dcodata:  &lt;http://info.deepcarbon.net/data/schema#&gt;
+        CONSTRUCT { 
+            ?subject ?property ?creatorship .
+            ?creatorship a dcodata:Creator .
+            ?creatorship ?creatorshipProperty ?creatorshipValue .
+            ?creatorship core:relates ?creator .
+            ?creator a foaf:Agent .
+            ?creator rdfs:label ?creatorName .
+            ?creator vitro:mostSpecificType ?subclass .
+            ?subclass rdfs:subClassOf foaf:Agent          
+        } WHERE {
+            {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator 
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship ?creatorshipProperty ?creatorshipValue 
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship core:relates ?creator .
+                ?creator a foaf:Agent .                      
+                ?creator rdfs:label ?creatorName  
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship core:relates ?creator .
+                ?creator a foaf:Agent .
+                ?creator rdfs:label ?creatorName . 
+                ?creator vitro:mostSpecificType ?subclass .
+                ?subclass rdfs:subClassOf foaf:Agent
+            }
+        } 
+    </query-construct>
+
+    <query-construct>
+        PREFIX core: &lt;http://vivoweb.org/ontology/core#&gt;
+        PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; 
+        PREFIX vitro: &lt;http://vitro.mannlib.cornell.edu/ns/vitro/0.7#&gt; 
+        PREFIX vcard:  &lt;http://www.w3.org/2006/vcard/ns#&gt; 
+        PREFIX dco:  &lt;http://info.deepcarbon.net/schema#&gt;
+        PREFIX dcodata:  &lt;http://info.deepcarbon.net/data/schema#&gt;
+        CONSTRUCT { 
+            ?subject ?property ?creatorship .
+            ?creatorship a dcodata:Creator .
+            ?creatorship ?creatorshipProperty ?creatorshipValue .
+            ?creatorship core:relates ?creator .
+            ?creator a vcard:Kind .
+            ?creator vcard:hasName ?vName .
+            ?vName vcard:familyName ?lastName . 
+            ?vName vcard:givenName ?firstName . 
+			?vName core:middleName ?middleName .
+            ?creator vitro:mostSpecificType ?subclass .
+            ?subclass rdfs:subClassOf vcard:Kind          
+        } WHERE {
+            {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator 
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship ?creatorshipProperty ?creatorshipValue 
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship core:relates ?creator .
+                ?creator a vcard:Kind .                      
+                ?creator vcard:hasName ?vName .
+                ?vName vcard:familyName ?lastName .  
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship core:relates ?creator .
+                ?creator a vcard:Kind .                      
+                ?creator vcard:hasName ?vName .
+                ?vName vcard:familyName ?lastName . 
+                ?vName vcard:givenName ?firstName . 
+            } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship core:relates ?creator .
+                ?creator a vcard:Kind .                      
+                ?creator vcard:hasName ?vName .
+                ?vName vcard:familyName ?lastName . 
+                ?vName vcard:givenName ?firstName . 
+				?vName core:middleName ?middleName .
+	        } UNION {
+                ?subject ?property ?creatorship .
+                ?creatorship a dcodata:Creator .
+                ?creatorship core:relates ?creator .
+                ?creator a vcard:Kind .
+                ?creator vitro:mostSpecificType ?subclass .
+                ?subclass rdfs:subClassOf vcard:Kind
+            }
+       } 
+    </query-construct>
+    
+    <template>propStatement-datasetInCreator.ftl</template>
+</list-view-config>

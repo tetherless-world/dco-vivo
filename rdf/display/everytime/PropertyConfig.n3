@@ -1797,3 +1797,19 @@ local:landingPageConfig a :ObjectPropertyDisplayConfig ;
     vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.DatasetLandingPageGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
     :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
 
+### creator and contributor on datasets ###
+local:datasetInCreatorContext a :ConfigContext ;
+    :hasConfiguration local:datasetInCreatorConfig ;
+    :configContextFor <http://vivoweb.org/ontology/core#relatedBy> ;
+    :qualifiedByDomain      <http://info.deepcarbon.net/data/schema#Dataset> ;
+    :qualifiedBy      <http://info.deepcarbon.net/schema#Creator> .
+
+local:datasetInCreatorConfig a :ObjectPropertyDisplayConfig ;
+    :listViewConfigFile "listViewConfig-datasetInCreator.xml"^^xsd:string ;
+    :displayName "creators" ;
+    vitro:displayRankAnnot 10;
+    vitro:hiddenFromDisplayBelowRoleLevelAnnot role:public ;
+    vitro:prohibitedFromUpdateBelowRoleLevelAnnot role:public ;
+    vitro:customEntryFormAnnot "edu.cornell.mannlib.vitro.webapp.edit.n3editing.configuration.generators.AddCreatorsToDatasetGenerator"^^<http://www.w3.org/2001/XMLSchema#string> ;
+    :propertyGroup <http://vivoweb.org/ontology#vitroPropertyGroupoverview> .
+
