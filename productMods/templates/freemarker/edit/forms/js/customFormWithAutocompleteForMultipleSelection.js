@@ -217,7 +217,7 @@ var customForm = {
             $.each($acSelection, function() {
                 var uri   = $(this).find('input.acUriReceiver').val(),
                     label = $(this).val();
-                if (uri && uri != ">SUBMITTED VALUE WAS BLANK<") {
+                if (uri && label && uri != ">SUBMITTED VALUE WAS BLANK<") {
                     customForm.showAutocompleteSelection(label, uri, $(this));
                 }
             });

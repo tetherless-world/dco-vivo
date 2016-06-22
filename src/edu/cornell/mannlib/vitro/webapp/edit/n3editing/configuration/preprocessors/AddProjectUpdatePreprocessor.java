@@ -36,7 +36,7 @@ public class AddProjectUpdatePreprocessor extends BaseEditSubmissionPreprocessor
             Map<String, List<String>> urisFromForm = inputSubmission.getUrisFromForm();
             List<String> newURIs = new ArrayList<>();
             for (String uri : urisFromForm.get(uriVariable)) {
-                if (uri != null && uri.length() != 0 && !uri.equals(">SUBMITTED VALUE WAS BLANK<")) {
+                if (uri != null && uri.length() != 0 && !uri.equals(">SUBMITTED VALUE WAS BLANK<") && !uri.startsWith("file:")) {
                     newURIs.add(uri);
                 }
             }
