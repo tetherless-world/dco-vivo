@@ -45,7 +45,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 <#assign modifiedByUriValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedByUri") />
 <#assign modifiedOnValue = lvf.getFormFieldValue(editSubmission, editConfiguration, "modifiedOn") />
 
-<#--FIXME: This doesn't seem to be working because we still see "Create Entry" in the form when editing instead of "Save Changes"-->
 <#if editMode == "edit">
         <#assign formTitle = "${i18n().edit_project_update}" + " \"" + editConfiguration.subjectName + "\"" />
         <#assign submitButtonText="${i18n().save_changes}">
@@ -92,7 +91,6 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
 <h2 xmlns="http://www.w3.org/1999/html">${formTitle}</h2>
 <form class="editForm customForm" id="addProjectUpdate" method="post" enctype="multipart/form-data" action="${submitUrl}">
-
     <p>
         <input type="hidden" name="editKey" id="editKey" value="${editConfiguration.editKey}" role="input">
         <input type="hidden" name="subjectUri" id="subjectUri" value="${editConfiguration.subjectUri}">
@@ -147,10 +145,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <span style="font-size:9pt;">${i18n().associated_publication_note}</span>
     </div>
     <p>
-        <input class="acSelector" size="60"  type="text" id="publicationTitle" name="publicationLabel" acGroupName="publication"  value="${publicationLabelValue}" />
+
+        <input class="acSelector" size="60"  type="text" id="publication" name="publicationLabel" acGroupName="publication"  value="${publicationLabelValue}" />
         <input  class="display" acGroupName="publication" type="hidden" id="publicationDisplay" name="publicationLabelDisplay" value="${publicationLabelDisplayValue}" />
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
+    <div>
     <div class="acSelection" acGroupName="publication" id="pubAcSelection">
         <p class="inline">
             <label>${i18n().selected_publication}:</label>
@@ -159,7 +159,8 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
-        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}" />
+        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value=">SUBMITTED VALUE WAS BLANK<" />
+    </div>
     </div>
     <script type="text/javascript">
         var existingProjectUpdatePubsData = [];
@@ -167,14 +168,15 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </script>
     <#if (publications?size > 0)>
         <p style="display: inline-block;">
-            <label for="publications">${i18n().current_pu_publications}:</label>
+            <label for="publications" style="font-size:12pt;">${i18n().current_pu_publications}:</label>
         </p>
         <ul>
         <#list publications as publication>
+            <#if (!publication.uri?starts_with("file:"))>
                 <li class="existingProjectUpdatePub projectUpdatePubsListContainer" style="font-size:10pt;">
                     <div class="row">
                         <div class="column projectUpdatePubLabel">
-                            <a href="${publication.uri}">${publication.label}</a><input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publication.uri}" />
+                            - <a href="${publication.uri}">${publication.label}</a><input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value="${publicationUriValue}" />
                         </div>
                         <div class="column projectUpdatePubRemoval">
                              <a href="${urls.base}/edit/primitiveRdfEdit" class="premove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
@@ -187,6 +189,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
                         "projectUpdatePubLabel": "${publication.label}"      
                     });
                 </script>
+            </#if>
         </#list>
         </ul>
     </#if>
@@ -206,6 +209,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <a href="#instrumentTitleClear" class="clear" name="instrumentTitleClear" id="instrumentTitleClear"> ${i18n().clear_link}</a>
     </p>
 
+    <div>
     <div class="acSelection" acGroupName="instrument" id="insAcSelection">
         <p class="inline">
             <label>${i18n().selected_instrument}:</label>
@@ -214,18 +218,20 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
             <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
         </p>
-        <input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrumentUriValue}" />
+        <input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value=">SUBMITTED VALUE WAS BLANK<" />
+    </div>
     </div>
     <#if (instruments?size > 0)>
         <p style="display: inline-block;">
-            <label for="instruments">${i18n().current_pu_instruments}:</label>
+            <label for="instruments" style="font-size:12pt;">${i18n().current_pu_instruments}:</label>
         </p>
         <ul>
         <#list instruments as instrument>
+            <#if (!instrument.uri?starts_with("file:"))>
                 <li class="existingProjectUpdateInstr projectUpdateInstrsListContainer" style="font-size:10pt;">
                     <div class="row">
                         <div class="column projectUpdateInstrLabel">
-                            <a href="${instrument.uri}">${instrument.label}</a><input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrument.uri}" />
+                            - <a href="${instrument.uri}">${instrument.label}</a><input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value="${instrumentUriValue}" />
                         </div>
                         <div class="column projectUpdateInstrRemoval">
                              <a href="${urls.base}/edit/primitiveRdfEdit" class="iremove" title="${i18n().remove_capitalized}">${i18n().remove_capitalized}</a>
@@ -238,6 +244,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
                         "projectUpdateInstrLabel": "${instrument.label}"      
                     });
                 </script>
+            </#if>
         </#list>
         </ul>
     </#if>
