@@ -29,6 +29,8 @@ if nothing is selected for that object -->
 Set this flag on the input acUriReceiver where you would like this behavior to occur. -->
 <#assign flagClearLabelForExisting = "flagClearLabelForExisting" />
 
+<#-- These two variables contain the list of publications and instruments to be displayed as the existing publications and instruments. -->
+<#-- There are two variables in the object, uri and label. -->
 <#assign publications = editConfiguration.pageData.publications/>
 <#assign instruments = editConfiguration.pageData.instruments/>
 <#assign requiredHint = "<span class='requiredHint'> *</span>" />
@@ -151,16 +153,17 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         <a href="#publicationTitleClear" class="clear" name="publicationTitleClear" id="publicationTitleClear"> ${i18n().clear_link}</a>
     </p>
     <div>
-    <div class="acSelection" acGroupName="publication" id="pubAcSelection">
-        <p class="inline">
-            <label>${i18n().selected_publication}:</label>
-            <span class="acSelectionInfo"></span>
-            <br />
-            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
-            <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
-        </p>
-        <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value=">SUBMITTED VALUE WAS BLANK<" />
-    </div>
+        <#-- This div gets replicated and assigned for each publication that is added. -->
+        <div class="acSelection" acGroupName="publication" id="pubAcSelection">
+            <p class="inline">
+                <label>${i18n().selected_publication}:</label>
+                <span class="acSelectionInfo"></span>
+                <br />
+                <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
+                <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
+            </p>
+            <input class="acUriReceiver" type="hidden" id="publicationUri" name="publicationUri" value=">SUBMITTED VALUE WAS BLANK<" />
+        </div>
     </div>
     <script type="text/javascript">
         var existingProjectUpdatePubsData = [];
@@ -171,6 +174,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
             <label for="publications" style="font-size:12pt;">${i18n().current_pu_publications}:</label>
         </p>
         <ul>
+        <#-- This displays the existing list of publications. We can't use the built in version because it only allows us to list one of them. -->
         <#list publications as publication>
             <#if (!publication.uri?starts_with("file:"))>
                 <li class="existingProjectUpdatePub projectUpdatePubsListContainer" style="font-size:10pt;">
@@ -210,22 +214,24 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </p>
 
     <div>
-    <div class="acSelection" acGroupName="instrument" id="insAcSelection">
-        <p class="inline">
-            <label>${i18n().selected_instrument}:</label>
-            <span class="acSelectionInfo"></span>
-            <br />
-            <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
-            <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
-        </p>
-        <input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value=">SUBMITTED VALUE WAS BLANK<" />
-    </div>
+        <#-- This div gets replicated and assigned for each instrument that is added. -->
+        <div class="acSelection" acGroupName="instrument" id="insAcSelection">
+            <p class="inline">
+                <label>${i18n().selected_instrument}:</label>
+                <span class="acSelectionInfo"></span>
+                <br />
+                <a href="" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized}</a> ${i18n().or}
+                <a href="#" class="changeSelection" id="changeSelection">${i18n().change_selection})</a>
+            </p>
+            <input class="acUriReceiver" type="hidden" id="instrumentUri" name="instrumentUri" value=">SUBMITTED VALUE WAS BLANK<" />
+        </div>
     </div>
     <#if (instruments?size > 0)>
         <p style="display: inline-block;">
             <label for="instruments" style="font-size:12pt;">${i18n().current_pu_instruments}:</label>
         </p>
         <ul>
+        <#-- This displays the existing list of instruments. We can't use the built in version because it only allows us to list one of them. -->
         <#list instruments as instrument>
             <#if (!instrument.uri?starts_with("file:"))>
                 <li class="existingProjectUpdateInstr projectUpdateInstrsListContainer" style="font-size:10pt;">
@@ -249,6 +255,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
         </ul>
     </#if>
 
+    <#-- Uncomment out elements here to get them to display on the page. For debugging purposes -->
     <#--<p>-->
         <#--<label for="modifiedByUri">${i18n().created_by}:</label>-->
         <input type="hidden" name="modifiedByUri" id="modifiedByUri" label="modifiedByUri" size="30" role="input" value="${modifiedByUriValue}">
