@@ -1,12 +1,12 @@
 <#-- $This file is distributed under the terms of the license in /doc/license.txt$ -->
 
-<#-- Custom form for adding contributors to datasets -->
+<#-- Custom form for adding authors to information resources -->
 
 <#import "lib-vivo-form.ftl" as lvf>
 
 <#--Retrieve certain page specific information information-->
 <#assign newRank = editConfiguration.pageData.newRank />
-<#assign existingContributorInfo = editConfiguration.pageData.existingContributorInfo />
+<#assign existingAuthorInfo = editConfiguration.pageData.existingAuthorInfo />
 <#assign rankPredicate = editConfiguration.pageData.rankPredicate />
 
 <#--If edit submission exists, then retrieve validation errors if they exist-->
@@ -22,9 +22,9 @@
 
 
 
-<#--UL class based on size of existing contributors-->
+<#--UL class based on size of existing authors-->
 <#assign ulClass = ""/>
-<#if (existingContributorInfo?size > 0)>
+<#if (existingAuthorInfo?size > 0)>
 	<#assign ulClass = "class='dd'"/>
 </#if>
 
@@ -49,44 +49,44 @@
     </section>
 </#if>
 
-<h3>${i18n().manage_contributors}</h3>
+<h3>${i18n().manage_authors}</h3>
 
-<ul id="contributorships" ${ulClass}>
+<ul id="authorships" ${ulClass}>
 
 <script type="text/javascript">
-    var contributorshipData = [];
+    var authorshipData = [];
 </script>
 
 
-<#assign contributorHref="/individual?uri=" />
+<#assign authorHref="/individual?uri=" />
 <#--This should be a list of java objects where URI and name can be retrieved-->
-<#list existingContributorInfo as contributorship>
-	<#assign contributorUri = contributorship.contributorUri/>
-	<#assign contributorName = contributorship.contributorName/>
+<#list existingAuthorInfo as authorship>
+	<#assign authorUri = authorship.authorUri/>
+	<#assign authorName = authorship.authorName/>
 
-	<li class="contributorship">
-			<#-- span.contributor will be used in the next phase, when we display a message that the contributor has been
-			removed. That text will replace the a.contributorName, which will be removed. -->    
-			<span class="contributor">
-					<#-- This span is here to assign a width to. We can't assign directly to the a.contributorName,
+	<li class="authorship">
+			<#-- span.author will be used in the next phase, when we display a message that the author has been
+			removed. That text will replace the a.authorName, which will be removed. -->    
+			<span class="author">
+					<#-- This span is here to assign a width to. We can't assign directly to the a.authorName,
 					for the case when it's followed by an em tag - we want the width to apply to the whole thing. -->
-					<span class="contributorNameWrapper">
-							<#if (contributorUri?length > 0)>
-									<span class="contributorName">${contributorName}</span>
+					<span class="authorNameWrapper">
+							<#if (authorUri?length > 0)>
+									<span class="authorName">${authorName}</span>
 								<#else>      
-									<span class="contributorName">${contributorship.contributorshipName}</span><em> (${i18n().no_linked_contributor})</em>
+									<span class="authorName">${authorship.authorshipName}</span><em> (${i18n().no_linked_author})</em>
 							</#if>
 					</span>
 
-					<a href="${urls.base}/edit/primitiveDelete" class="remove" title="${i18n().remove_contributor_link}">${i18n().remove_capitalized}</a>
+					<a href="${urls.base}/edit/primitiveDelete" class="remove" title="${i18n().remove_author_link}">${i18n().remove_capitalized}</a>
 			</span>
 	</li>
 
 	<script type="text/javascript">
-			contributorshipData.push({
-					"contributorshipUri": "${contributorship.contributorshipUri}",
-					"contributorUri": "${contributorUri}",
-					"contributorName": "${contributorName}"                
+			authorshipData.push({
+					"authorshipUri": "${authorship.authorshipUri}",
+					"authorUri": "${authorUri}",
+					"authorName": "${authorName}"                
 			});
 	</script>
 </#list>
@@ -97,20 +97,20 @@
 
 <section id="showAddForm" role="region">
     <input type="hidden" name = "editKey" value="${editKey}" />
-    <input type="submit" id="showAddFormButton" value="${i18n().add_contributor}" role="button" />
+    <input type="submit" id="showAddFormButton" value="${i18n().add_author}" role="button" />
 
     <span class="or"> ${i18n().or} </span>
-    <a id="returnLink" class="cancel" href="${cancelUrl}&url=/individual" title="${i18n().cancel_title}">${i18n().return_to_dataset}</a>
+    <a id="returnLink" class="cancel" href="${cancelUrl}&url=/individual" title="${i18n().cancel_title}">${i18n().return_to_publication}</a>
     <img id="indicatorOne" class="indicator hidden" alt="${i18n().processing_indicator}" src="${urls.base}/images/indicatorWhite.gif" />
 </section> 
 
-<form id="addContributorForm" action ="${submitUrl}" class="customForm noIE67">
-    <h3>${i18n().add_a_contributor}</h3>
+<form id="addAuthorForm" action ="${submitUrl}" class="customForm noIE67">
+    <h3>${i18n().add_an_author}</h3>
 
     <div style="display:inline">
-        <input type="radio" name="contributorType" class="person-radio" value="" role="radio" checked style="display:inline;margin-top:20px" />
+        <input type="radio" name="authorType" class="person-radio" value="" role="radio" checked style="display:inline;margin-top:20px" />
         <label class="inline" for="Person" >${i18n().person_capitalized}</label>
-        <input type="radio" name="contributorType" class="org-radio" value="http://xmlns.com/foaf/0.1/Organization" role="radio" style="display:inline;margin-left:18px" />
+        <input type="radio" name="authorType" class="org-radio" value="http://xmlns.com/foaf/0.1/Organization" role="radio" style="display:inline;margin-left:18px" />
         <label class="inline" for="Organization">${i18n().organization_capitalized}</label>
     </div>
 
@@ -132,10 +132,10 @@
         <input  size="20"  type="text" id="middleName" name="middleName" value="${middleNameValue}"  role="input" />
         </p>
       
-        <div id="selectedContributor" class="acSelection">
+        <div id="selectedAuthor" class="acSelection">
             <p class="inline">
-                <label>${i18n().selected_contributor}:&nbsp;</label>
-                <span class="acSelectionInfo" id="selectedContributorName"></span>
+                <label>${i18n().selected_author}:&nbsp;</label>
+                <span class="acSelectionInfo" id="selectedAuthorName"></span>
                 <a href="${urls.base}/individual?uri=" id="personLink" class="verifyMatch"  title="${i18n().verify_match_capitalized}">(${i18n().verify_match_capitalized})</a>
                 <input type="hidden" id="personUri" name="personUri" value=""  role="input" /> <!-- Field value populated by JavaScript -->
             </p>
@@ -164,7 +164,7 @@
     
         <p class="submit">
             <input type="hidden" name = "editKey" value="${editKey}" role="input" />
-            <input type="submit" id="submit" value="${i18n().add_contributor}" role="button" role="input" />
+            <input type="submit" id="submit" value="${i18n().add_author}" role="button" role="input" />
             
             <span class="or"> ${i18n().or} </span>
             
@@ -185,11 +185,11 @@ var customFormData = {
     reorderUrl: '${urls.base}/edit/reorder'
 };
 var i18nStrings = {
-    contributorNameWrapperTitle: '${i18n().drag_drop_reorder_contributors}',
-    reorderContributorsAlert: '${i18n().reordering_contributors_failed}',
-    removeContributorshipMessage: '${i18n().confirm_contributor_removal}',
-    removeContributorshipAlert: '${i18n().error_processing_contributor_request}',
-    contributorTypeText: '${i18n().contributor_capitalized}',
+    authorNameWrapperTitle: '${i18n().drag_drop_reorder_authors}',
+    reorderAuthorsAlert: '${i18n().reordering_authors_failed}',
+    removeAuthorshipMessage: '${i18n().confirm_author_removal}',
+    removeAuthorshipAlert: '${i18n().error_processing_author_request}',
+    authorTypeText: '${i18n().author_capitalized}',
     organizationTypeText: '${i18n().organization_capitalized}',
     helpTextSelect: '${i18n().select_an_existing}',
     helpTextAdd: '${i18n().or_add_new_one}'
@@ -199,10 +199,10 @@ var i18nStrings = {
 ${stylesheets.add('<link rel="stylesheet" href="${urls.base}/js/jquery-ui/css/smoothness/jquery-ui-1.8.9.custom.css" />',
 					'<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/customForm.css" />',
 					'<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/autocomplete.css" />',
-					'<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addContributorsToDataset.css" />')}
+					'<link rel="stylesheet" href="${urls.base}/templates/freemarker/edit/forms/css/addAuthorsToInformationResource.css" />')}
 
 
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/jquery-ui/js/jquery-ui-1.8.9.custom.min.js"></script>')}
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/customFormUtils.js"></script>')}
 ${scripts.add('<script type="text/javascript" src="${urls.base}/js/browserUtils.js"></script>')}
-${scripts.add('<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addContributorsToDataset.js"></script>')}
+${scripts.add('<script type="text/javascript" src="${urls.base}/templates/freemarker/edit/forms/js/addAuthorsToInformationResource.js"></script>')}
