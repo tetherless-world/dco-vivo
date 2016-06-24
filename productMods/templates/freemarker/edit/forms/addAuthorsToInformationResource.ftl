@@ -119,17 +119,17 @@
     		should be visible even when first name/middle name are not, the parents should be separate for each field-->
     		<p class="inline">
         <label for="lastName">${i18n().last_name} <span class='requiredHint'> *</span></label>
-        <input class="acSelector" size="35"  type="text" id="lastName" name="lastName" value="${lastNameValue}" role="input" />
+        <input class="acSelector" size="60"  type="text" id="lastName" name="lastName" value="${lastNameValue}" role="input" />
         </p>
 				
 				<p class="inline">
         <label for="firstName">${i18n().first_name} ${requiredHint} ${initialHint}</label>
-        <input  size="20"  type="text" id="firstName" name="firstName" value="${firstNameValue}"  role="input" />
+        <input  size="60"  type="text" id="firstName" name="firstName" value="${firstNameValue}"  role="input" />
         </p>
         
 				<p class="inline">
 				<label for="middleName">${i18n().middle_name} <span class='hint'>(${i18n().initial_okay})</span></label>
-        <input  size="20"  type="text" id="middleName" name="middleName" value="${middleNameValue}"  role="input" />
+        <input  size="60"  type="text" id="middleName" name="middleName" value="${middleNameValue}"  role="input" />
         </p>
       
         <div id="selectedAuthor" class="acSelection">
