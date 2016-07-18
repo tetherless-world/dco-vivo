@@ -83,7 +83,8 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			return new TemplateResponseValues("error-message.ftl", map);
 		} else {
 			try {
-				if (doi.isEmpty()) throw new PublicationMetadataImportException("No DOI was entered.");
+                // Commented because a missing doi is now handled in addPublicationToPerson.ftl
+                //if (doi.isEmpty()) throw new NullPointerException("No DOI was entered.");
 
 				//String editKey = vreq.getParameter("editKey");
 				//EditConfigurationVTwo editConfig = EditConfigurationUtils.getEditConfiguration(vreq, editKey);
