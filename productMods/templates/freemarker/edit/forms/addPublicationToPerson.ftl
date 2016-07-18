@@ -345,16 +345,9 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
     <script type="text/javascript">
     (function() {
-        $('#addpublicationToPersonUsingDOI > input').keyup(function() {
+        $('#doi').keyup(function() {
 
-            var empty = false;
-            $('#addpublicationToPersonUsingDOI > input').each(function() {
-                if ($(this).val() == '') {
-                    empty = true;
-                }
-            });
-
-            if (empty) {
+            if ($(#doi).val() == '') {
                 $('#submitDOI').attr('disabled', 'disabled');
             } else {
                 $('#submitDOI').removeAttr('disabled');
