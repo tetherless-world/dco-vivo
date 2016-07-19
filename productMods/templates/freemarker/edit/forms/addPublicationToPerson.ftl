@@ -310,7 +310,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
 
     <form id="addpublicationToPersonUsingDOI" class="customForm noIE67" action="${urls.base}/addPublicationUsingDOIStepOne" role="add publication">
     	<input type="hidden" name="editKey" value="${editKey}"/>
-    	<input type="submit" id="submitDOI" value="Or import metadata via DOI"/>
+    	<input type="submit" id="submitDOI" value="Or import metadata via DOI" disabled="disabled"/>
     	<input type="text" class="acSelector acSelectorWithHelpText" name="doi" id="doi" label="DOI" size="30" value="Enter a DOI. E.g. 10.1109/TGRS.2013.2262179"/>
     </form>
 
@@ -344,7 +344,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     </script>
 
     <script type="text/javascript">
-    (function() {
+    $(document).ready(function() {
         $('#doi').keyup(function() {
 
             if ($(#doi).val() == '') {
@@ -353,7 +353,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
                 $('#submitDOI').removeAttr('disabled');
             }
         });
-    })()
+    });
     </script>
 
 </section>
