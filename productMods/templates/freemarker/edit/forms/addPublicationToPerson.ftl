@@ -347,7 +347,7 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
     $(document).ready(function() {
         $('#doi').keyup(function() {
 
-            if ($(#doi).val() == '') {
+            if ($(this).val() == '') {
                 $('#submitDOI').attr('disabled', 'disabled');
             } else {
                 $('#submitDOI').removeAttr('disabled');
