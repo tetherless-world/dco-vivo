@@ -316,7 +316,7 @@ input[type="submit"]:disabled {
 
     <form id="addpublicationToPersonUsingDOI" class="customForm noIE67" action="${urls.base}/addPublicationUsingDOIStepOne" role="add publication">
     	<input type="hidden" name="editKey" value="${editKey}"/>
-    	<input type="submit" id="submitDOI" value="Or import metadata via DOI" disabled="disabled"/>
+    	<input type="submit" id="submit" value="Or import metadata via DOI" disabled="disabled"/>
     	<input type="text" class="acSelector acSelectorWithHelpText" name="doi" id="doi" label="DOI" size="30" value="Enter a DOI. E.g. 10.1109/TGRS.2013.2262179"/>
     </form>
 
