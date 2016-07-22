@@ -124,6 +124,12 @@ Set this flag on the input acUriReceiver where you would like this behavior to o
  <div>${i18n().unable_to_handle_publication_editing}</div>
 <#else>
 
+<style>
+input[type="submit"]:disabled {
+    background: #dddddd !important;
+}
+</style>
+
 <section id="addPublicationToPerson" role="region">
 
 <@lvf.unsupportedBrowser urls.base/>
