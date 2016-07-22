@@ -354,9 +354,9 @@ input[type="submit"]:disabled {
         $('#doi').keyup(function() {
 
             if ($(this).val() == '') {
-                $('#submitDOI').attr('disabled', 'disabled');
+                $('#addpublicationToPersonUsingDOI > input[type="submit"]').attr('disabled', 'disabled');
             } else {
-                $('#submitDOI').removeAttr('disabled');
+                $('#addpublicationToPersonUsingDOI > input[type="submit"]').removeAttr('disabled');
             }
         });
     });
