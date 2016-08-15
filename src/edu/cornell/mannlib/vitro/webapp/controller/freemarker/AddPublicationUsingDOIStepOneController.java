@@ -114,11 +114,9 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		        	templateData.put("doi", doi);
 				templateData.put("metadata", metadataMap);
 				templateData.put("venueTypes", venueTypes);
-<<<<<<< Updated upstream
-=======
+
                 templateData.put("volume", venueTypes);
                 templateData.put("issue", venueTypes);
->>>>>>> Stashed changes
 
 				String template = "addPublicationUsingDOIStepOne.ftl";
 				return new TemplateResponseValues(template, templateData);
@@ -191,8 +189,6 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		// Publication year
 		if (json.has("issued")) metadata.put("publicationYears", getPublicationYearsFromJSON(json));
 		else metadata.put("publicationYear", null);
-<<<<<<< Updated upstream
-=======
         // Volume
         if (json.has("volume")) metadata.put("volume", getVolumeFromJSON(json));
         else metadata.put("volume", null);
@@ -202,7 +198,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
         // // Pages
 		// if (json.has("pages")) metadata.put("pages", getPagesFromJSON(json));
 		// else metadata.put("pages", null);
->>>>>>> Stashed changes
+
 
 		return metadata;
 	}
@@ -281,8 +277,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		return years;
 	}
 
-<<<<<<< Updated upstream
-=======
+
     private List<String> getVolumeFromJSON(JSONObject json) {
 		List<String> volume = new ArrayList<String> ();
 		if (!json.isNull("volume")) {
@@ -309,7 +304,6 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		return issue;
 	}
 
->>>>>>> Stashed changes
 	private void matchAuthor(Map<String, Object> author, ServletContext ctx) {
 		String familyName = (String) author.get("family");
 		String processedFamilyName = familyName.replaceAll("\\.", "").toLowerCase();
