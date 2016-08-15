@@ -90,6 +90,30 @@
         </select>
     </p>
 	</#if>
+    <p>
+		<label for="volume">Volume</label>
+		<#if metadata.volume?has_content>
+			<select id="volumeSelector" name="volume" acGroup="publication">
+				<#list metadata.volume as volume>
+					<option value="${volume}">${volume}</option>
+				</#list>
+			</select>
+		<#else>
+			<input class="acSelector" size="100"  type="text" id="volume" name="volume" acGroupName="publication" value="" />
+		</#if>
+	</p>
+    <p>
+		<label for="issue">Issue</label>
+		<#if metadata.issue?has_content>
+			<select id="issueSelector" name="issue" acGroup="publication">
+				<#list metadata.issue as issue>
+					<option value="${issue}">${issue}</option>
+				</#list>
+			</select>
+		<#else>
+			<input class="acSelector" size="100"  type="text" id="issue" name="issue" acGroupName="publication" value="" />
+		</#if>
+	</p>
 	<p>
 		<input type="hidden" name="doi" value="${doi}"/>
 		<input type="submit" id="submit" value="Create an entry with these metadata"/>

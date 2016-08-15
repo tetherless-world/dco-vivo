@@ -105,12 +105,20 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 				HashMap<String, Object> venue = (HashMap<String, Object>) metadataMap.get("venue");
 				matchVenue(venue, ctx);
 
+                HashMap<String, Object> volume = (HashMap<String, Object>) metadataMap.get("volume");
+                HashMap<String, Object> issue = (HashMap<String, Object>) metadataMap.get("issue");
+
 				Map<String, Object> templateData = new HashMap<String, Object>();
 	//			templateData.put("editConfiguration", editConfig);
 				templateData.put("pubTypes", pubTypes);
 		        	templateData.put("doi", doi);
 				templateData.put("metadata", metadataMap);
 				templateData.put("venueTypes", venueTypes);
+<<<<<<< Updated upstream
+=======
+                templateData.put("volume", venueTypes);
+                templateData.put("issue", venueTypes);
+>>>>>>> Stashed changes
 
 				String template = "addPublicationUsingDOIStepOne.ftl";
 				return new TemplateResponseValues(template, templateData);
@@ -183,6 +191,18 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		// Publication year
 		if (json.has("issued")) metadata.put("publicationYears", getPublicationYearsFromJSON(json));
 		else metadata.put("publicationYear", null);
+<<<<<<< Updated upstream
+=======
+        // Volume
+        if (json.has("volume")) metadata.put("volume", getVolumeFromJSON(json));
+        else metadata.put("volume", null);
+        // Issue
+		if (json.has("issue")) metadata.put("issue", getIssueFromJSON(json));
+		else metadata.put("issue", null);
+        // // Pages
+		// if (json.has("pages")) metadata.put("pages", getPagesFromJSON(json));
+		// else metadata.put("pages", null);
+>>>>>>> Stashed changes
 
 		return metadata;
 	}
@@ -261,6 +281,35 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		return years;
 	}
 
+<<<<<<< Updated upstream
+=======
+    private List<String> getVolumeFromJSON(JSONObject json) {
+		List<String> volume = new ArrayList<String> ();
+		if (!json.isNull("volume")) {
+			try {
+				volume.add(json.getString("volume"));
+			} catch (JSONException e) {
+				volume = null;
+				e.printStackTrace();
+			}
+		} else volume = null;
+		return volume;
+	}
+
+    private List<String> getIssueFromJSON(JSONObject json) {
+		List<String> issue = new ArrayList<String> ();
+		if (!json.isNull("issue")) {
+			try {
+				issue.add(json.getString("issue"));
+			} catch (JSONException e) {
+				issue = null;
+				e.printStackTrace();
+			}
+		} else issue = null;
+		return issue;
+	}
+
+>>>>>>> Stashed changes
 	private void matchAuthor(Map<String, Object> author, ServletContext ctx) {
 		String familyName = (String) author.get("family");
 		String processedFamilyName = familyName.replaceAll("\\.", "").toLowerCase();
