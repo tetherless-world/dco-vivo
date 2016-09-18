@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,9 @@ import edu.rpi.twc.dcods.vivo.ServerInfo;
 import edu.rpi.twc.dcods.vivo.SparqlQueryUtils;
 
 public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServlet {
-	
+
+	static final Log log = LogFactory.getLog(AddPublicationUsingDOIStepTwoController.class );
+
 	private static final long serialVersionUID = 1L;
 	private String returnURL ;
 
@@ -117,6 +121,12 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 			if (key.equals("pubYear") && !value.isEmpty()) {
 				triples += "?newPub dco:yearOfPublication \"" + value + "\"^^xsd:gYear . \n";
 			}
+			if (key.equals("volume") && !value.isEmpty()) {
+				triples += "?newPub bibo:volume \"" + value + "\" . \n";
+			}
+			if (key.equals("issue") && !value.isEmpty()) {
+				triples += "?newPub bibo:issue \"" + value + "\" . \n";
+			}
 			if (key.equals("venue") && !value.isEmpty()) {
 				if (value.startsWith("http:")) {
 					triples += "?newPub vivo:hasPublicationVenue <" + value + "> . \n" +
@@ -185,11 +195,19 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 				triples = triples.replaceAll("\\?\\bnewAuthorship\\b", "<" + authorshipURI + ">");
 			}
 		}
+		log.info("generated triples " + triples);
+
 		String publicationURI = generateIndividualURI(ctx);
+		log.info("generated uri " + publicationURI);
+
 		DCOId dcoId = new DCOId();
 		dcoId.generateDCOId(publicationURI, ctx);
 		String pubDCOId = dcoId.getDCOId();
+		log.info("generated dcoid for publication " + pubDCOId);
+
 		String pubDCOIdLabel = pubDCOId.substring(25);
+		log.info("dcoid label is " + pubDCOIdLabel);
+
 		triples += "?newPub dco:hasDcoId <" + pubDCOId + "> . \n" +
 			  "<" + pubDCOId + "> a dco:DCOID . \n" +
 			  "<" + pubDCOId + "> rdfs:label \"" + pubDCOIdLabel + "\" . \n" +

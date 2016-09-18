@@ -105,8 +105,8 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 				HashMap<String, Object> venue = (HashMap<String, Object>) metadataMap.get("venue");
 				matchVenue(venue, ctx);
 
-                HashMap<String, Object> volume = (HashMap<String, Object>) metadataMap.get("volume");
-                HashMap<String, Object> issue = (HashMap<String, Object>) metadataMap.get("issue");
+                String volume = (String)metadataMap.get("volume");
+                String issue = (String)metadataMap.get("issue");
 
 				Map<String, Object> templateData = new HashMap<String, Object>();
 	//			templateData.put("editConfiguration", editConfig);
@@ -115,8 +115,8 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 				templateData.put("metadata", metadataMap);
 				templateData.put("venueTypes", venueTypes);
 
-                templateData.put("volume", venueTypes);
-                templateData.put("issue", venueTypes);
+                templateData.put("volume", volume);
+                templateData.put("issue", issue);
 
 				String template = "addPublicationUsingDOIStepOne.ftl";
 				return new TemplateResponseValues(template, templateData);
@@ -143,6 +143,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			    builder.append(line).append("\n");
 			}
 			if (builder.toString().startsWith("{")) {
+                log.info("crossref returned " + builder.toString());
 				JSONTokener tokener = new JSONTokener(builder.toString());
 				JSONObject json = new JSONObject(tokener);
 				if (json.has("message")) {
@@ -278,29 +279,29 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 	}
 
 
-    private List<String> getVolumeFromJSON(JSONObject json) {
-		List<String> volume = new ArrayList<String> ();
-		if (!json.isNull("volume")) {
+    private String getVolumeFromJSON(JSONObject json) {
+		String volume = null;
+		if (json.has("volume")) {
 			try {
-				volume.add(json.getString("volume"));
+				volume = json.getString("volume");
 			} catch (JSONException e) {
 				volume = null;
-				e.printStackTrace();
+				log.error("Failed to get volume from CrossRef " + e.getMessage());
 			}
-		} else volume = null;
+		}
 		return volume;
 	}
 
-    private List<String> getIssueFromJSON(JSONObject json) {
-		List<String> issue = new ArrayList<String> ();
-		if (!json.isNull("issue")) {
+    private String getIssueFromJSON(JSONObject json) {
+		String issue = null;
+		if (json.has("issue")) {
 			try {
-				issue.add(json.getString("issue"));
+				issue = json.getString("issue");
 			} catch (JSONException e) {
 				issue = null;
-				e.printStackTrace();
+				log.error("Failed to get issue from CrossRef " + e.getMessage());
 			}
-		} else issue = null;
+		}
 		return issue;
 	}
 

@@ -93,25 +93,17 @@
     <p>
 		<label for="volume">Volume</label>
 		<#if metadata.volume?has_content>
-			<select id="volumeSelector" name="volume" acGroup="publication">
-				<#list metadata.volume as volume>
-					<option value="${volume}">${volume}</option>
-				</#list>
-			</select>
+			<input class="doitext" size="100"  type="text" id="volume" name="volume" acGroupName="publication" value="${volume}" />
 		<#else>
-			<input class="acSelector" size="100"  type="text" id="volume" name="volume" acGroupName="publication" value="" />
+			<input class="doitext" size="100"  type="text" id="volume" name="volume" acGroupName="publication" value="" />
 		</#if>
 	</p>
     <p>
 		<label for="issue">Issue</label>
 		<#if metadata.issue?has_content>
-			<select id="issueSelector" name="issue" acGroup="publication">
-				<#list metadata.issue as issue>
-					<option value="${issue}">${issue}</option>
-				</#list>
-			</select>
+			<input class="doitext" size="100"  type="text" id="issue" name="issue" acGroupName="publication" value="${issue}" />
 		<#else>
-			<input class="acSelector" size="100"  type="text" id="issue" name="issue" acGroupName="publication" value="" />
+			<input class="doitext" size="100"  type="text" id="issue" name="issue" acGroupName="publication" value="" />
 		</#if>
 	</p>
 	<p>
