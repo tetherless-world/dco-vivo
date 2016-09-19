@@ -106,6 +106,14 @@
 			<input class="doitext" size="100"  type="text" id="issue" name="issue" acGroupName="publication" value="" />
 		</#if>
 	</p>
+    <p>
+        <label for="issue">Pages</label>
+        <#if metadata.issue?has_content>
+            <input class="doitext" size="100"  type="text" id="pages" name="pages" acGroupName="publication" value="${pages}" />
+        <#else>
+            <input class="doitext" size="100"  type="text" id="pages" name="pages" acGroupName="publication" value="" />
+        </#if>
+    </p>
 	<p>
 		<input type="hidden" name="doi" value="${doi}"/>
 		<input type="submit" id="submit" value="Create an entry with these metadata"/>

@@ -124,6 +124,17 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 			if (key.equals("volume") && !value.isEmpty()) {
 				triples += "?newPub bibo:volume \"" + value + "\" . \n";
 			}
+			if (key.equals("pages") && !value.isEmpty()) {
+				// here we don't just have one potential value we have two. Could be start-end or just one page start
+				if(value.indexOf('-') != -1) {
+					String start = value.substring(0,value.indexOf('-'));
+					String end = value.substring(value.indexOf('-') + 1);
+					triples += "?newPub bibo;pageStart \"" + start + "\" . \n";
+					triples += "?newPub bibo;pageEnd \"" + end + "\" . \n";
+				} else {
+					triples += "?newPub bibo:pageStart \"" + value + "\" . \n";
+				}
+			}
 			if (key.equals("issue") && !value.isEmpty()) {
 				triples += "?newPub bibo:issue \"" + value + "\" . \n";
 			}

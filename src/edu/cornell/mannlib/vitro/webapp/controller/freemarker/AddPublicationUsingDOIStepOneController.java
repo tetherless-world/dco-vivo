@@ -107,6 +107,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 
                 String volume = (String)metadataMap.get("volume");
                 String issue = (String)metadataMap.get("issue");
+				String pages = (String)metadataMap.get("pages");
 
 				Map<String, Object> templateData = new HashMap<String, Object>();
 	//			templateData.put("editConfiguration", editConfig);
@@ -117,6 +118,7 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 
                 templateData.put("volume", volume);
                 templateData.put("issue", issue);
+				templateData.put("pages", pages);
 
 				String template = "addPublicationUsingDOIStepOne.ftl";
 				return new TemplateResponseValues(template, templateData);
@@ -197,8 +199,8 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 		if (json.has("issue")) metadata.put("issue", getIssueFromJSON(json));
 		else metadata.put("issue", null);
         // // Pages
-		// if (json.has("pages")) metadata.put("pages", getPagesFromJSON(json));
-		// else metadata.put("pages", null);
+		if (json.has("pages")) metadata.put("pages", getPagesFromJSON(json));
+		else metadata.put("pages", null);
 
 
 		return metadata;
@@ -303,6 +305,19 @@ public class AddPublicationUsingDOIStepOneController extends EditRequestDispatch
 			}
 		}
 		return issue;
+	}
+
+	private String getPagesFromJSON(JSONObject json) {
+		String pages = null;
+		if (json.has("page")) {
+			try {
+				pages = json.getString("page");
+			} catch (JSONException e) {
+				pages = null;
+				log.error("Failed to get issue from CrossRef " + e.getMessage());
+			}
+		}
+		return pages;
 	}
 
 	private void matchAuthor(Map<String, Object> author, ServletContext ctx) {
