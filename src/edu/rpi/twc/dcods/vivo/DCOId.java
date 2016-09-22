@@ -81,17 +81,17 @@ public class DCOId {
 	 */
 	private void operate( String urlParameters, String type, String command, ServletContext ctx )
 	{
-        log.info("DCOId operate command = " + command);
-        log.info("parameters = " + urlParameters);
-        log.info("type = " + type);
-		log.info("the current id is "+this.dcoId);
+        log.debug("DCOId operate command = " + command);
+        log.debug("parameters = " + urlParameters);
+        log.debug("type = " + type);
+		log.debug("the current id is "+this.dcoId);
 
 		urlParameters = "<handle><id>" + this.cleanDCOID(this.dcoId)+ "</id><type>" + type + "</type><value>" + urlParameters + "</value></handle>";
-		log.info("request string = " + urlParameters);
+		log.debug("request string = " + urlParameters);
 
 		String handleURL = ServerInfo.getInstance().getHandleURL( ctx ) ;
 		String requestUrl = handleURL + command;
-		log.info("  request url: " + requestUrl);
+		log.debug("request url: " + requestUrl);
 
 		URL url;
 	    HttpURLConnection connection = null;  
@@ -122,7 +122,7 @@ public class DCOId {
 	    	wr.flush ();
 	    	wr.close ();
 
-			log.info("connection returned code " + connection.getResponseCode() + " " + connection.getResponseMessage());
+			log.info("handle connection returned code " + connection.getResponseCode() + " " + connection.getResponseMessage());
 
 	    	//Get Response
 	    	InputStream is = connection.getInputStream();
@@ -142,7 +142,7 @@ public class DCOId {
 
 	    	//Parse xml to get the <id> property
 	    	String xmlString = response.toString();
-			log.info("response from dco handle service is " + xmlString);
+			log.debug("response from dco handle service is " + xmlString);
 
 	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    	DocumentBuilder builder;
@@ -165,7 +165,7 @@ public class DCOId {
 				throw new Exception("Response from handle service is not xml");
 			}
 	    } catch (Exception e) {
-			log.info("Failed to generate a DCOId " + e.getMessage());
+			log.error("Failed to generate a DCOId " + e.getMessage());
 	    	e.printStackTrace();
 	    } finally {
 	    	if(connection != null) {
