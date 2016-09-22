@@ -108,7 +108,7 @@
 	</p>
     <p>
         <label for="issue">Pages</label>
-        <#if metadata.issue?has_content>
+        <#if metadata.pages?has_content>
             <input class="doitext" size="100"  type="text" id="pages" name="pages" acGroupName="publication" value="${pages}" />
         <#else>
             <input class="doitext" size="100"  type="text" id="pages" name="pages" acGroupName="publication" value="" />
