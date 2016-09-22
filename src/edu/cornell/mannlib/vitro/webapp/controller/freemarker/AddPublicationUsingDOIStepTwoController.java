@@ -129,10 +129,10 @@ public class AddPublicationUsingDOIStepTwoController extends FreemarkerHttpServl
 				if(value.indexOf('-') != -1) {
 					String start = value.substring(0,value.indexOf('-'));
 					String end = value.substring(value.indexOf('-') + 1);
-					triples += "?newPub bibo:pageStart \"" + start + "\" . \n";
-					triples += "?newPub bibo:pageEnd \"" + end + "\" . \n";
+					triples += "?newPub bibo:pageStart \"" + start.trim() + "\" . \n";
+					triples += "?newPub bibo:pageEnd \"" + end.trim() + "\" . \n";
 				} else {
-					triples += "?newPub bibo:pageStart \"" + value + "\" . \n";
+					triples += "?newPub bibo:pageStart \"" + value.trim() + "\" . \n";
 				}
 			}
 			if (key.equals("issue") && !value.isEmpty()) {
