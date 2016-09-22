@@ -108,6 +108,14 @@ input[type="password"] {
     margin-bottom: .8em;
 }
 
+input.doitext {
+    width: 100px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    padding: .2em .2em .2em .5em;
+}
+
 input.block {
     margin-bottom: 20px;
 }

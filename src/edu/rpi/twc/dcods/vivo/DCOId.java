@@ -12,12 +12,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 public class DCOId {
-	
+
+	static final Log log = LogFactory.getLog(DCOId.class );
+
 	private String dcoId;
 	public final String createCommand = "create";
 	public final String updateCommand = "update";
@@ -77,22 +81,28 @@ public class DCOId {
 	 */
 	private void operate( String urlParameters, String type, String command, ServletContext ctx )
 	{
+        log.debug("DCOId operate command = " + command);
+        log.debug("parameters = " + urlParameters);
+        log.debug("type = " + type);
+		log.debug("the current id is "+this.dcoId);
 
-        System.out.println("DCOId operate " + command);
-        System.out.println("  parameters = " + urlParameters);
-        System.out.println("  type = " + type);
-		System.out.println("  the current id is "+this.dcoId);
 		urlParameters = "<handle><id>" + this.cleanDCOID(this.dcoId)+ "</id><type>" + type + "</type><value>" + urlParameters + "</value></handle>";
-		System.out.println("  request string: " + urlParameters);
+		log.debug("request string = " + urlParameters);
+
 		String handleURL = ServerInfo.getInstance().getHandleURL( ctx ) ;
 		String requestUrl = handleURL + command;
-		System.out.println("  request url: " + requestUrl);
+		log.debug("request url: " + requestUrl);
+
 		URL url;
 	    HttpURLConnection connection = null;  
 	    try {
 	    	//Create connection
 	    	url = new URL(requestUrl);
 	    	connection = (HttpURLConnection)url.openConnection();
+			if(connection == null) {
+				throw new Exception("Unable to create the connection");
+			}
+
 	    	connection.setRequestMethod("POST");
 	    	connection.setRequestProperty("Content-Type", "application/xml");
 	    	connection.setRequestProperty("Content-Length", ""
@@ -104,13 +114,24 @@ public class DCOId {
 
 	    	//Send request
 	    	DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
+			if(wr == null) {
+				throw new Exception("Unable to get the output stream for the connection");
+			}
+
 	    	wr.writeBytes (urlParameters);
 	    	wr.flush ();
 	    	wr.close ();
-	      
-	    	//Get Response	
+
+			log.info("handle connection returned code " + connection.getResponseCode() + " " + connection.getResponseMessage());
+
+	    	//Get Response
 	    	InputStream is = connection.getInputStream();
+			if(is == null) {
+				throw new Exception("Unable to get the input stream from the connection");
+			}
+
 	    	BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
 	    	String line;
 	    	StringBuffer response = new StringBuffer(); 
 	    	while((line = rd.readLine()) != null) {
@@ -118,27 +139,34 @@ public class DCOId {
 	    		response.append('\r');
 	    	}
 	    	rd.close();
-	      
+
 	    	//Parse xml to get the <id> property
-	    	String xmlString = response.toString(); 
-	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
-	    	DocumentBuilder builder;  
-		/*july 25, 2013, boliang
-		 * add condition statement to avoid parse xml string not starint with "<?xml ....".
-		 */    
-		if (xmlString != null && xmlString.startsWith("<?xml")) {
-		    try {  
-	    		builder = factory.newDocumentBuilder();  
-	    		Document document = builder.parse(new InputSource(new StringReader( xmlString ) ) );  
-	    		Element handleElement = (Element) document.getElementsByTagName("handle").item(0);
-	    		this.dcoId = handleElement.getElementsByTagName("id").item(0).getTextContent();          
-                System.out.println("  New dcoId " + this.dcoId);
-		    } catch (Exception e) {  
-	    		e.printStackTrace(); 
-	    		this.dcoId = null;
-		    }
-		}
+	    	String xmlString = response.toString();
+			log.debug("response from dco handle service is " + xmlString);
+
+	    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    	DocumentBuilder builder;
+
+            /*july 25, 2013, boliang
+             * add condition statement to avoid parse xml string not starint with "<?xml ....".
+             */
+            if (xmlString != null && xmlString.startsWith("<?xml")) {
+                try {
+                    builder = factory.newDocumentBuilder();
+                    Document document = builder.parse(new InputSource(new StringReader( xmlString ) ) );
+                    Element handleElement = (Element) document.getElementsByTagName("handle").item(0);
+                    this.dcoId = handleElement.getElementsByTagName("id").item(0).getTextContent();
+                    log.info("New dcoId " + this.dcoId);
+                } catch (Exception e) {
+                    log.error("Failed to parse the XML return " + xmlString + " - " + e.getMessage());
+                    e.printStackTrace();
+                    this.dcoId = null;
+                }
+            } else {
+				throw new Exception("Response from handle service is not xml");
+			}
 	    } catch (Exception e) {
+			log.error("Failed to generate a DCOId " + e.getMessage());
 	    	e.printStackTrace();
 	    } finally {
 	    	if(connection != null) {
