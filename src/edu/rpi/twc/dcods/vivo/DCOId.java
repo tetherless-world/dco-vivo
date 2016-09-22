@@ -158,6 +158,7 @@ public class DCOId {
                     this.dcoId = handleElement.getElementsByTagName("id").item(0).getTextContent();
                     log.info("New dcoId " + this.dcoId);
                 } catch (Exception e) {
+                    log.error("Failed to parse the XML return " + xmlString + " - " + e.getMessage());
                     e.printStackTrace();
                     this.dcoId = null;
                 }
