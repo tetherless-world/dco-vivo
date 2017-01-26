@@ -68,6 +68,7 @@
 	<li class="leaf"><a   href="https://deepcarbon.net/page/submit-community-data" title="Submit Community Data">Submit Community Data</a></li>
 	<li class="leaf"><a href="${urls.base}/publications" title="Publications">Publications</a></li>
 	<li class="leaf"><a href="${urls.base}/people" title="People">People</a></li>
+	<li class="leaf"><a href="${urls.base}/scientific-collections" title="Scientific Collections">Scientific Collections</a></li>
 	<li class="leaf"><a href="${urls.base}/projects" title="Projects">Project &amp; Field Studies</a></li>
 	<li class="leaf"><a href="${urls.base}/field-studies" title="DCO Field Study Browser (map)">Field Sites (map)</a></li>
 	<li class="leaf last"><a href="${urls.base}/datasets" title="Datasets">Datasets</a></li>
